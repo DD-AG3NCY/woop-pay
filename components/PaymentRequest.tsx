@@ -109,14 +109,14 @@ export default function PaymentRequest() {
             <div>
               {" "}
               <WhatsappShareButton
-                url={`http://localhost:3000/request/${path}`}
+                url={`https://web3-pay-alpha.vercel.app/${path}`}
                 title={`Hey, can please pay me ${amount} USDC`}
                 separator=":: "
               >
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
               <TelegramShareButton
-                url={`http://localhost:3000/request/${path}`}
+                url={`https://web3-pay-alpha.vercel.app/${path}`}
                 title={`Hey, can please pay me ${amount} USDC`}
               >
                 <TelegramIcon size={32} round />
@@ -125,7 +125,7 @@ export default function PaymentRequest() {
                 //href={`http://localhost:3000/request/${path}`}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `http://localhost:3000/request/${path}`
+                    `https://web3-pay-alpha.vercel.app/${path}`
                   );
                   setCopySuccess(true);
                 }}
@@ -133,7 +133,7 @@ export default function PaymentRequest() {
                 {copySuccess ? "Copied" : "Copy Link"}
               </Link>
               <Canvas
-                text={`http://localhost:3000/request/${path}`}
+                text={`https://web3-pay-alpha.vercel.app/${path}`}
                 options={{
                   level: "M",
                   margin: 3,
