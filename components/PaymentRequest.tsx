@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import { useAccount } from "wagmi";
 import { uploadIpfs } from "../utils/ipfs";
+import { selectToken } from "../utils/constants";
 import {
   WhatsappShareButton,
   WhatsappIcon,
@@ -16,9 +17,10 @@ import {
   TelegramIcon,
 } from "next-share";
 import { useQRCode } from "next-qrcode";
+import Image from "next/image";
 
 export default function PaymentRequest() {
-  const [tokenAddress, setTokenAddress] = React.useState("");
+  const [tokenLabel, setTokenLabel] = React.useState("");
   const [amount, setAmount] = React.useState<string>("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
@@ -27,8 +29,8 @@ export default function PaymentRequest() {
   const { Canvas } = useQRCode();
 
   //event handlers
-  const handleTokenAddressChange = (event: SelectChangeEvent) => {
-    setTokenAddress(event.target.value as string);
+  const handleTokenLabelChange = (event: SelectChangeEvent) => {
+    setTokenLabel(event.target.value as string);
   };
 
   const handleAmountChange = (event: any) => {
@@ -44,8 +46,8 @@ export default function PaymentRequest() {
         // metadata_id: uuid(), can be used in the future to have a proper payment id
         from: address,
         value: amount,
-        tokenName: "USDC",
-        tokenAddress: tokenAddress,
+        tokenName: tokenLabel,
+        tokenAddress: selectToken(tokenLabel).contractAddress,
       }).finally(() => {
         setIpfsLoading(false);
       });
@@ -72,17 +74,41 @@ export default function PaymentRequest() {
         autoComplete="off"
       >
         <div className="container flex flex-col  items-center">
-          <FormControl sx={{ minWidth: 120 }}>
+          <FormControl sx={{ minWidth: 175 }}>
             <InputLabel id="demo-select-small">Token</InputLabel>
             <Select
               labelId="demo-select-small"
               id="demo-simple-select"
-              value={tokenAddress}
+              value={tokenLabel}
               label="Token"
-              onChange={handleTokenAddressChange}
+              onChange={handleTokenLabelChange}
             >
-              <MenuItem value={"0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60"}>
-                DAI
+              <MenuItem value={selectToken("DAI")?.label}>
+                <Image
+                  alt="DAI"
+                  src={selectToken("DAI")?.img}
+                  width={20}
+                  height={20}
+                />
+                {selectToken("DAI")?.label}
+              </MenuItem>
+              <MenuItem value={selectToken("USDC")?.label}>
+                <Image
+                  alt="USDC"
+                  src={selectToken("USDC")?.img}
+                  width={20}
+                  height={20}
+                />
+                {selectToken("USDC")?.label}
+              </MenuItem>
+              <MenuItem value={selectToken("WETH")?.label}>
+                <Image
+                  alt="WETH"
+                  src={selectToken("WETH")?.img}
+                  width={20}
+                  height={20}
+                />
+                {selectToken("WETH")?.label}
               </MenuItem>
             </Select>
           </FormControl>
@@ -109,14 +135,14 @@ export default function PaymentRequest() {
             <div>
               {" "}
               <WhatsappShareButton
-                url={`https://web3-pay-alpha.vercel.app/${path}`}
+                url={`https://web3-pay-alpha.vercel.app/request/${path}`}
                 title={`Hey, can please pay me ${amount} USDC`}
                 separator=":: "
               >
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
               <TelegramShareButton
-                url={`https://web3-pay-alpha.vercel.app/${path}`}
+                url={`https://web3-pay-alpha.vercel.app/request/${path}`}
                 title={`Hey, can please pay me ${amount} USDC`}
               >
                 <TelegramIcon size={32} round />
@@ -125,7 +151,7 @@ export default function PaymentRequest() {
                 //href={`http://localhost:3000/request/${path}`}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://web3-pay-alpha.vercel.app/${path}`
+                    `https://web3-pay-alpha.vercel.app/request/${path}`
                   );
                   setCopySuccess(true);
                 }}
@@ -133,7 +159,7 @@ export default function PaymentRequest() {
                 {copySuccess ? "Copied" : "Copy Link"}
               </Link>
               <Canvas
-                text={`https://web3-pay-alpha.vercel.app/${path}`}
+                text={`https://web3-pay-alpha.vercel.app/request/${path}`}
                 options={{
                   level: "M",
                   margin: 3,
