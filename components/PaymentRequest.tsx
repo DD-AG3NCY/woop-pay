@@ -18,6 +18,9 @@ import {
 } from "next-share";
 import { useQRCode } from "next-qrcode";
 import Image from "next/image";
+import wethLogo from "../public/eth.png";
+import daiLogo from "../public/dai.png";
+import usdcLogo from "../public/usdc.png";
 
 export default function PaymentRequest() {
   const [tokenLabel, setTokenLabel] = React.useState("");
@@ -84,30 +87,15 @@ export default function PaymentRequest() {
               onChange={handleTokenLabelChange}
             >
               <MenuItem value={selectToken("DAI")?.label}>
-                <Image
-                  alt="DAI"
-                  src={selectToken("DAI")?.img}
-                  width={20}
-                  height={20}
-                />
+                <Image alt="DAI" src={daiLogo} width={20} height={20} />
                 {selectToken("DAI")?.label}
               </MenuItem>
               <MenuItem value={selectToken("USDC")?.label}>
-                <Image
-                  alt="USDC"
-                  src={selectToken("USDC")?.img}
-                  width={20}
-                  height={20}
-                />
+                <Image alt="USDC" src={usdcLogo} width={20} height={20} />
                 {selectToken("USDC")?.label}
               </MenuItem>
               <MenuItem value={selectToken("WETH")?.label}>
-                <Image
-                  alt="WETH"
-                  src={selectToken("WETH")?.img}
-                  width={20}
-                  height={20}
-                />
+                <Image alt="WETH" src={wethLogo} width={20} height={20} />
                 {selectToken("WETH")?.label}
               </MenuItem>
             </Select>
