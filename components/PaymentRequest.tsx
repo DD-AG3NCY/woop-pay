@@ -47,7 +47,7 @@ export default function PaymentRequest() {
         from: address,
         value: amount,
         tokenName: tokenLabel,
-        tokenAddress: selectToken(tokenLabel).contractAddress,
+        tokenAddress: selectToken(tokenLabel)?.contractAddress,
       }).finally(() => {
         setIpfsLoading(false);
       });
