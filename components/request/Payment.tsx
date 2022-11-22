@@ -6,10 +6,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
 
 import { useAccount } from "wagmi";
 import { uploadIpfs } from "../../utils/ipfs";
-import { selectToken, tokens } from "../../utils/constants";
+import { selectToken } from "../../utils/constants";
 
 import Image from "next/image";
 import wethLogo from "../../public/weth.png";
@@ -61,7 +62,7 @@ export default function Payment() {
           Ask anon 🙈 to pay me
         </span>
         <input
-          className="ml-2 font-medium text-xl focus:outline-0 focus:text-gray-400 max-w-[75px]"
+          className="ml-3 text-gray-500 font-medium text-xl focus:outline-0 focus:text-gray-500 max-w-[65px]"
           type="number"
           placeholder="0.00"
           onChange={handleAmountChange}
