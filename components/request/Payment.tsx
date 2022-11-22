@@ -120,7 +120,7 @@ export default function Payment() {
       </div>
 
       <div>
-        <Share path={path} amount={amount} />
+        <Share path={path} amount={amount} tokenLabel={tokenLabel} />
       </div>
     </>
   );

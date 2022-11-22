@@ -9,8 +9,12 @@ import {
 import { useQRCode } from "next-qrcode";
 import { baseUrl } from "../../utils/constants";
 
-export const Share: React.FC<{ path: string; amount: string }> = (props) => {
-  const { amount, path } = props;
+export const Share: React.FC<{
+  path: string;
+  amount: string;
+  tokenLabel: string;
+}> = (props) => {
+  const { amount, path, tokenLabel } = props;
   const [copySuccess, setCopySuccess] = React.useState(false);
   const { Canvas } = useQRCode();
 
@@ -40,7 +44,7 @@ export const Share: React.FC<{ path: string; amount: string }> = (props) => {
             <div>
               <WhatsappShareButton
                 url={`${baseUrl}${path}`}
-                title={`Hey, can please pay me ${amount} USDC`}
+                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
                 separator=":: "
               >
                 <WhatsappIcon size={32} round />
@@ -49,7 +53,7 @@ export const Share: React.FC<{ path: string; amount: string }> = (props) => {
             <div>
               <TelegramShareButton
                 url={`${baseUrl}${path}`}
-                title={`Hey, can please pay me ${amount} USDC`}
+                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
               >
                 <TelegramIcon size={32} round />
               </TelegramShareButton>
