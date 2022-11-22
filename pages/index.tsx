@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from "../public/web3-pay-logo.png";
 import Wallet from "../components/Wallet";
-import PaymentRequest from "../components/PaymentRequest";
+import Request from "../components/Request";
 
 export default function Home() {
   return (
@@ -16,7 +16,7 @@ export default function Home() {
       </div>
 
       <Wallet />
-      <PaymentRequest />
+      <Request />
     </>
   );
 }

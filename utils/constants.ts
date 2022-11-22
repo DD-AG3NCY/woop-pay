@@ -1,4 +1,4 @@
-const tokens = [
+export const tokens = [
   {
     value: "eth",
     label: "WETH",
