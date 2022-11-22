@@ -56,7 +56,7 @@ export default function Payment() {
   // to refactor the menu item part by using .map
   return (
     <>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center m-10">
         <span className="ml-7 font-medium text-xl max-w-[220px]">
           Ask anon 🙈 to pay me
         </span>
@@ -66,9 +66,7 @@ export default function Payment() {
           placeholder="0.00"
           onChange={handleAmountChange}
         ></input>
-        <FormControl
-          className={`ml-1 ${tokenLabel ? "min-w-fit" : "min-w-[100px]"}`}
-        >
+        <FormControl sx={{ width: "120px" }}>
           <InputLabel>{tokenLabel ? "ERC20" : "Select"}</InputLabel>
           <Select
             value={tokenLabel}
@@ -98,7 +96,7 @@ export default function Payment() {
         </FormControl>
       </div>
 
-      <div className="flex">
+      <div className="flex m-10">
         <div className="w-1/3"></div>
         <Button
           className="w-1/3 mt-10"
