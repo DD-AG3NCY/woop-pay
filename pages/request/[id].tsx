@@ -1,6 +1,13 @@
 import * as React from "react";
+import Image from "next/image";
+import logo from "../../public/web3-pay-logo.png";
 import { useRouter } from "next/router";
+
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Alert from "@mui/material/Alert";
+
 import {
   usePrepareContractWrite,
   useContractWrite,
@@ -8,6 +15,7 @@ import {
 } from "wagmi";
 import ERC20 from "../../abi/ERC20.abi.json";
 import Wallet from "../../components/Wallet";
+import Footer from "../../components/Footer";
 import { utils } from "ethers";
 
 interface Request {
@@ -24,6 +32,7 @@ const Request = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  // querying ipfs
   const callIpfs = async () => {
     try {
       const response = await fetch(
@@ -48,14 +57,18 @@ const Request = () => {
   }, [id]);
 
   // wagmi transaction
-  const { config } = usePrepareContractWrite({
+  const {
+    config,
+    error: prepareError,
+    isError: isPrepareError,
+  } = usePrepareContractWrite({
     address: request?.tokenAddress,
     abi: ERC20,
     functionName: "transfer",
     args: [request?.from, utils.parseEther(amount)],
   });
 
-  const { data, write } = useContractWrite(config);
+  const { data, error, isError, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -63,29 +76,83 @@ const Request = () => {
 
   return (
     <div>
-      <Wallet />
-      <p>Request Id: {id}</p>
-
-      <div>
-        There is a payment request from {request?.from} of {request?.value}{" "}
-        {request?.tokenName}
-      </div>
-      <Button
-        sx={{ minWidth: 120, maxHeight: 50 }}
-        variant="outlined"
-        disabled={!write || isLoading}
-        onClick={() => write?.()}
-      >
-        Pay
-      </Button>
-      {isSuccess && (
-        <div>
-          Payment successful!
-          <div>
-            <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
-          </div>
-        </div>
+      {(isPrepareError || isError) && (
+        <Alert variant="filled" severity="error">
+          Error: {(prepareError || error)?.message}
+        </Alert>
       )}
+
+      {isSuccess && (
+        <Alert variant="filled" severity="success">
+          Payment successful!{" "}
+          <a href={`https://etherscan.io/tx/${data?.hash}`}>
+            Track your tx on Etherscan
+          </a>
+        </Alert>
+        // <div>
+
+        //   <div>
+        //     <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+        //   </div>
+        // </div>
+      )}
+
+      <div className="flex items-center justify-between m-7">
+        <Image alt="web3-pay" src={logo} width={150} height={150} />
+        <Wallet />
+      </div>
+
+      <Container maxWidth="md">
+        <Box
+          component="form"
+          className="mt-20"
+          sx={{
+            p: 2,
+            border: "2px solid grey",
+            borderRadius: 10,
+          }}
+        >
+          <div className="grid justify-items-center">
+            <p>
+              Payment Id:
+              <span className="ml-1 font-medium text-xl max-w-[220px]">
+                {id}
+              </span>
+            </p>
+            <p>
+              Request from
+              <span className="ml-1 font-medium text-xl max-w-[220px]">
+                {request?.from}
+              </span>{" "}
+              of
+              <span className="ml-1 font-medium text-xl max-w-[220px]">
+                {request?.value} {request?.tokenName}
+              </span>
+            </p>
+            <div className="mt-10">
+              <Button
+                variant="outlined"
+                disabled={!write || isLoading}
+                onClick={() => write?.()}
+              >
+                {isLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3 bg-sky-500"
+                      viewBox="0 0 24 24"
+                    ></svg>
+                    <p>Processing...</p>
+                  </>
+                ) : (
+                  "Pay"
+                )}
+              </Button>
+            </div>
+          </div>
+        </Box>
+      </Container>
+
+      <Footer />
     </div>
   );
 };
