@@ -1,15 +1,16 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import { Share } from "./Share";
+
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
+
 import { useAccount } from "wagmi";
 import { uploadIpfs } from "../../utils/ipfs";
 import { selectToken, tokens } from "../../utils/constants";
+
 import Image from "next/image";
 import wethLogo from "../../public/weth.png";
 import daiLogo from "../../public/dai.png";
@@ -20,7 +21,6 @@ export default function Payment() {
   const [amount, setAmount] = React.useState<string>("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
-  const [copySuccess, setCopySuccess] = React.useState(false);
   const { address } = useAccount();
 
   //event handlers
@@ -97,6 +97,7 @@ export default function Payment() {
           </Select>
         </FormControl>
       </div>
+
       <div className="flex">
         <div className="w-1/3"></div>
         <Button
@@ -117,6 +118,10 @@ export default function Payment() {
           )}
         </Button>
         <div className="w-1/3"></div>
+      </div>
+
+      <div>
+        <Share path={path} amount={amount} />
       </div>
     </>
   );

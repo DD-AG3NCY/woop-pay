@@ -16,6 +16,8 @@ export const tokens = [
   },
 ];
 
+export const baseUrl: string = "https://web3-pay-alpha.vercel.app/request/";
+
 export const selectToken = (token: string) => {
   if (token === "WETH") {
     return tokens[0];
