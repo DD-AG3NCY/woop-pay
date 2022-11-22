@@ -56,7 +56,7 @@ export default function Payment() {
   // to refactor the menu item part by using .map
   return (
     <>
-      <div className="flex items-center">
+      <div className="flex items-center justify-center">
         <span className="ml-7 font-medium text-xl max-w-[220px]">
           Ask anon 🙈 to pay me
         </span>
