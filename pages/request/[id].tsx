@@ -7,13 +7,13 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
-import Tooltip from "@mui/material/Tooltip";
 
 import {
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
 } from "wagmi";
+
 import ERC20 from "../../abi/ERC20.abi.json";
 import Wallet from "../../components/Wallet";
 import Footer from "../../components/Footer";
@@ -30,6 +30,7 @@ interface Request {
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.1");
+  const [badRequest, setBadRequest] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
 
@@ -48,6 +49,7 @@ const Request = () => {
       //console.log(json);
     } catch (error) {
       console.error(error);
+      setBadRequest(true);
     }
   };
 
@@ -83,6 +85,12 @@ const Request = () => {
         </Alert>
       )}
 
+      {badRequest && (
+        <Alert variant="filled" severity="error">
+          Error: Payment not found
+        </Alert>
+      )}
+
       {isSuccess && (
         <Alert variant="filled" severity="success">
           Payment successful!{" "}
@@ -108,18 +116,24 @@ const Request = () => {
           }}
         >
           <div className="grid justify-items-center">
-            <p className="m-3 text-xl">
-              From{" "}
-              <strong>
-                {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
-              </strong>
-            </p>
-            <p className="mt-3 text-xl">
-              Hey 😇, can you please pay me{" "}
-              <strong>
-                {request?.value} {request?.tokenName}
-              </strong>
-            </p>
+            {badRequest ? (
+              <p className="mt-3 text-xl">Is the request id correct? 🤔</p>
+            ) : (
+              <>
+                <p className="m-3 text-xl">
+                  From{" "}
+                  <strong>
+                    {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                  </strong>
+                </p>
+                <p className="mt-3 text-xl">
+                  Hey 😇, can you please pay me{" "}
+                  <strong>
+                    {request?.value} {request?.tokenName}
+                  </strong>
+                </p>
+              </>
+            )}
             <div className="mt-10 mb-3">
               <Button
                 variant="outlined"
