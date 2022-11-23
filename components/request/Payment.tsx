@@ -118,7 +118,7 @@ export default function Payment() {
         </Button>
       </div>
 
-      <div>
+      <div className="flex justify-center">
         <Share path={path} amount={amount} tokenLabel={tokenLabel} />
       </div>
     </>
