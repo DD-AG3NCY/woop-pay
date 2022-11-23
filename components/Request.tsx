@@ -2,7 +2,8 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Payment from "./request/Payment";
 
-export default function Request() {
+export default function Request(props: any) {
+  const { setBadRequest } = props;
   return (
     <Container maxWidth="md">
       <Box
@@ -15,7 +16,7 @@ export default function Request() {
         }}
       >
         <div>
-          <Payment />
+          <Payment setBadRequest={setBadRequest} />
         </div>
       </Box>
     </Container>

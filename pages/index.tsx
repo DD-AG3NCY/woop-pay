@@ -14,6 +14,7 @@ export default function Home() {
   const { isConnected } = useAccount();
   const { error } = useConnect();
   const [connected, setConnected] = React.useState<boolean>(false);
+  const [badRequest, setBadRequest] = React.useState<boolean>(false);
 
   React.useEffect(() => setConnected(isConnected), [isConnected]);
 
@@ -25,13 +26,19 @@ export default function Home() {
         </Alert>
       )}
 
+      {badRequest && (
+        <Alert variant="filled" severity="error">
+          Error: The payment creation failed
+        </Alert>
+      )}
+
       <div className="flex items-center justify-between m-7">
         <Image alt="web3-pay" src={logo} width={150} height={150} />
         <Wallet />
       </div>
 
       {connected ? (
-        <Request />
+        <Request setBadRequest={setBadRequest} />
       ) : (
         <>
           <WalletDisconnect />

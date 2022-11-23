@@ -117,7 +117,7 @@ const Request = () => {
         >
           <div className="grid justify-items-center">
             {badRequest ? (
-              <p className="mt-3 text-xl">Is the request id correct? 🤔</p>
+              <p className="mt-3 text-xl">Is the request url correct? 🤔</p>
             ) : (
               <>
                 <p className="m-3 text-xl">

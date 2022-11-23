@@ -17,7 +17,8 @@ import wethLogo from "../../public/weth.png";
 import daiLogo from "../../public/dai.png";
 import usdcLogo from "../../public/usdc.png";
 
-export default function Payment() {
+export default function Payment(props: any) {
+  const { setBadRequest } = props;
   const [tokenLabel, setTokenLabel] = React.useState("");
   const [amount, setAmount] = React.useState<string>("");
   const [path, setPath] = React.useState<string>("");
@@ -50,6 +51,7 @@ export default function Payment() {
       setPath(path);
     } catch (error) {
       console.error(error);
+      setBadRequest(true);
       setIpfsLoading(false);
     }
   };
