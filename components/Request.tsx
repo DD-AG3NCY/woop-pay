@@ -14,12 +14,8 @@ export default function Request() {
           borderRadius: 10,
         }}
       >
-        <div className="flex">
-          <div className="w-1/6"></div>
-          <div className="w-2/3">
-            <Payment />
-          </div>
-          <div className="w-1/6"></div>
+        <div>
+          <Payment />
         </div>
       </Box>
     </Container>

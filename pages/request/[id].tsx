@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
+import Tooltip from "@mui/material/Tooltip";
 
 import {
   usePrepareContractWrite,
@@ -89,12 +90,6 @@ const Request = () => {
             Track your tx on Etherscan
           </a>
         </Alert>
-        // <div>
-
-        //   <div>
-        //     <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
-        //   </div>
-        // </div>
       )}
 
       <div className="flex items-center justify-between m-7">
@@ -113,23 +108,19 @@ const Request = () => {
           }}
         >
           <div className="grid justify-items-center">
-            <p>
-              Payment Id:
-              <span className="ml-1 font-medium text-xl max-w-[220px]">
-                {id}
-              </span>
+            <p className="m-3 text-xl">
+              From{" "}
+              <strong>
+                {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+              </strong>
             </p>
-            <p>
-              Request from
-              <span className="ml-1 font-medium text-xl max-w-[220px]">
-                {request?.from}
-              </span>{" "}
-              of
-              <span className="ml-1 font-medium text-xl max-w-[220px]">
+            <p className="mt-3 text-xl">
+              Hey 😇, can you please pay me{" "}
+              <strong>
                 {request?.value} {request?.tokenName}
-              </span>
+              </strong>
             </p>
-            <div className="mt-10">
+            <div className="mt-10 mb-3">
               <Button
                 variant="outlined"
                 disabled={!write || isLoading}

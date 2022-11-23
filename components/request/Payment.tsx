@@ -57,16 +57,17 @@ export default function Payment() {
   // to refactor the menu item part by using .map
   return (
     <>
-      <div className="flex items-center justify-center m-10">
-        <span className="ml-7 font-medium text-xl max-w-[220px]">
+      <div className="m-3 flex items-center justify-center">
+        <p className="font-medium text-xl">
           Ask anon 🙈 to pay me
-        </span>
-        <input
-          className="ml-3 text-gray-500 font-medium text-xl focus:outline-0 focus:text-gray-500 max-w-[65px]"
-          type="number"
-          placeholder="0.00"
-          onChange={handleAmountChange}
-        ></input>
+          <input
+            className="ml-2 text-gray-500 font-medium text-xl focus:outline-0 focus:text-gray-500 max-w-[65px]"
+            type="number"
+            placeholder="0.00"
+            onChange={handleAmountChange}
+          ></input>
+        </p>
+
         <FormControl sx={{ width: "120px" }}>
           <InputLabel>{tokenLabel ? "ERC20" : "Select"}</InputLabel>
           <Select
@@ -97,10 +98,9 @@ export default function Payment() {
         </FormControl>
       </div>
 
-      <div className="flex m-10">
-        <div className="w-1/3"></div>
+      <div className="flex justify-center mt-10 mb-3">
         <Button
-          className="w-1/3 mt-10"
+          className="mt-10 max-w-fit"
           variant="outlined"
           onClick={createRequest}
         >
@@ -116,7 +116,6 @@ export default function Payment() {
             "Request"
           )}
         </Button>
-        <div className="w-1/3"></div>
       </div>
 
       <div>
