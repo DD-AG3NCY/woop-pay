@@ -6,7 +6,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 
 import { useAccount } from "wagmi";
 import { uploadIpfs } from "../../utils/ipfs";
@@ -18,9 +17,9 @@ import daiLogo from "../../public/dai.png";
 import usdcLogo from "../../public/usdc.png";
 
 export default function Payment(props: any) {
-  const { setBadRequest } = props;
+  const { setBadRequest, setAmountZeroRequest } = props;
   const [tokenLabel, setTokenLabel] = React.useState("");
-  const [amount, setAmount] = React.useState<string>("");
+  const [amount, setAmount] = React.useState<string>("0");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const { address } = useAccount();
@@ -36,23 +35,30 @@ export default function Payment(props: any) {
 
   //main functions
   const createRequest = async () => {
-    try {
-      setIpfsLoading(true);
-      const { path } = await uploadIpfs({
-        version: "1.0.0",
-        // metadata_id: uuid(), can be used in the future to have a proper payment id
-        from: address,
-        value: amount,
-        tokenName: tokenLabel,
-        tokenAddress: selectToken(tokenLabel)?.contractAddress,
-      }).finally(() => {
+    setAmountZeroRequest(false);
+    setBadRequest(false);
+
+    if (amount == "0") {
+      setAmountZeroRequest(true);
+    } else {
+      try {
+        setIpfsLoading(true);
+        const { path } = await uploadIpfs({
+          version: "1.0.0",
+          // metadata_id: uuid(), can be used in the future to have a proper payment id
+          from: address,
+          value: amount,
+          tokenName: tokenLabel,
+          tokenAddress: selectToken(tokenLabel)?.contractAddress,
+        }).finally(() => {
+          setIpfsLoading(false);
+        });
+        setPath(path);
+      } catch (error) {
+        console.error(error);
+        setBadRequest(true);
         setIpfsLoading(false);
-      });
-      setPath(path);
-    } catch (error) {
-      console.error(error);
-      setBadRequest(true);
-      setIpfsLoading(false);
+      }
     }
   };
 

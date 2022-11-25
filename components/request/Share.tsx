@@ -5,6 +5,8 @@ import {
   WhatsappIcon,
   TelegramShareButton,
   TelegramIcon,
+  TwitterShareButton,
+  TwitterIcon,
 } from "next-share";
 import { useQRCode } from "next-qrcode";
 import { baseUrl } from "../../utils/constants";
@@ -22,14 +24,13 @@ export const Share: React.FC<{
     <div className="container flex flex-col  items-center">
       {path ? (
         <div className="mt-20">
-          <div>
+          <div className="flex justify-center">
             <Canvas
               text={`${baseUrl}${path}`}
               options={{
                 level: "M",
                 margin: 3,
                 scale: 6,
-                width: 400,
                 color: {
                   dark: "#010599FF",
                   light: "#FFF2DF",
@@ -37,20 +38,19 @@ export const Share: React.FC<{
               }}
             />
           </div>
-          <p className="mt-10 font-medium text-xl">
-            Share this payment request:
+          <p className="flex mt-10 font-medium text-xl justify-center">
+            Share this payment request
           </p>
-          <div className="mt-5 grid grid-cols-3 gap-8 place-content-evenly">
-            <div>
+          <div className="mt-5 grid grid-cols-4 gap-2 place-content-evenly">
+            <div className="flex justify-center">
               <WhatsappShareButton
                 url={`${baseUrl}${path}`}
                 title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
-                separator=":: "
               >
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
             </div>
-            <div>
+            <div className="flex justify-center">
               <TelegramShareButton
                 url={`${baseUrl}${path}`}
                 title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
@@ -58,7 +58,15 @@ export const Share: React.FC<{
                 <TelegramIcon size={32} round />
               </TelegramShareButton>
             </div>
-            <div>
+            <div className="flex justify-center">
+              <TwitterShareButton
+                url={`${baseUrl}${path}`}
+                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+            </div>
+            <div className="flex justify-center">
               <Link
                 onClick={() => {
                   navigator.clipboard.writeText(`${baseUrl}${path}`);
