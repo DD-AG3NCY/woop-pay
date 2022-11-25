@@ -41,7 +41,11 @@ export default function Home() {
       )}
 
       <div className="flex items-center justify-between m-7">
-        <Image alt="web3-pay" src={logo} width={150} height={150} />
+        <div>
+          <Image alt="web3-pay" src={logo} width={120} height={120} />
+          <p className="flex justify-center font-[proxima-nova]">web3-pay</p>
+        </div>
+
         <Wallet />
       </div>
 

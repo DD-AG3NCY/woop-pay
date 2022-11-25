@@ -1,6 +1,7 @@
 import * as React from "react";
 import Image from "next/image";
 import logo from "../../public/web3-pay-logo.png";
+import emoji from "../../public/emoji_thumbs_up.png";
 import { useRouter } from "next/router";
 
 import Button from "@mui/material/Button";
@@ -93,15 +94,22 @@ const Request = () => {
 
       {isSuccess && (
         <Alert variant="filled" severity="success">
-          Payment successful!{" "}
-          <a href={`https://etherscan.io/tx/${data?.hash}`}>
-            Track your tx on Etherscan
+          Payment successful! Track your tx on{" "}
+          <a
+            className="underline underline-offset-4"
+            href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+          >
+            Etherscan
           </a>
         </Alert>
       )}
 
       <div className="flex items-center justify-between m-7">
-        <Image alt="web3-pay" src={logo} width={150} height={150} />
+        <div>
+          <Image alt="web3-pay" src={logo} width={120} height={120} />
+          <p className="flex justify-center font-[proxima-nova]">web3-pay</p>
+        </div>
+
         <Wallet />
       </div>
 
@@ -156,6 +164,12 @@ const Request = () => {
           </div>
         </Box>
       </Container>
+
+      {isSuccess && (
+        <div className="flex justify-center m-7">
+          <Image alt="web3-pay-success" src={emoji} width={350} height={350} />
+        </div>
+      )}
 
       <Footer />
     </div>

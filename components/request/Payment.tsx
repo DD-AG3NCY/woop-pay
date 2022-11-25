@@ -67,9 +67,9 @@ export default function Payment(props: any) {
     <>
       <div className="m-3 flex items-center justify-center">
         <p className="font-medium text-xl">
-          Ask anon 🙈 to pay me
+          Ask anon 🙈 to pay me:
           <input
-            className="ml-2 text-gray-500 font-medium text-xl focus:outline-0 focus:text-gray-500 max-w-[65px]"
+            className="ml-2 text-gray-500 font-medium text-xl focus:outline-0 focus:text-slate-700 max-w-[65px] bg-transparent"
             type="number"
             placeholder="0.00"
             onChange={handleAmountChange}
