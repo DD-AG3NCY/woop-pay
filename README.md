@@ -1,6 +1,5 @@
 # web3-pay
 
-## About
 web3-pay is a web application to make web3 payment requests frictionless
 
 
