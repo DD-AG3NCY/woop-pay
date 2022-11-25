@@ -30,13 +30,13 @@ export default function Home() {
 
       {badRequest && (
         <Alert variant="filled" severity="error">
-          Error: The payment creation failed
+          {`Error: The payment creation failed`}
         </Alert>
       )}
 
       {amountZeroRequest && (
         <Alert variant="filled" severity="error">
-          Error: You can't create a payment request with value 0
+          {`Error: You can't create a payment request with value 0`}
         </Alert>
       )}
 
