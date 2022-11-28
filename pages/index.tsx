@@ -55,28 +55,46 @@ export default function Home() {
         </Alert>
       )}
 
-      <div className="flex items-center justify-between m-7">
-        <div>
-          <Image alt="web3-pay" src={logo} width={120} height={120} />
-        </div>
+      <section className="h-screen w-screen flex justify-center items-center container bg-black">
+        <div className="absolute top-0 left-0 w-screen flex items-center justify-between m-7 z-10">
+          <div>
+            <Image alt="web3-pay" src={logo} width={120} height={120} />
+          </div>
 
-        <Wallet />
-      </div>
-
-      {connected ? (
-        <Request
-          setBadRequest={setBadRequest}
-          setAmountZeroRequest={setAmountZeroRequest}
-          setNoTokenRequest={setNoTokenRequest}
-        />
-      ) : (
-        <>
-          <WalletDisconnect />
           <Wallet />
-        </>
-      )}
-
-      <Footer />
+        </div>
+        <div className="h-screen w-screen absolute top-0 z-0 opacity-50 container">
+          <style jsx>{`
+            .container {
+              background-repeat: repeat;
+              background-image: url("/double-bubble-dark.webp");
+              background-opacity: 0.2;
+              background-blend-mode: soft-light;
+              background-size: 400px;
+            }
+            p {
+              color: blue;
+            }
+          `}</style>
+        </div>
+        <div className="z-10">
+          {connected ? (
+            <Request
+              setBadRequest={setBadRequest}
+              setAmountZeroRequest={setAmountZeroRequest}
+              setNoTokenRequest={setNoTokenRequest}
+            />
+          ) : (
+            <>
+              <WalletDisconnect />
+              <Wallet />
+            </>
+          )}
+        </div>
+      </section>
+      <div className="absolute bottom-0 left-0 w-full mb-5">
+        <Footer />
+      </div>
     </>
   );
 }
