@@ -17,7 +17,7 @@ import daiLogo from "../../public/dai.png";
 import usdcLogo from "../../public/usdc.png";
 
 export default function Payment(props: any) {
-  const { setBadRequest, setAmountZeroRequest } = props;
+  const { setBadRequest, setAmountZeroRequest, setNoTokenRequest } = props;
   const [tokenLabel, setTokenLabel] = React.useState("");
   const [amount, setAmount] = React.useState<string>("0");
   const [path, setPath] = React.useState<string>("");
@@ -36,10 +36,13 @@ export default function Payment(props: any) {
   //main functions
   const createRequest = async () => {
     setAmountZeroRequest(false);
+    setNoTokenRequest(false);
     setBadRequest(false);
 
     if (amount == "0") {
       setAmountZeroRequest(true);
+    } else if (tokenLabel == "") {
+      setNoTokenRequest(true);
     } else {
       try {
         setIpfsLoading(true);

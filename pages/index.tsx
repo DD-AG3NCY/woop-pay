@@ -17,6 +17,7 @@ export default function Home() {
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
   const [amountZeroRequest, setAmountZeroRequest] =
     React.useState<boolean>(false);
+  const [noTokenRequest, setNoTokenRequest] = React.useState<boolean>(false);
 
   React.useEffect(() => setConnected(isConnected), [isConnected]);
 
@@ -40,6 +41,12 @@ export default function Home() {
         </Alert>
       )}
 
+      {noTokenRequest && (
+        <Alert variant="filled" severity="error">
+          {`Error: You can't create a payment request without selecting a token`}
+        </Alert>
+      )}
+
       <div className="flex items-center justify-between m-7">
         <div>
           <Image alt="web3-pay" src={logo} width={120} height={120} />
@@ -52,6 +59,7 @@ export default function Home() {
         <Request
           setBadRequest={setBadRequest}
           setAmountZeroRequest={setAmountZeroRequest}
+          setNoTokenRequest={setNoTokenRequest}
         />
       ) : (
         <>
