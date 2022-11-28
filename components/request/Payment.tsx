@@ -94,7 +94,7 @@ export default function Payment(props: any) {
             placeholder="Select token"
           >
             {tokensDetails.map((token) => (
-              <MenuItem value={token.label}>
+              <MenuItem key={token.label} value={token.label}>
                 <div className="flex">
                   <Image
                     alt={token.label}
