@@ -24,6 +24,7 @@ interface Request {
   version: string;
   from: string;
   value: string;
+  network: string;
   tokenName: string;
   tokenAddress: string;
 }
