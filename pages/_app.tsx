@@ -1,9 +1,15 @@
+import * as React from "react";
+
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
+
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const { chains, provider } = configureChains(
   [chain.goerli],
@@ -22,10 +28,26 @@ const wagmiClient = createClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? "light" : "dark",
+        },
+      }),
+    [prefersDarkMode]
+  );
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider modalSize="compact" chains={chains}>
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <Component {...pageProps} />
+          </CssBaseline>
+        </ThemeProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
