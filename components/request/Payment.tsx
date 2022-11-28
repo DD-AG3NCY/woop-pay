@@ -7,14 +7,11 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { uploadIpfs } from "../../utils/ipfs";
-import { selectToken } from "../../utils/constants";
+import { selectToken, tokensDetails } from "../../utils/constants";
 
 import Image from "next/image";
-import wethLogo from "../../public/weth.png";
-import daiLogo from "../../public/dai.png";
-import usdcLogo from "../../public/usdc.png";
 
 export default function Payment(props: any) {
   const { setBadRequest, setAmountZeroRequest, setNoTokenRequest } = props;
@@ -22,7 +19,9 @@ export default function Payment(props: any) {
   const [amount, setAmount] = React.useState<string>("0");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
+  const [chainId, setChainId] = React.useState<string>("");
   const { address } = useAccount();
+  const { chain } = useNetwork();
 
   //event handlers
   const handleTokenLabelChange = (event: SelectChangeEvent) => {
@@ -51,8 +50,9 @@ export default function Payment(props: any) {
           // metadata_id: uuid(), can be used in the future to have a proper payment id
           from: address,
           value: amount,
+          network: chain?.name,
           tokenName: tokenLabel,
-          tokenAddress: selectToken(tokenLabel)?.contractAddress,
+          tokenAddress: selectToken(tokenLabel, chainId),
         }).finally(() => {
           setIpfsLoading(false);
         });
@@ -64,6 +64,12 @@ export default function Payment(props: any) {
       }
     }
   };
+
+  React.useEffect(() => {
+    if (chain) {
+      setChainId(chain.network);
+    }
+  }, [chain]);
 
   // to refactor the menu item part by using .map
   return (
@@ -87,24 +93,19 @@ export default function Payment(props: any) {
             onChange={handleTokenLabelChange}
             placeholder="Select token"
           >
-            <MenuItem value="DAI">
-              <div className="flex">
-                <Image alt="DAI" src={daiLogo} width={20} height={20} />
-                <span className="ml-2">DAI</span>
-              </div>
-            </MenuItem>
-            <MenuItem value="USDC">
-              <div className="flex">
-                <Image alt="USDC" src={usdcLogo} width={20} height={20} />
-                <span className="ml-2">USDC</span>
-              </div>
-            </MenuItem>
-            <MenuItem value="WETH">
-              <div className="flex">
-                <Image alt="WETH" src={wethLogo} width={20} height={10} />
-                <span className="ml-2">WETH</span>
-              </div>
-            </MenuItem>
+            {tokensDetails.map((token) => (
+              <MenuItem value={token.label}>
+                <div className="flex">
+                  <Image
+                    alt={token.label}
+                    src={token.src}
+                    width={20}
+                    height={20}
+                  />
+                  <span className="ml-2">{token.label}</span>
+                </div>
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </div>
