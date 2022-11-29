@@ -1,5 +1,7 @@
 import * as React from "react";
 import Image from "next/image";
+import Head from "next/head";
+
 import logo from "../public/web3-pay-logo.png";
 import Wallet from "../components/Wallet";
 import WalletDisconnect from "../components/WalletDisconnected";
@@ -23,6 +25,12 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>web3-pay</title>
+        <meta name="description" content="web3 payment requests made simple" />
+        <link rel="icon" href="./icon.svg" />
+      </Head>
+
       {error && (
         <Alert variant="filled" severity="error">
           {error.message}
