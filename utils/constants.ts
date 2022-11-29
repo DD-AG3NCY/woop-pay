@@ -1,53 +1,60 @@
-import wethLogo from "../public/weth.png";
+import ethLogo from "../public/eth.png";
 import daiLogo from "../public/dai.png";
 import usdcLogo from "../public/usdc.png";
 import uniLogo from "../public/uni.png";
-import aaveLogo from "../public/aave.png";
 
 export const tokensDetails = [
   {
-    src: wethLogo,
-    label: "WETH",
-    mainnet: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-    goerli: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
-    polygon: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    src: ethLogo,
+    label: "ETH",
+    mainnet: "0x0000000000000000000000000000000000000000",
+    goerli: "0x0000000000000000000000000000000000000000",
+    optimism: "0x0000000000000000000000000000000000000000",
+    arbitrum: "0x0000000000000000000000000000000000000000",
   },
   {
     src: daiLogo,
     label: "DAI",
     mainnet: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     goerli: "0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60",
-    polygon: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+    optimism: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+    arbitrum: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
   },
   {
     src: usdcLogo,
     label: "USDC",
     mainnet: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     goerli: "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C",
-    polygon: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    optimism: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+    arbitrum: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
   },
   {
     src: uniLogo,
     label: "UNI",
     mainnet: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
     goerli: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-    polygon: "0xb33EaAd8d922B1083446DC23f610c2567fB5180f",
-  },
-  {
-    src: aaveLogo,
-    label: "AAVE",
-    contractAddress: "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C",
-    mainnet: "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
-    goerli: "0x63242b9bd3c22f18706d5c4e627b4735973f1f07",
-    polygon: "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
+    optimism: "0x6fd9d7AD17242c41f7131d257212c54A0e816691",
+    arbitrum: "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0",
   },
 ];
 
-export const baseUrl: string = "https://web3-pay-alpha.vercel.app/request/";
+export const setEtherscanBase = (network: string) => {
+  if (network == "arbitrum") {
+    return "https://arbiscan.io/tx/";
+  } else if (network == "goerli") {
+    return "https://goerli.etherscan.io/tx/";
+  } else if (network == "optimism") {
+    return "https://optimistic.etherscan.io/tx/";
+  } else {
+    return "https://etherscan.io/tx/";
+  }
+};
+
+export const baseUrl: string = "http://localhost:3000/request/";
 
 export const selectToken = (token: string, network: string) => {
   if (network == "goerli") {
-    if (token === "WETH") {
+    if (token === "ETH") {
       return tokensDetails[0].goerli;
     } else if (token == "DAI") {
       return tokensDetails[1].goerli;
@@ -55,11 +62,9 @@ export const selectToken = (token: string, network: string) => {
       return tokensDetails[2].goerli;
     } else if (token == "UNI") {
       return tokensDetails[3].goerli;
-    } else if (token == "AAVE") {
-      return tokensDetails[4].goerli;
     }
   } else if (network == "mainnet") {
-    if (token === "WETH") {
+    if (token === "ETH") {
       return tokensDetails[0].mainnet;
     } else if (token == "DAI") {
       return tokensDetails[1].mainnet;
@@ -67,20 +72,26 @@ export const selectToken = (token: string, network: string) => {
       return tokensDetails[2].mainnet;
     } else if (token == "UNI") {
       return tokensDetails[3].mainnet;
-    } else if (token == "AAVE") {
-      return tokensDetails[4].mainnet;
     }
-  } else if (network == "polygon") {
-    if (token === "WETH") {
-      return tokensDetails[0].polygon;
+  } else if (network == "optimism") {
+    if (token === "ETH") {
+      return tokensDetails[0].optimism;
     } else if (token == "DAI") {
-      return tokensDetails[1].polygon;
+      return tokensDetails[1].optimism;
     } else if (token == "USDC") {
-      return tokensDetails[2].polygon;
+      return tokensDetails[2].optimism;
     } else if (token == "UNI") {
-      return tokensDetails[3].polygon;
-    } else if (token == "AAVE") {
-      return tokensDetails[4].polygon;
+      return tokensDetails[3].optimism;
+    }
+  } else if (network == "arbitrum") {
+    if (token === "ETH") {
+      return tokensDetails[0].arbitrum;
+    } else if (token == "DAI") {
+      return tokensDetails[1].arbitrum;
+    } else if (token == "USDC") {
+      return tokensDetails[2].arbitrum;
+    } else if (token == "UNI") {
+      return tokensDetails[3].arbitrum;
     }
   }
 };
