@@ -50,7 +50,7 @@ export const setEtherscanBase = (network: string) => {
   }
 };
 
-export const baseUrl: string = "http://localhost:3000/request/";
+export const baseUrl: string = "https://web3-pay-alpha.vercel.app/request/";
 
 export const selectToken = (token: string, network: string) => {
   if (network == "goerli") {
