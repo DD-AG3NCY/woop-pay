@@ -1,5 +1,7 @@
 import * as React from "react";
 import Image from "next/image";
+import Head from "next/head";
+
 import logo from "../../public/web3-pay-logo.png";
 import emoji from "../../public/emoji_thumbs_up.png";
 import { useRouter } from "next/router";
@@ -115,15 +117,23 @@ const Request = () => {
 
   return (
     <div>
+      <Head>
+        <title>web3-pay</title>
+        <meta name="description" content="web3 payment requests made simple" />
+        <link rel="icon" href="../icon.svg" />
+      </Head>
+
       {isNativeTx
         ? (isPrepareErrorNative || isErrorNative) && (
             <Alert variant="filled" severity="error">
-              Error: {(prepareErrorNative || errorNative)?.message}
+              Error: Payment not possible due to insufficient funds or contract
+              error
             </Alert>
           )
         : (isPrepareError || isError) && (
             <Alert variant="filled" severity="error">
-              Error: {(prepareError || error)?.message}
+              Error: Payment not possible due to insufficient funds or contract
+              error
             </Alert>
           )}
 
