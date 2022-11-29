@@ -13,7 +13,11 @@ import {
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
+  usePrepareSendTransaction,
+  useSendTransaction,
 } from "wagmi";
+
+import { setEtherscanBase } from "../../utils/constants";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Wallet from "../../components/Wallet";
@@ -32,7 +36,10 @@ interface Request {
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.1");
+  const [recipient, setRecipient] = React.useState<string>("");
+  const [network, setNetwork] = React.useState<string>("");
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
+  const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
 
@@ -42,13 +49,17 @@ const Request = () => {
       const response = await fetch(
         `https://web3-pay.infura-ipfs.io/ipfs/${id}`
       );
-
       if (!response.ok) throw new Error(response.statusText);
 
       const json = await response.json();
       setRequest(json);
       setAmount(json.value);
-      //console.log(json);
+      setRecipient(json.from);
+      setNetwork(setEtherscanBase(json.network));
+
+      if (json.tokenName == "ETH") {
+        setIsNativeTx(true);
+      }
     } catch (error) {
       console.error(error);
       setBadRequest(true);
@@ -61,7 +72,7 @@ const Request = () => {
     }
   }, [id]);
 
-  // wagmi transaction
+  // wagmi erc20 transaction
   const {
     config,
     error: prepareError,
@@ -79,13 +90,42 @@ const Request = () => {
     hash: data?.hash,
   });
 
+  //wagmi native transaction
+  const {
+    config: configNative,
+    error: prepareErrorNative,
+    isError: isPrepareErrorNative,
+  } = usePrepareSendTransaction({
+    request: {
+      to: recipient,
+      value: amount ? utils.parseEther(amount) : undefined,
+    },
+  });
+  const {
+    data: dataNative,
+    error: errorNative,
+    isError: isErrorNative,
+    sendTransaction,
+  } = useSendTransaction(configNative);
+
+  const { isLoading: isLoadingNative, isSuccess: isSuccessNative } =
+    useWaitForTransaction({
+      hash: dataNative?.hash,
+    });
+
   return (
     <div>
-      {(isPrepareError || isError) && (
-        <Alert variant="filled" severity="error">
-          Error: {(prepareError || error)?.message}
-        </Alert>
-      )}
+      {isNativeTx
+        ? (isPrepareErrorNative || isErrorNative) && (
+            <Alert variant="filled" severity="error">
+              Error: {(prepareErrorNative || errorNative)?.message}
+            </Alert>
+          )
+        : (isPrepareError || isError) && (
+            <Alert variant="filled" severity="error">
+              Error: {(prepareError || error)?.message}
+            </Alert>
+          )}
 
       {badRequest && (
         <Alert variant="filled" severity="error">
@@ -98,7 +138,19 @@ const Request = () => {
           Payment successful! Track your tx on{" "}
           <a
             className="underline underline-offset-4"
-            href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+            href={`${network}${data?.hash}`}
+          >
+            Etherscan
+          </a>
+        </Alert>
+      )}
+
+      {isSuccessNative && (
+        <Alert variant="filled" severity="success">
+          Payment successful! Track your tx on{" "}
+          <a
+            className="underline underline-offset-4"
+            href={`${network}${dataNative?.hash}`}
           >
             Etherscan
           </a>
@@ -145,10 +197,28 @@ const Request = () => {
             <div className="mt-10 mb-3">
               <Button
                 variant="outlined"
-                disabled={!write || isLoading}
-                onClick={() => write?.()}
+                disabled={
+                  isNativeTx
+                    ? !sendTransaction || isLoadingNative
+                    : !write || isLoading
+                }
+                onClick={
+                  isNativeTx ? () => sendTransaction?.() : () => write?.()
+                }
               >
-                {isLoading ? (
+                {isNativeTx ? (
+                  isLoadingNative ? (
+                    <>
+                      <svg
+                        className="animate-spin h-5 w-5 mr-3 bg-sky-500"
+                        viewBox="0 0 24 24"
+                      ></svg>
+                      <p>Processing...</p>
+                    </>
+                  ) : (
+                    "Pay"
+                  )
+                ) : isLoading ? (
                   <>
                     <svg
                       className="animate-spin h-5 w-5 mr-3 bg-sky-500"
@@ -166,6 +236,12 @@ const Request = () => {
       </Container>
 
       {isSuccess && (
+        <div className="flex justify-center m-7">
+          <Image alt="web3-pay-success" src={emoji} width={350} height={350} />
+        </div>
+      )}
+
+      {isSuccessNative && (
         <div className="flex justify-center m-7">
           <Image alt="web3-pay-success" src={emoji} width={350} height={350} />
         </div>

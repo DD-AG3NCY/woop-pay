@@ -50,7 +50,7 @@ export default function Payment(props: any) {
           // metadata_id: uuid(), can be used in the future to have a proper payment id
           from: address,
           value: amount,
-          network: chain?.name,
+          network: chain?.network,
           tokenName: tokenLabel,
           tokenAddress: selectToken(tokenLabel, chainId),
         }).finally(() => {
