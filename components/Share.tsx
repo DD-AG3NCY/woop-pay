@@ -9,7 +9,7 @@ import {
   TwitterIcon,
 } from "next-share";
 import { useQRCode } from "next-qrcode";
-import { baseUrl } from "../../utils/constants";
+import { baseUrl } from "../utils/constants";
 
 export const Share: React.FC<{
   path: string;
@@ -45,24 +45,21 @@ export const Share: React.FC<{
             <div className="flex justify-center">
               <WhatsappShareButton
                 url={`${baseUrl}${path}`}
-                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
-              >
+                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}>
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
             </div>
             <div className="flex justify-center">
               <TelegramShareButton
                 url={`${baseUrl}${path}`}
-                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
-              >
+                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}>
                 <TelegramIcon size={32} round />
               </TelegramShareButton>
             </div>
             <div className="flex justify-center">
               <TwitterShareButton
                 url={`${baseUrl}${path}`}
-                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}
-              >
+                title={`Hey, can you please pay me ${amount} ${tokenLabel}`}>
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
             </div>
@@ -71,8 +68,7 @@ export const Share: React.FC<{
                 onClick={() => {
                   navigator.clipboard.writeText(`${baseUrl}${path}`);
                   setCopySuccess(true);
-                }}
-              >
+                }}>
                 {copySuccess ? "Copied" : "Copy Link"}
               </Link>
             </div>
