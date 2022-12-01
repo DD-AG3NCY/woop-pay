@@ -11,6 +11,7 @@ import styles from "./index.module.scss";
 import cx from "classnames";
 
 import { useAccount, useConnect } from "wagmi";
+import Header from "../components/header";
 
 export default function Home() {
   const { error } = useConnect();
@@ -25,20 +26,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-10">
-        <div>
-          <Image alt="web3-pay" src={logo} width={280} height={120} />
-          <p className="font-base text-xs text-white mt-2 ml-1 opacity-60">
-            Web 3 payments made easy
-          </p>
-        </div>
+      <Header />
 
-        <div className="hidden md:block">
-          <Wallet />
-        </div>
-      </div>
-
-      <section
+      <article
         className={cx(
           styles.baseContainer,
           "h-screen w-full flex justify-center items-center"
@@ -69,11 +59,11 @@ export default function Home() {
           )}
         </div>
 
-        <div
+        <section
           className={cx(
             styles.containerBase,
             "h-screen w-full absolute top-0 z-0 opacity-50"
-          )}></div>
+          )}></section>
 
         {
           <Request
@@ -82,7 +72,7 @@ export default function Home() {
             setNoTokenRequest={setNoTokenRequest}
           />
         }
-      </section>
+      </article>
       <div className="absolute bottom-0 left-0 w-full">
         <Footer />
       </div>
