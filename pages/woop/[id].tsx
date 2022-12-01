@@ -102,6 +102,13 @@ const Request = () => {
     hash: data?.hash,
   });
 
+  const colors = [
+    "rgba(16, 130, 178, 1)",
+    "rgba(79, 76, 227, 1)",
+    "rgba(33, 35, 167, 0.5)",
+    "rgb(6, 34, 92)",
+  ];
+
   const coins = [
     {
       tokenId: "ETH",
@@ -218,6 +225,24 @@ const Request = () => {
           )}
         ></section>
 
+        {isSuccess && (
+          <Confetti
+            colors={colors}
+            className="z-10"
+            width={width}
+            height={height}
+          />
+        )}
+
+        {isSuccess && (
+          <Confetti
+            colors={colors}
+            className="z-10"
+            width={width}
+            height={height}
+          />
+        )}
+
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">
           <Box
@@ -234,9 +259,13 @@ const Request = () => {
                 <p className="font-base font-bold text-xl opacity-70">
                   {badRequest
                     ? "No Woop to pay here"
+                    : isSuccess
+                    ? "Woop sent!"
                     : "You've received a Woop! "}
                 </p>
-                <p className="text-3xl ml-2">{badRequest ? "⚠️" : "✨"}</p>
+                <p className="text-3xl ml-2">
+                  {badRequest ? "⚠️" : isSuccess ? "💸" : "✨"}
+                </p>
               </div>
               {badRequest ? (
                 <>
@@ -251,6 +280,36 @@ const Request = () => {
                         )}
                       >
                         Go back
+                      </button>
+                    </Link>
+                  </div>
+                </>
+              ) : isSuccess ? (
+                <>
+                  <div className="px-4 pb-4 pt-1">
+                    <div className="mt-3 text-center w-full my-6">
+                      <p className="font-bold md:text-5xl text-4xl mb-2">
+                        {request?.value} {request?.tokenName}
+                      </p>
+                      <p className="text-xs text-slate-300 mb-2">
+                        {"Are on "}
+                        <a
+                          className="underline underline-offset-4"
+                          href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+                        >
+                          their way
+                        </a>
+                        {" to "}
+                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                      </p>
+                    </div>
+                    <Link href="/">
+                      <button
+                        className={cx(
+                          "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                        )}
+                      >
+                        Finish
                       </button>
                     </Link>
                   </div>
