@@ -1,0 +1,13 @@
+.mainInput {
+    &:focus {
+        background-color: rgba(255, 255, 255, 0.3);
+        &::placeholder {
+            color: rgba(255, 255, 255, 1);
+            opacity: 1;
+        }
+    }
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        opacity: 1;
+    }
+}

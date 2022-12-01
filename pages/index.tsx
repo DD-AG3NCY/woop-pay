@@ -1,26 +1,28 @@
 import * as React from "react";
 import Image from "next/image";
 import Head from "next/head";
-
-import logo from "../public/web3-pay-logo.png";
+// import logo from "../public/web3-pay-logo.png";
+import logo from "../public/logo.svg";
 import Wallet from "../components/Wallet";
 import WalletDisconnect from "../components/WalletDisconnected";
-import Request from "../components/Request";
+import Request from "../components/Request/Request";
 import Footer from "../components/Footer";
 
 import Alert from "@mui/material/Alert";
+import styles from "./index.module.scss";
+import cx from "classnames";
 
 import { useAccount, useConnect } from "wagmi";
 
 export default function Home() {
-  const { isConnected } = useAccount();
   const { error } = useConnect();
-  const [connected, setConnected] = React.useState<boolean>(false);
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
   const [amountZeroRequest, setAmountZeroRequest] =
     React.useState<boolean>(false);
   const [noTokenRequest, setNoTokenRequest] = React.useState<boolean>(false);
 
+  const { isConnected } = useAccount();
+  const [connected, setConnected] = React.useState<boolean>(false);
   React.useEffect(() => setConnected(isConnected), [isConnected]);
 
   return (
@@ -36,63 +38,66 @@ export default function Home() {
           {error.message}
         </Alert>
       )}
+      <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-10">
+        <div>
+          <Image alt="web3-pay" src={logo} width={280} height={120} />
+          <p className="font-base text-xs text-white mt-2 ml-1 opacity-60">
+            Web 3 payments made easy
+          </p>
+        </div>
 
-      {badRequest && (
-        <Alert variant="filled" severity="error">
-          {`Error: The payment creation failed`}
-        </Alert>
-      )}
-
-      {amountZeroRequest && (
-        <Alert variant="filled" severity="error">
-          {`Error: You can't create a payment request with value 0`}
-        </Alert>
-      )}
-
-      {noTokenRequest && (
-        <Alert variant="filled" severity="error">
-          {`Error: You can't create a payment request without selecting a token`}
-        </Alert>
-      )}
-
-      <section className="h-screen w-screen flex justify-center items-center container bg-black">
-        <div className="absolute top-0 left-0 w-screen flex items-center justify-between m-7 z-10">
-          <div>
-            <Image alt="web3-pay" src={logo} width={120} height={120} />
-          </div>
-
+        <div className="hidden md:block">
           <Wallet />
         </div>
-        <div className="h-screen w-screen absolute top-0 z-0 opacity-50 container">
-          <style jsx>{`
-            .container {
-              background-repeat: repeat;
-              background-image: url("/double-bubble-dark.webp");
-              background-opacity: 0.2;
-              background-blend-mode: soft-light;
-              background-size: 400px;
-            }
-            p {
-              color: blue;
-            }
-          `}</style>
-        </div>
-        <div className="z-10">
-          {connected ? (
-            <Request
-              setBadRequest={setBadRequest}
-              setAmountZeroRequest={setAmountZeroRequest}
-              setNoTokenRequest={setNoTokenRequest}
-            />
-          ) : (
-            <>
-              <WalletDisconnect />
-              <Wallet />
-            </>
+      </div>
+
+      <section
+        className={cx(
+          styles.baseContainer,
+          "h-screen w-full flex justify-center items-center"
+        )}
+      >
+        <div className="fixed top-8 bg-white rounded">
+          {error && (
+            <Alert variant="filled" severity="error">
+              {error.message}
+            </Alert>
+          )}
+
+          {badRequest && (
+            <Alert variant="filled" severity="error">
+              {`Error: The payment creation failed`}
+            </Alert>
+          )}
+
+          {amountZeroRequest && (
+            <Alert variant="filled" severity="error">
+              {`Error: You can't create a payment request with value 0`}
+            </Alert>
+          )}
+
+          {noTokenRequest && (
+            <Alert variant="filled" severity="error">
+              {`Error: You can't create a payment request without selecting a token`}
+            </Alert>
           )}
         </div>
+
+        <div
+          className={cx(
+            styles.containerBase,
+            "h-screen w-full absolute top-0 z-0 opacity-50"
+          )}
+        ></div>
+        {
+          <Request
+            setBadRequest={setBadRequest}
+            setAmountZeroRequest={setAmountZeroRequest}
+            setNoTokenRequest={setNoTokenRequest}
+          />
+        }
       </section>
-      <div className="absolute bottom-0 left-0 w-full mb-5">
+      <div className="absolute bottom-0 left-0 w-full">
         <Footer />
       </div>
     </>
