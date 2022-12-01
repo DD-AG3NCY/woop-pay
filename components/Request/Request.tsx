@@ -8,13 +8,10 @@ export default function Request(props: any) {
   const { setBadRequest, setAmountZeroRequest, setNoTokenRequest } = props;
 
   return (
-    <Container maxWidth="sm" className="w-full">
+    <Container maxWidth="sm" className="w-full z-10">
       <Box
         component="form"
-        className={cx(
-          styles.containerBox,
-          "backdrop-blur containerBox p-2 rou rounded-3xl shadow-md w-full"
-        )}>
+        className={cx(styles.containerBox, "p-2 rounded-3xl shadow-md w-full")}>
         <Payment
           setBadRequest={setBadRequest}
           setAmountZeroRequest={setAmountZeroRequest}
