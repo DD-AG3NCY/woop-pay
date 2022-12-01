@@ -175,14 +175,12 @@ const Request = () => {
                   styles.topContainer,
                   "mb-2 pl-6 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
                 )}>
-                <p className="font-base font-bold text-xl opacity-70">
+                <p className="font-base font-bold text-xl">
                   {badRequest
                     ? "No Woop to pay here"
                     : "You've received a Woop! "}
                 </p>
-                <p className="text-3xl ml-2 opacity-100">
-                  {badRequest ? "⚠️" : "✨"}
-                </p>
+                <p className="text-3xl ml-2">{badRequest ? "⚠️" : "✨"}</p>
               </div>
               {badRequest ? (
                 <>
