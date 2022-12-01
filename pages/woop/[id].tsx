@@ -32,6 +32,7 @@ import cx from "classnames";
 import wethLogo from "../../public/eth.png";
 import daiLogo from "../../public/dai.png";
 import usdcLogo from "../../public/usdc.png";
+import Link from "next/link";
 
 interface Request {
   version: string;
@@ -103,6 +104,10 @@ const Request = () => {
 
   const coins = [
     {
+      tokenId: "ETH",
+      logo: wethLogo,
+    },
+    {
       tokenId: "WETH",
       logo: wethLogo,
     },
@@ -118,15 +123,15 @@ const Request = () => {
 
   const findIcon = (tokenName: string) => {
     const coin = coins.find((coin) => tokenName === coin.tokenId);
-    console.log(coin);
+    console.log(coin, tokenName);
     return (
       coin && (
         <Image
           alt={coin.tokenId}
           src={coin.logo}
-          className="p-1"
-          width={40}
-          height={40}
+          className=""
+          width={20}
+          height={20}
         />
       )
     );
@@ -227,47 +232,75 @@ const Request = () => {
                 )}
               >
                 <p className="font-base font-bold text-xl opacity-70">
-                  {"You've received a Woop! "}{" "}
+                  {badRequest
+                    ? "No Woop to pay here"
+                    : "You've received a Woop! "}
                 </p>
-                <p className="text-3xl ml-2 opacity-100">✨</p>
+                <p className="text-3xl ml-2 opacity-100">
+                  {badRequest ? "⚠️" : "✨"}
+                </p>
               </div>
-
-              <div className="px-4 pb-4 pt-1">
-                {badRequest ? (
-                  <p className="mt-1 text-xl">Is the request url correct? 🤔</p>
-                ) : (
+              {badRequest ? (
+                <>
+                  <div className="px-4 pb-4 pt-1">
+                    <div className="mt-3 md:text-2xl text-xl text-center w-full font-bold my-6">
+                      Check the link 🙏
+                    </div>
+                    <Link href="/">
+                      <button
+                        className={cx(
+                          "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                        )}
+                      >
+                        Go back
+                      </button>
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <div className="px-4 pb-4 pt-1 relative">
                   <>
                     {/* <p className="mb-1 text-2xl">
                     </p> */}
+                    <div className="absolute top-0 right-3 p-1">
+                      {request && findIcon(request?.tokenName)}
+                    </div>
                     <p className="text-xs text-slate-300 mb-2">
                       {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
                       {" requested you:"}
                     </p>
-                    <p className="mt-3 md:text-6xl text-5xl font-bold my-6 flex">
-                      <>
-                        {request && findIcon(request?.tokenName)}
-                        {request?.value} {request?.tokenName}
-                      </>
-                    </p>
+                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
+                      {request?.value} {request?.tokenName}
+                    </div>
                   </>
-                )}
 
-                <div className="">
-                  <button
-                    className={cx(
-                      "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                    )}
-                    disabled={
-                      isNativeTx
-                        ? !sendTransaction || isLoadingNative
-                        : !write || isLoading
-                    }
-                    onClick={
-                      isNativeTx ? () => sendTransaction?.() : () => write?.()
-                    }
-                  >
-                    {isNativeTx ? (
-                      isLoadingNative ? (
+                  <div className="">
+                    <button
+                      className={cx(
+                        "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                      )}
+                      disabled={
+                        isNativeTx
+                          ? !sendTransaction || isLoadingNative
+                          : !write || isLoading
+                      }
+                      onClick={
+                        isNativeTx ? () => sendTransaction?.() : () => write?.()
+                      }
+                    >
+                      {isNativeTx ? (
+                        isLoadingNative ? (
+                          <>
+                            <svg
+                              className="animate-spin h-5 w-5 mr-3 bg-sky-500"
+                              viewBox="0 0 24 24"
+                            ></svg>
+                            <p>Processing...</p>
+                          </>
+                        ) : (
+                          "Pay"
+                        )
+                      ) : isLoading ? (
                         <>
                           <svg
                             className="animate-spin h-5 w-5 mr-3 bg-sky-500"
@@ -276,22 +309,12 @@ const Request = () => {
                           <p>Processing...</p>
                         </>
                       ) : (
-                        "Pay"
-                      )
-                    ) : isLoading ? (
-                      <>
-                        <svg
-                          className="animate-spin h-5 w-5 mr-3 bg-sky-500"
-                          viewBox="0 0 24 24"
-                        ></svg>
-                        <p>Processing...</p>
-                      </>
-                    ) : (
-                      "Pay Woop"
-                    )}
-                  </button>
+                        "Pay Woop"
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </section>
           </Box>
         </Container>
