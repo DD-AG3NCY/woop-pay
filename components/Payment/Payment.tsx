@@ -23,7 +23,13 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function Payment(props: any) {
   const { setBadRequest, setAmountZeroRequest, setNoTokenRequest } = props;
-  const [tokenLabel, setTokenLabel] = React.useState("");
+  const [selectedToken, setSelectedToken] = React.useState<{
+    tokenId: string;
+    logo: any;
+  }>({
+    tokenId: "DAI",
+    logo: daiLogo,
+  });
   const [amount, setAmount] = React.useState<string>("0");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
@@ -33,24 +39,23 @@ export default function Payment(props: any) {
   const { isConnected } = useAccount();
   useConnect();
 
-  //event handlers
-  const handleTokenLabelChange = (event: SelectChangeEvent) => {
-    setTokenLabel(event.target.value as string);
-  };
-
   const handleAmountChange = (event: any) => {
     setAmount(event.target.value as string);
   };
 
   //main functions
   const createRequest = async () => {
+    if (selectedToken !== undefined) {
+      return;
+    }
+
     setAmountZeroRequest(false);
     setNoTokenRequest(false);
     setBadRequest(false);
 
     if (amount == "0") {
       setAmountZeroRequest(true);
-    } else if (tokenLabel == "") {
+    } else if (selectedToken?.tokenId == "") {
       setNoTokenRequest(true);
     } else {
       try {
@@ -60,8 +65,8 @@ export default function Payment(props: any) {
           // metadata_id: uuid(), can be used in the future to have a proper payment id
           from: address,
           value: amount,
-          tokenName: tokenLabel,
-          tokenAddress: selectToken(tokenLabel)?.contractAddress,
+          tokenName: selectedToken.tokenId,
+          tokenAddress: selectToken(selectedToken.tokenId)?.contractAddress,
         }).finally(() => {
           setIpfsLoading(false);
         });
@@ -74,14 +79,57 @@ export default function Payment(props: any) {
     }
   };
 
+  const coins = [
+    {
+      tokenId: "DAI",
+      logo: daiLogo,
+    },
+    {
+      tokenId: "USDC",
+      logo: usdcLogo,
+    },
+    {
+      tokenId: "WETH",
+      logo: wethLogo,
+    },
+  ];
+
+  React.useEffect(() => {
+    setSelectedToken(coins[0]);
+    return () => {};
+  }, []);
+
   // to refactor the menu item part by using .map
   return (
     <>
+      <section className="fixed p-4 bg-white">
+        {/* <InputLabel>{selectedToken.tokenId ? "ERC20" : "Select"}</InputLabel> */}
+
+        {coins.map((coin) => {
+          return (
+            <MenuItem
+              key={coin.tokenId}
+              onClick={() => setSelectedToken(coin.tokenId)}
+              value={coin.tokenId}>
+              <div className="flex items-center">
+                <Image
+                  alt={coin.tokenId}
+                  src={coin.logo}
+                  width={20}
+                  height={20}
+                />
+                <span className="ml-3">DAI</span>
+              </div>
+            </MenuItem>
+          );
+        })}
+      </section>
       <div className="p-2 flex flex-col w-full">
         <p className="font-medium font-base text-sm text-white mb-2 pl-2">
           <span className="md:block hidden">Select the amount to receive:</span>
           <span className="md:hidden">Receiving:</span>
         </p>
+
         <div className="relative">
           <input
             autoFocus={isConnected}
@@ -93,50 +141,15 @@ export default function Payment(props: any) {
             step="0.000000"
             placeholder="0.00"
             onChange={handleAmountChange}></input>
-
-          <FormControl
+          <Button
             sx={{
               width: 120,
               position: "absolute",
               top: -23,
               right: 25,
             }}>
-            {/* <InputLabel>{tokenLabel ? "ERC20" : "Select"}</InputLabel> */}
-            <Select
-              sx={{
-                backgroundColor: "white",
-                border: "none",
-                height: 40,
-                borderRadius: 3,
-                fontSize: 13,
-                display: "flex",
-                alignItems: "center",
-              }}
-              className="shadow-md"
-              value={tokenLabel}
-              label="ERC20"
-              onChange={handleTokenLabelChange}
-              placeholder="Select token">
-              <MenuItem value="DAI">
-                <div className="flex items-center">
-                  <Image alt="DAI" src={daiLogo} width={20} height={20} />
-                  <span className="ml-3">DAI</span>
-                </div>
-              </MenuItem>
-              <MenuItem value="USDC">
-                <div className="flex">
-                  <Image alt="USDC" src={usdcLogo} width={20} height={20} />
-                  <span className="ml-3">USDC</span>
-                </div>
-              </MenuItem>
-              <MenuItem value="WETH">
-                <div className="flex">
-                  <Image alt="WETH" src={wethLogo} width={20} height={10} />
-                  <span className="ml-3">WETH</span>
-                </div>
-              </MenuItem>
-            </Select>
-          </FormControl>
+            {selectedToken.tokenId}
+          </Button>
         </div>
         <button
           className={cx(
@@ -158,7 +171,11 @@ export default function Payment(props: any) {
         </button>
       </div>
       <div className="flex justify-center">
-        <Share path={path} amount={amount} tokenLabel={tokenLabel} />
+        <Share
+          path={path}
+          amount={amount}
+          tokenLabel={selectedToken?.tokenId}
+        />
       </div>
     </>
   );
