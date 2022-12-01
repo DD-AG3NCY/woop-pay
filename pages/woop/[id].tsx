@@ -236,9 +236,7 @@ const Request = () => {
                     ? "No Woop to pay here"
                     : "You've received a Woop! "}
                 </p>
-                <p className="text-3xl ml-2 opacity-100">
-                  {badRequest ? "⚠️" : "✨"}
-                </p>
+                <p className="text-3xl ml-2">{badRequest ? "⚠️" : "✨"}</p>
               </div>
               {badRequest ? (
                 <>
