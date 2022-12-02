@@ -46,7 +46,6 @@ export default function Payment(props: any) {
   //main functions
   const createRequest = async () => {
     setAmountZeroRequest(false);
-    setNoTokenRequest(false);
     setBadRequest(false);
 
     if (amount == "0") {

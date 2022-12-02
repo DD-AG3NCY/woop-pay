@@ -1,7 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
 import Head from "next/head";
-import logo from "../../public/logo.svg";
 import emoji from "../../public/emoji_thumbs_up.png";
 import { useRouter } from "next/router";
 
@@ -20,10 +19,9 @@ import {
   useSendTransaction,
 } from "wagmi";
 
-import { setEtherscanBase } from "../../utils/constants";
+import { setEtherscanBase, tokensDetails } from "../../utils/constants";
 
 import ERC20 from "../../abi/ERC20.abi.json";
-import Wallet from "../../components/Wallet";
 import Footer from "../../components/Footer";
 import { utils } from "ethers";
 import Header from "../../components/header";
@@ -109,32 +107,13 @@ const Request = () => {
     "rgb(6, 34, 92)",
   ];
 
-  const coins = [
-    {
-      tokenId: "ETH",
-      logo: wethLogo,
-    },
-    {
-      tokenId: "WETH",
-      logo: wethLogo,
-    },
-    {
-      tokenId: "DAI",
-      logo: daiLogo,
-    },
-    {
-      tokenId: "USDC",
-      logo: usdcLogo,
-    },
-  ];
-
   const findIcon = (tokenName: string) => {
-    const coin = coins.find((coin) => tokenName === coin.tokenId);
+    const coin = tokensDetails.find((token) => tokenName === token.label);
     console.log(coin, tokenName);
     return (
       coin && (
         <Image
-          alt={coin.tokenId}
+          alt={coin.label}
           src={coin.logo}
           className=""
           width={20}
@@ -170,7 +149,7 @@ const Request = () => {
   return (
     <div>
       <Head>
-        <title>web3-pay</title>
+        <title>woop-pay</title>
         <meta name="description" content="web3 payment requests made simple" />
         <link rel="icon" href="../icon.svg" />
       </Head>
