@@ -22,10 +22,10 @@ import dynamic from "next/dynamic";
 export const Share: React.FC<{
   path: string;
   amount: string;
-  tokenLabel: string;
+  token: any;
   visibility: any;
 }> = (props) => {
-  const { amount, path, tokenLabel, visibility } = props;
+  const { amount, path, token, visibility } = props;
   const [copySuccess, setCopySuccess] = React.useState(false);
 
   const qrContainer = useRef<any>();
@@ -103,7 +103,7 @@ export const Share: React.FC<{
                   navigator
                     .share({
                       title: "WOOP",
-                      text: `Hey!, you've been ask for a WOOP of ${amount} ${tokenLabel}`,
+                      text: `Hey!, you've been ask for a WOOP of ${amount} ${token.label}`,
                       url: `${baseUrl}${path}`,
                     })
                     .then(() => console.log("Successful share"))
@@ -135,21 +135,21 @@ export const Share: React.FC<{
               <div className="mr-1 flex items-center">
                 <WhatsappShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey!, you've been ask for a WOOP of ${amount} ${tokenLabel} `}>
+                  title={`Hey!, you've been ask for a WOOP of ${amount} ${token.label} `}>
                   <WhatsappIcon size={15} round />
                 </WhatsappShareButton>
               </div>
               <div className="mr-1 flex items-center">
                 <TelegramShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey!, you've been ask for a WOOP of ${amount} ${tokenLabel}`}>
+                  title={`Hey!, you've been ask for a WOOP of ${amount} ${token.label}`}>
                   <TelegramIcon size={15} round />
                 </TelegramShareButton>
               </div>
               <div className="mr-1 flex items-center">
                 <TwitterShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey!, you've been ask for a WOOP of ${amount} ${tokenLabel}`}>
+                  title={`Hey!, you've been ask for a WOOP of ${amount} ${token.label}`}>
                   <TwitterIcon size={15} round />
                 </TwitterShareButton>
               </div>

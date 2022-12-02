@@ -184,41 +184,9 @@ export default function Payment(props: any) {
           {ipfsLoading ? (
             <>
               <svg
-                version="1.1"
-                id="L4"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 20 20"
-                enable-background="new 0 0 0 0">
-                <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.1"
-                  />
-                </circle>
-                <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.2"
-                  />
-                </circle>
-                <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
-                  <animate
-                    attributeName="opacity"
-                    dur="1s"
-                    values="0;1;0"
-                    repeatCount="indefinite"
-                    begin="0.3"
-                  />
-                </circle>
-              </svg>
+                className="animate-spin h-5 w-5 mr-3 bg-sky-500"
+                viewBox="0 0 24 24"></svg>
+              <p>Processing...</p>
             </>
           ) : isConnected ? (
             "Create a Woop"
@@ -245,7 +213,7 @@ export default function Payment(props: any) {
               visibility={() => setIsShareActive}
               path={path}
               amount={amount}
-              tokenLabel={selectedToken?.label}
+              token={selectedToken}
             />
           </div>
         </section>
