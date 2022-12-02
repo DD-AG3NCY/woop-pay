@@ -4,7 +4,6 @@ import Head from "next/head";
 import emoji from "../../public/emoji_thumbs_up.png";
 import { useRouter } from "next/router";
 
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
@@ -27,9 +26,6 @@ import { utils } from "ethers";
 import Header from "../../components/header";
 import styles from "./woop.module.scss";
 import cx from "classnames";
-import wethLogo from "../../public/eth.png";
-import daiLogo from "../../public/dai.png";
-import usdcLogo from "../../public/usdc.png";
 import Link from "next/link";
 
 interface Request {
