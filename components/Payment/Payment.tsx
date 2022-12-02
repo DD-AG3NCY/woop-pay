@@ -176,7 +176,7 @@ export default function Payment(props: any) {
             </div>
           </Button>
         </div>
-        <Button
+        <button
           className={cx(
             "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
           )}
@@ -184,16 +184,48 @@ export default function Payment(props: any) {
           {ipfsLoading ? (
             <>
               <svg
-                className="animate-spin h-5 w-5 mr-3 bg-sky-500"
-                viewBox="0 0 24 24"></svg>
-              <p>Processing...</p>
+                version="1.1"
+                id="L4"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                viewBox="0 0 20 20"
+                enable-background="new 0 0 0 0">
+                <circle fill="#fff" stroke="none" cx="6" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.1"
+                  />
+                </circle>
+                <circle fill="#fff" stroke="none" cx="26" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.2"
+                  />
+                </circle>
+                <circle fill="#fff" stroke="none" cx="46" cy="50" r="6">
+                  <animate
+                    attributeName="opacity"
+                    dur="1s"
+                    values="0;1;0"
+                    repeatCount="indefinite"
+                    begin="0.3"
+                  />
+                </circle>
+              </svg>
             </>
           ) : isConnected ? (
             "Create a Woop"
           ) : (
             "Connect Wallet"
           )}
-        </Button>
+        </button>
       </div>
 
       {isShareActive && (
@@ -210,7 +242,7 @@ export default function Payment(props: any) {
               "z-20 rounded-3xl shadow-xl py-2 px-2 md:w-96 w-full m-5"
             )}>
             <Share
-              visibility={() => setIsShareActive(!isShareActive)}
+              visibility={() => setIsShareActive}
               path={path}
               amount={amount}
               tokenLabel={selectedToken?.label}

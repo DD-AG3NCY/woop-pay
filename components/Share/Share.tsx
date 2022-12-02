@@ -10,37 +10,14 @@ import {
 } from "next-share";
 import { useQRCode } from "next-qrcode";
 import { baseUrl } from "../../utils/constants";
-import { useEffect, useRef } from "react";
-import QRCodeStyling from "qr-code-styling";
+import { useEffect, useRef, useState } from "react";
+
 import cx from "classnames";
 import Image from "next/image";
 import shareImg from "../public/share.svg";
 import styles from "./share.module.scss";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
-
-const qrCode = new QRCodeStyling({
-  width: 357,
-  height: 357,
-  image: "/O.svg",
-  dotsOptions: {
-    gradient: {
-      type: "linear",
-      colorStops: [
-        { offset: 0, color: "rgb(6, 34, 92)" },
-        { offset: 1, color: "rgba(38, 142, 200, 1)" },
-      ],
-      rotation: 2.35,
-    },
-    type: "extra-rounded",
-  },
-  imageOptions: {
-    crossOrigin: "anonymous",
-    margin: 15,
-  },
-  backgroundOptions: {
-    color: "transparent",
-  },
-});
+import dynamic from "next/dynamic";
 
 export const Share: React.FC<{
   path: string;
@@ -54,16 +31,51 @@ export const Share: React.FC<{
   const qrContainer = useRef<any>();
   const { width, height } = useWindowSize();
 
+  const [qrCode, setqrCode] = useState<any>(null);
+
   useEffect(() => {
-    qrCode.append(qrContainer.current);
+    const initQR = async () => {
+      const QRCodeStyling = await require("qr-code-styling");
+      const qrCodeBuild = new QRCodeStyling({
+        width: 357,
+        height: 357,
+        image: "/O.svg",
+        dotsOptions: {
+          gradient: {
+            type: "linear",
+            colorStops: [
+              { offset: 0, color: "rgb(6, 34, 92)" },
+              { offset: 1, color: "rgba(38, 142, 200, 1)" },
+            ],
+            rotation: 2.35,
+          },
+          type: "extra-rounded",
+        },
+        imageOptions: {
+          crossOrigin: "anonymous",
+          margin: 15,
+        },
+        backgroundOptions: {
+          color: "transparent",
+        },
+      });
+      // Add logic with `term`
+      setqrCode(qrCodeBuild);
+    };
+    initQR();
   }, []);
 
   useEffect(() => {
-    qrCode.update({
-      data: `${baseUrl}${path}`,
-      width: width < 361 ? 320 : 357,
-      height: width < 361 ? 320 : 357,
-    });
+    qrCode && qrCode.append(qrContainer.current);
+  }, []);
+
+  useEffect(() => {
+    qrCode &&
+      qrCode.update({
+        data: `${baseUrl}${path}`,
+        width: width < 400 ? 320 : 357,
+        height: width < 400 ? 320 : 357,
+      });
   }, [baseUrl, path, width]);
 
   return (
@@ -78,21 +90,21 @@ export const Share: React.FC<{
           </p>
           <div className="mt-2 flex gap-2 place-content-evenly">
             <div
-              onClick={() => visibility}
+              onClick={() => visibility(false)}
               className={cx(
                 styles.buttons,
-                "w-full cursor-pointer  font-base focus:outline-0 focus:text-slate-700  h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize hover:border-slate-700 hover:bg-slate-200 hover:text-slate-500 flex items-center justify-center"
+                "w-full cursor-pointer font-base h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize flex items-center justify-center"
               )}>
-              {"Back"}{" "}
+              {"Back"}
             </div>
             <div
               onClick={() => {
                 if (navigator.share) {
                   navigator
                     .share({
-                      title: "web.dev",
-                      text: "Check out web.dev.",
-                      url: "https://web.dev/",
+                      title: "WOOP",
+                      text: `Hey!, you've been ask for a WOOP of ${amount} ${tokenLabel}`,
+                      url: `${baseUrl}${path}`,
                     })
                     .then(() => console.log("Successful share"))
                     .catch((error) => console.log("Error sharing", error));
@@ -106,7 +118,7 @@ export const Share: React.FC<{
               }}
               className={cx(
                 styles.buttons,
-                "w-full font-base text-sm focus:outline-0 focus:text-slate-700  h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize hover:border-slate-700 hover:bg-slate-200 hover:text-slate-500 flex items-center justify-center"
+                "w-full font-base cursor-pointer text-sm focus:outline-0 focus:text-slate-700  h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize hover:border-slate-700 hover:bg-slate-200 hover:text-slate-500 flex items-center justify-center"
               )}>
               {!navigator.share && copySuccess
                 ? "Copied"
