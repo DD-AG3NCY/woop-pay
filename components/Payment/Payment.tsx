@@ -1,21 +1,14 @@
 import * as React from "react";
 import { Share } from "../Share";
 
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import OutlinedInput from "@mui/material/OutlinedInput";
 
-import { useAccount, useConnect, useNetwork } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { uploadIpfs } from "../../utils/ipfs";
 import { selectToken, tokensDetails } from "../../utils/constants";
 
 import Image from "next/image";
-import wethLogo from "../../public/eth.png";
-import daiLogo from "../../public/dai.png";
-import usdcLogo from "../../public/usdc.png";
 
 import styles from "./payment.module.scss";
 import cx from "classnames";
@@ -23,18 +16,19 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function Payment(props: any) {
   const { setBadRequest, setAmountZeroRequest, setNoTokenRequest } = props;
-  const [tokenLabel, setTokenLabel] = React.useState("");
   const [selectedToken, setSelectedToken] = React.useState<{
-    tokenId: string;
+    label: string;
     logo: any;
-  }>({
-    tokenId: "DAI",
-    logo: daiLogo,
-  });
+    mainnet: string;
+    goerli: string;
+    optimism: string;
+    arbitrum: string;
+  }>(tokensDetails[0]);
   const [amount, setAmount] = React.useState<string>("0");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
+  const [isConnected, setIsConnected] = React.useState<boolean>(false);
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
@@ -42,43 +36,31 @@ export default function Payment(props: any) {
   const [selectorVisibility, setSelectorVisibility] =
     React.useState<boolean>(false);
 
-  const { isConnected } = useAccount();
-  useConnect();
+  const { isConnected: connected } = useAccount();
 
   //event handlers
-  const handleTokenLabelChange = (event: SelectChangeEvent) => {
-    setTokenLabel(event.target.value as string);
-  };
-
   const handleAmountChange = (event: any) => {
     setAmount(event.target.value as string);
   };
 
   //main functions
   const createRequest = async () => {
-    if (selectedToken === undefined) {
-      return;
-    }
-
     setAmountZeroRequest(false);
     setNoTokenRequest(false);
     setBadRequest(false);
 
     if (amount == "0") {
       setAmountZeroRequest(true);
-    } else if (selectedToken && selectedToken.tokenId == "") {
-      setNoTokenRequest(true);
     } else {
       try {
         setIpfsLoading(true);
         const { path } = await uploadIpfs({
           version: "1.0.0",
-          // metadata_id: uuid(), can be used in the future to have a proper payment id
           from: address,
           value: amount,
           network: chain?.network,
-          tokenName: tokenLabel,
-          tokenAddress: selectToken(tokenLabel, chainId),
+          tokenName: selectedToken.label,
+          tokenAddress: selectToken(selectedToken.label, chainId),
         }).finally(() => {
           setIpfsLoading(false);
         });
@@ -91,25 +73,13 @@ export default function Payment(props: any) {
     }
   };
 
-  const coins = [
-    {
-      tokenId: "WETH",
-      logo: wethLogo,
-    },
-    {
-      tokenId: "DAI",
-      logo: daiLogo,
-    },
-    {
-      tokenId: "USDC",
-      logo: usdcLogo,
-    },
-  ];
-
   React.useEffect(() => {
-    setSelectedToken(coins[0]);
-    return () => {};
-  }, []);
+    if (connected) {
+      setIsConnected(true);
+    } else {
+      setIsConnected(false);
+    }
+  }, [connected]);
 
   React.useEffect(() => {
     if (chain) {
@@ -117,7 +87,6 @@ export default function Payment(props: any) {
     }
   }, [chain]);
 
-  // to refactor the menu item part by using .map
   return (
     <>
       {selectorVisibility && (
@@ -133,30 +102,30 @@ export default function Payment(props: any) {
             <p className="font-base font-semibold text-slate-700 pl-4 pb-3 pt-2 border-b mb-3">
               Select a token:
             </p>
-            {coins.map((coin, i) => {
+            {tokensDetails.map((token, i) => {
               return (
                 <MenuItem
-                  key={coin.tokenId}
+                  key={token.label}
                   onClick={() => {
-                    setSelectedToken(coin);
+                    setSelectedToken(token);
                     setSelectorVisibility(!selectorVisibility);
                   }}
-                  value={coin.tokenId}
+                  value={token.label}
                   sx={{
-                    marginBottom: coins.length - 1 === i ? 0 : 1,
+                    marginBottom: tokensDetails.length - 1 === i ? 0 : 1,
                   }}
                   className="cursor-pointer hover:bg-slate-200 rounded-xl p-1"
                 >
                   <div className="flex items-center">
                     <Image
-                      alt={coin.tokenId}
-                      src={coin.logo}
+                      alt={token.label}
+                      src={token.logo}
                       className="p-1"
                       width={40}
                       height={40}
                     />
                     <span className="ml-3 text-slate-700 font-base font-semibold">
-                      {coin.tokenId}
+                      {token.label}
                     </span>
                   </div>
                 </MenuItem>
@@ -197,19 +166,19 @@ export default function Payment(props: any) {
           >
             <div className="flex items-center w-full ml-1">
               <Image
-                alt={selectedToken.tokenId}
+                alt={selectedToken.label}
                 src={selectedToken.logo}
                 className="pr-1"
                 width={30}
                 height={30}
               />
               <span className="ml-1 text-slate-700 font-base font-semibold">
-                {selectedToken.tokenId}
+                {selectedToken.label}
               </span>
             </div>
           </Button>
         </div>
-        <button
+        <Button
           className={cx(
             "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
           )}
@@ -228,14 +197,10 @@ export default function Payment(props: any) {
           ) : (
             "Connect Wallet"
           )}
-        </button>
+        </Button>
       </div>
       <div className="flex justify-center">
-        <Share
-          path={path}
-          amount={amount}
-          tokenLabel={selectedToken?.tokenId}
-        />
+        <Share path={path} amount={amount} tokenLabel={selectedToken?.label} />
       </div>
     </>
   );
