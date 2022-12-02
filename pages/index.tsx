@@ -5,7 +5,7 @@ import Head from "next/head";
 import logo from "../public/logo.svg";
 import Wallet from "../components/Wallet";
 import WalletDisconnect from "../components/WalletDisconnected";
-import Request from "../components/Request/Request";
+import Request from "../components/request/Request";
 import Footer from "../components/Footer";
 
 import Alert from "@mui/material/Alert";

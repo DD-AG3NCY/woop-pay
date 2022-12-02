@@ -8,12 +8,12 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import OutlinedInput from "@mui/material/OutlinedInput";
 
-import { useAccount, useConnect } from "wagmi";
+import { useAccount, useConnect, useNetwork } from "wagmi";
 import { uploadIpfs } from "../../utils/ipfs";
-import { selectToken } from "../../utils/constants";
+import { selectToken, tokensDetails } from "../../utils/constants";
 
 import Image from "next/image";
-import wethLogo from "../../public/weth.png";
+import wethLogo from "../../public/eth.png";
 import daiLogo from "../../public/dai.png";
 import usdcLogo from "../../public/usdc.png";
 
@@ -27,7 +27,9 @@ export default function Payment(props: any) {
   const [amount, setAmount] = React.useState<string>("0");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
+  const [chainId, setChainId] = React.useState<string>("");
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
 
   const { isConnected } = useAccount();
@@ -60,8 +62,9 @@ export default function Payment(props: any) {
           // metadata_id: uuid(), can be used in the future to have a proper payment id
           from: address,
           value: amount,
+          network: chain?.network,
           tokenName: tokenLabel,
-          tokenAddress: selectToken(tokenLabel)?.contractAddress,
+          tokenAddress: selectToken(tokenLabel, chainId),
         }).finally(() => {
           setIpfsLoading(false);
         });
@@ -73,6 +76,12 @@ export default function Payment(props: any) {
       }
     }
   };
+
+  React.useEffect(() => {
+    if (chain) {
+      setChainId(chain.network);
+    }
+  }, [chain]);
 
   // to refactor the menu item part by using .map
   return (
@@ -92,7 +101,8 @@ export default function Payment(props: any) {
             type="number"
             step="0.000000"
             placeholder="0.00"
-            onChange={handleAmountChange}></input>
+            onChange={handleAmountChange}
+          ></input>
 
           <FormControl
             sx={{
@@ -100,7 +110,8 @@ export default function Payment(props: any) {
               position: "absolute",
               top: -23,
               right: 25,
-            }}>
+            }}
+          >
             {/* <InputLabel>{tokenLabel ? "ERC20" : "Select"}</InputLabel> */}
             <Select
               sx={{
@@ -116,25 +127,21 @@ export default function Payment(props: any) {
               value={tokenLabel}
               label="ERC20"
               onChange={handleTokenLabelChange}
-              placeholder="Select token">
-              <MenuItem value="DAI">
-                <div className="flex items-center">
-                  <Image alt="DAI" src={daiLogo} width={20} height={20} />
-                  <span className="ml-3">DAI</span>
-                </div>
-              </MenuItem>
-              <MenuItem value="USDC">
-                <div className="flex">
-                  <Image alt="USDC" src={usdcLogo} width={20} height={20} />
-                  <span className="ml-3">USDC</span>
-                </div>
-              </MenuItem>
-              <MenuItem value="WETH">
-                <div className="flex">
-                  <Image alt="WETH" src={wethLogo} width={20} height={10} />
-                  <span className="ml-3">WETH</span>
-                </div>
-              </MenuItem>
+              placeholder="Select token"
+            >
+              {tokensDetails.map((token) => (
+                <MenuItem key={token.label} value={token.label}>
+                  <div className="flex">
+                    <Image
+                      alt={token.label}
+                      src={token.src}
+                      width={20}
+                      height={20}
+                    />
+                    <span className="ml-2">{token.label}</span>
+                  </div>
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
@@ -142,12 +149,14 @@ export default function Payment(props: any) {
           className={cx(
             "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
           )}
-          onClick={isConnected ? createRequest : openConnectModal}>
+          onClick={isConnected ? createRequest : openConnectModal}
+        >
           {ipfsLoading ? (
             <>
               <svg
                 className="animate-spin h-5 w-5 mr-3 bg-sky-500"
-                viewBox="0 0 24 24"></svg>
+                viewBox="0 0 24 24"
+              ></svg>
               <p>Processing...</p>
             </>
           ) : isConnected ? (
