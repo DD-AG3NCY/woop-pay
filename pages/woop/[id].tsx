@@ -1,5 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
+import Head from "next/head";
 import logo from "../../public/logo.svg";
 import emoji from "../../public/emoji_thumbs_up.png";
 import { useRouter } from "next/router";
@@ -15,7 +16,11 @@ import {
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
+  usePrepareSendTransaction,
+  useSendTransaction,
 } from "wagmi";
+
+import { setEtherscanBase } from "../../utils/constants";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Wallet from "../../components/Wallet";
@@ -24,7 +29,7 @@ import { utils } from "ethers";
 import Header from "../../components/header";
 import styles from "./woop.module.scss";
 import cx from "classnames";
-import wethLogo from "../../public/weth.png";
+import wethLogo from "../../public/eth.png";
 import daiLogo from "../../public/dai.png";
 import usdcLogo from "../../public/usdc.png";
 
@@ -32,6 +37,7 @@ interface Request {
   version: string;
   from: string;
   value: string;
+  network: string;
   tokenName: string;
   tokenAddress: string;
 }
@@ -39,7 +45,10 @@ interface Request {
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.1");
+  const [recipient, setRecipient] = React.useState<string>("");
+  const [network, setNetwork] = React.useState<string>("");
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
+  const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
   const { width, height } = useWindowSize();
@@ -56,7 +65,12 @@ const Request = () => {
       const json = await response.json();
       setRequest(json);
       setAmount(json.value);
-      //console.log(json);
+      setRecipient(json.from);
+      setNetwork(setEtherscanBase(json.network));
+
+      if (json.tokenName == "ETH") {
+        setIsNativeTx(true);
+      }
     } catch (error) {
       console.error(error);
       setBadRequest(true);
@@ -118,22 +132,60 @@ const Request = () => {
     );
   };
 
+  //wagmi native transaction
+  const {
+    config: configNative,
+    error: prepareErrorNative,
+    isError: isPrepareErrorNative,
+  } = usePrepareSendTransaction({
+    request: {
+      to: recipient,
+      value: amount ? utils.parseEther(amount) : undefined,
+    },
+  });
+  const {
+    data: dataNative,
+    error: errorNative,
+    isError: isErrorNative,
+    sendTransaction,
+  } = useSendTransaction(configNative);
+
+  const { isLoading: isLoadingNative, isSuccess: isSuccessNative } =
+    useWaitForTransaction({
+      hash: dataNative?.hash,
+    });
+
   return (
     <div>
+      <Head>
+        <title>web3-pay</title>
+        <meta name="description" content="web3 payment requests made simple" />
+        <link rel="icon" href="../icon.svg" />
+      </Head>
+
       <Header />
 
       <article
         className={cx(
           styles.baseContainer,
           "h-screen w-full flex justify-center items-center"
-        )}>
+        )}
+      >
         {/* NOTIFICATIONS */}
         <div className="fixed top-8 bg-white rounded">
-          {(isPrepareError || isError) && (
-            <Alert variant="filled" severity="error">
-              Error: {(prepareError || error)?.message}
-            </Alert>
-          )}
+          {isNativeTx
+            ? (isPrepareErrorNative || isErrorNative) && (
+                <Alert variant="filled" severity="error">
+                  Error: Payment not possible due to insufficient funds or
+                  contract error
+                </Alert>
+              )
+            : (isPrepareError || isError) && (
+                <Alert variant="filled" severity="error">
+                  Error: Payment not possible due to insufficient funds or
+                  contract error
+                </Alert>
+              )}
 
           {badRequest && (
             <Alert variant="filled" severity="error">
@@ -146,7 +198,8 @@ const Request = () => {
               Payment successful! Track your tx on{" "}
               <a
                 className="underline underline-offset-4"
-                href={`https://goerli.etherscan.io/tx/${data?.hash}`}>
+                href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+              >
                 Etherscan
               </a>
             </Alert>
@@ -157,19 +210,22 @@ const Request = () => {
           className={cx(
             styles.containerBase,
             "h-screen w-full absolute top-0 z-0 flex opacity-50 items-center"
-          )}></section>
+          )}
+        ></section>
 
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">
           <Box
             component="form"
-            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}>
+            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}
+          >
             <section className="justify-items-left font-base text-white">
               <div
                 className={cx(
                   styles.topContainer,
                   "mb-2 pl-6 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
-                )}>
+                )}
+              >
                 <p className="font-base font-bold text-xl opacity-70">
                   {"You've received a Woop! "}{" "}
                 </p>
@@ -201,13 +257,33 @@ const Request = () => {
                     className={cx(
                       "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                     )}
-                    disabled={!write || isLoading}
-                    onClick={() => write?.()}>
-                    {isLoading ? (
+                    disabled={
+                      isNativeTx
+                        ? !sendTransaction || isLoadingNative
+                        : !write || isLoading
+                    }
+                    onClick={
+                      isNativeTx ? () => sendTransaction?.() : () => write?.()
+                    }
+                  >
+                    {isNativeTx ? (
+                      isLoadingNative ? (
+                        <>
+                          <svg
+                            className="animate-spin h-5 w-5 mr-3 bg-sky-500"
+                            viewBox="0 0 24 24"
+                          ></svg>
+                          <p>Processing...</p>
+                        </>
+                      ) : (
+                        "Pay"
+                      )
+                    ) : isLoading ? (
                       <>
                         <svg
                           className="animate-spin h-5 w-5 mr-3 bg-sky-500"
-                          viewBox="0 0 24 24"></svg>
+                          viewBox="0 0 24 24"
+                        ></svg>
                         <p>Processing...</p>
                       </>
                     ) : (
@@ -222,6 +298,12 @@ const Request = () => {
       </article>
 
       {isSuccess && (
+        <div className="flex justify-center m-7">
+          <Image alt="web3-pay-success" src={emoji} width={350} height={350} />
+        </div>
+      )}
+
+      {isSuccessNative && (
         <div className="flex justify-center m-7">
           <Image alt="web3-pay-success" src={emoji} width={350} height={350} />
         </div>

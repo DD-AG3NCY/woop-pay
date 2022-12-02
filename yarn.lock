@@ -7423,7 +7423,7 @@
   "resolved" "https://registry.npmjs.org/react-confetti/-/react-confetti-6.1.0.tgz"
   "version" "6.1.0"
   dependencies:
-    "tween-functions" "^1.2.0" 
+    "tween-functions" "^1.2.0"
 
 "react-devtools-core@4.24.0":
   "integrity" "sha512-Rw7FzYOOzcfyUPaAm9P3g0tFdGqGq2LLiAI+wjYcp6CsF3DeeMrRS3HZAho4s273C29G/DJhx0e8BpRE/QZNGg=="
