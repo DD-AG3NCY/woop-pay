@@ -3,7 +3,18 @@ import daiLogo from "../public/dai.png";
 import usdcLogo from "../public/usdc.png";
 import uniLogo from "../public/uni.png";
 
-export const tokensDetails = [
+type Token = {
+  label: string;
+  logo: any;
+  mainnet: string;
+  goerli: string;
+  optimism: string;
+  arbitrum: string;
+
+  [key: string]: any;
+};
+
+export const tokensDetails: Token[] = [
   {
     label: "ETH",
     logo: ethLogo,
@@ -52,46 +63,19 @@ export const setEtherscanBase = (network: string) => {
 
 export const baseUrl: string = "https://web3-pay-alpha.vercel.app/woop/";
 
-export const selectToken = (token: string, network: string) => {
-  if (network == "goerli") {
-    if (token === "ETH") {
-      return tokensDetails[0].goerli;
-    } else if (token == "DAI") {
-      return tokensDetails[1].goerli;
-    } else if (token == "USDC") {
-      return tokensDetails[2].goerli;
-    } else if (token == "UNI") {
-      return tokensDetails[3].goerli;
-    }
-  } else if (network == "mainnet") {
-    if (token === "ETH") {
-      return tokensDetails[0].mainnet;
-    } else if (token == "DAI") {
-      return tokensDetails[1].mainnet;
-    } else if (token == "USDC") {
-      return tokensDetails[2].mainnet;
-    } else if (token == "UNI") {
-      return tokensDetails[3].mainnet;
-    }
-  } else if (network == "optimism") {
-    if (token === "ETH") {
-      return tokensDetails[0].optimism;
-    } else if (token == "DAI") {
-      return tokensDetails[1].optimism;
-    } else if (token == "USDC") {
-      return tokensDetails[2].optimism;
-    } else if (token == "UNI") {
-      return tokensDetails[3].optimism;
-    }
-  } else if (network == "arbitrum") {
-    if (token === "ETH") {
-      return tokensDetails[0].arbitrum;
-    } else if (token == "DAI") {
-      return tokensDetails[1].arbitrum;
-    } else if (token == "USDC") {
-      return tokensDetails[2].arbitrum;
-    } else if (token == "UNI") {
-      return tokensDetails[3].arbitrum;
+export const selectToken = (
+  token: string,
+  network: string
+): string | undefined => {
+  const networks = ["goerli", "mainnet", "optimism", "arbitrum"];
+  const tokens = ["ETH", "DAI", "USDC", "UNI"];
+
+  if (networks.includes(network) && tokens.includes(token)) {
+    const selectedToken = tokensDetails.find((t) => t.label === token);
+    if (selectedToken && selectedToken.network) {
+      return selectedToken.network;
+    } else {
+      return undefined;
     }
   }
 };
