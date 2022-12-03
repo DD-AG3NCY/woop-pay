@@ -70,12 +70,15 @@ export const selectToken = (
   const networks = ["goerli", "mainnet", "optimism", "arbitrum"];
   const tokens = ["ETH", "DAI", "USDC", "UNI"];
 
+  let selectedToken: Token | undefined;
+
   if (networks.includes(network) && tokens.includes(token)) {
-    const selectedToken = tokensDetails.find((t) => t.label === token);
-    if (selectedToken && selectedToken.network) {
-      return selectedToken.network;
-    } else {
-      return undefined;
-    }
+    selectedToken = tokensDetails.find((t) => t.label === token);
+  }
+
+  if (selectedToken && selectedToken[network]) {
+    return selectedToken[network];
+  } else {
+    return undefined;
   }
 };

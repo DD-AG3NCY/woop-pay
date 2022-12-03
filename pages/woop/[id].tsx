@@ -13,6 +13,8 @@ import {
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
+  usePrepareSendTransaction,
+  useSendTransaction,
 } from "wagmi";
 import { setEtherscanBase, tokensDetails } from "../../utils/constants";
 
@@ -35,8 +37,10 @@ interface Request {
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.1");
+  const [recipient, setRecipient] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
+  const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
   const { width, height } = useWindowSize();
@@ -53,7 +57,12 @@ const Request = () => {
       const json = await response.json();
       setRequest(json);
       setAmount(json.value);
-      //console.log(json);
+      setRecipient(json.from);
+      setNetwork(setEtherscanBase(json.network));
+
+      if (json.tokenName == "ETH") {
+        setIsNativeTx(true);
+      }
     } catch (error) {
       console.error(error);
       setBadRequest(true);
@@ -66,7 +75,7 @@ const Request = () => {
     }
   }, [id]);
 
-  // wagmi transaction
+  // wagmi erc20 transaction
   const {
     config,
     error: prepareError,
@@ -84,6 +93,29 @@ const Request = () => {
     hash: data?.hash,
   });
 
+  //wagmi native transaction
+  const {
+    config: configNative,
+    error: prepareErrorNative,
+    isError: isPrepareErrorNative,
+  } = usePrepareSendTransaction({
+    request: {
+      to: recipient,
+      value: amount ? utils.parseEther(amount) : undefined,
+    },
+  });
+  const {
+    data: dataNative,
+    error: errorNative,
+    isError: isErrorNative,
+    sendTransaction,
+  } = useSendTransaction(configNative);
+
+  const { isLoading: isLoadingNative, isSuccess: isSuccessNative } =
+    useWaitForTransaction({
+      hash: dataNative?.hash,
+    });
+
   const colors = [
     "rgba(16, 130, 178, 1)",
     "rgba(79, 76, 227, 1)",
@@ -93,7 +125,6 @@ const Request = () => {
 
   const findIcon = (tokenName: string) => {
     const coin = tokensDetails.find((token) => tokenName === token.label);
-    console.log(coin, tokenName);
     return (
       coin && (
         <Image
@@ -125,11 +156,19 @@ const Request = () => {
       >
         {/* NOTIFICATIONS */}
         <div className="fixed top-8 bg-white rounded">
-          {(isPrepareError || isError) && (
-            <Alert variant="filled" severity="error">
-              Error: {(prepareError || error)?.message}
-            </Alert>
-          )}
+          {isNativeTx
+            ? (isPrepareErrorNative || isErrorNative) && (
+                <Alert variant="filled" severity="error">
+                  Error: Payment not possible due to insufficient funds or
+                  contract
+                </Alert>
+              )
+            : (isPrepareError || isError) && (
+                <Alert variant="filled" severity="error">
+                  Error: Payment not possible due to insufficient funds or
+                  contract
+                </Alert>
+              )}
 
           {badRequest && (
             <Alert variant="filled" severity="error">
@@ -154,6 +193,15 @@ const Request = () => {
           />
         )}
 
+        {isSuccessNative && (
+          <Confetti
+            colors={colors}
+            className="z-10"
+            width={width}
+            height={height}
+          />
+        )}
+
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">
           <Box
@@ -170,12 +218,22 @@ const Request = () => {
                 <p className="font-base font-bold text-xl">
                   {badRequest
                     ? "No Woop to pay here"
+                    : isNativeTx
+                    ? isSuccessNative
+                      ? "Woop sent!"
+                      : "You've received a Woop! "
                     : isSuccess
                     ? "Woop sent!"
                     : "You've received a Woop! "}
                 </p>
                 <p className="text-3xl ml-2">
-                  {badRequest ? "⚠️" : isSuccess ? "💸" : "✨"}
+                  {badRequest
+                    ? "⚠️"
+                    : isSuccess
+                    ? "💸"
+                    : isSuccessNative
+                    ? "💸"
+                    : "✨"}
                 </p>
               </div>
               {badRequest ? (
@@ -206,7 +264,37 @@ const Request = () => {
                         {"Are on "}
                         <a
                           className="underline underline-offset-4"
-                          href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+                          href={`${network}/${data?.hash}`}
+                        >
+                          their way
+                        </a>
+                        {" to "}
+                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                      </p>
+                    </div>
+                    <Link href="/">
+                      <button
+                        className={cx(
+                          "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                        )}
+                      >
+                        Finish
+                      </button>
+                    </Link>
+                  </div>
+                </>
+              ) : isSuccessNative ? (
+                <>
+                  <div className="px-4 pb-4 pt-1">
+                    <div className="mt-3 text-center w-full my-6">
+                      <p className="font-bold md:text-5xl text-4xl mb-2">
+                        {request?.value} {request?.tokenName}
+                      </p>
+                      <p className="text-xs text-slate-300 mb-2">
+                        {"Are on "}
+                        <a
+                          className="underline underline-offset-4"
+                          href={`${network}/${dataNative?.hash}`}
                         >
                           their way
                         </a>
@@ -246,18 +334,54 @@ const Request = () => {
                     <button
                       type="button"
                       className={cx(
-                        "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                        "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                       )}
-                      disabled={!write || isLoading}
-                      onClick={() => write?.()}
+                      disabled={
+                        isNativeTx
+                          ? !sendTransaction || isLoadingNative
+                          : !write || isLoading
+                      }
+                      onClick={
+                        isNativeTx ? () => sendTransaction?.() : () => write?.()
+                      }
                     >
-                      {isLoading ? (
+                      {isNativeTx ? (
+                        isLoadingNative ? (
+                          <svg
+                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke-width="4"
+                              stroke="currentColor"
+                              stroke-dasharray="32"
+                              stroke-linecap="round"
+                              fill="transparent"
+                            />
+                          </svg>
+                        ) : (
+                          "Pay Woop"
+                        )
+                      ) : isLoading ? (
                         <>
                           <svg
-                            className="animate-spin h-5 w-5 mr-3 bg-sky-500"
+                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
                             viewBox="0 0 24 24"
-                          ></svg>
-                          <p>Processing...</p>
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke-width="4"
+                              stroke="currentColor"
+                              stroke-dasharray="32"
+                              stroke-linecap="round"
+                              fill="transparent"
+                            />
+                          </svg>
                         </>
                       ) : (
                         "Pay Woop"
