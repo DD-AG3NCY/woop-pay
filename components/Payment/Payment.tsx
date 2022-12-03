@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Share } from "../Share";
+import { Share } from "../Share/Share";
 
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
@@ -13,6 +13,7 @@ import Image from "next/image";
 import styles from "./payment.module.scss";
 import cx from "classnames";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useState } from "react";
 
 export default function Payment(props: any) {
   const { setBadRequest, setAmountZeroRequest, setNoTokenRequest } = props;
@@ -37,6 +38,7 @@ export default function Payment(props: any) {
     React.useState<boolean>(false);
 
   const { isConnected: connected } = useAccount();
+  const [isShareActive, setIsShareActive] = useState<boolean>(false);
 
   //event handlers
   const handleAmountChange = (event: any) => {
@@ -64,6 +66,7 @@ export default function Payment(props: any) {
           setIpfsLoading(false);
         });
         setPath(path);
+        setIsShareActive(true);
       } catch (error) {
         console.error(error);
         setBadRequest(true);
@@ -92,12 +95,11 @@ export default function Payment(props: any) {
         <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen z-30">
           <div
             onClick={() => setSelectorVisibility(!selectorVisibility)}
-            className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30"
-          >
+            className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30">
             {/* <div className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-10 z-10"></div>
         {/* <InputLabel>{selectedToken.tokenId ? "ERC20" : "Select"}</InputLabel> */}
           </div>
-          <div className="z-20 bg-white rounded-xl shadow-xl py-2 px-2 md:w-2/5 w-full m-5">
+          <div className="z-20 bg-white rounded-xl shadow-xl py-2 px-2 md:w-80 w-full m-5">
             <p className="font-base font-semibold text-slate-700 pl-4 pb-3 pt-2 border-b mb-3">
               Select a token:
             </p>
@@ -113,8 +115,7 @@ export default function Payment(props: any) {
                   sx={{
                     marginBottom: tokensDetails.length - 1 === i ? 0 : 1,
                   }}
-                  className="cursor-pointer hover:bg-slate-200 rounded-xl p-1"
-                >
+                  className="cursor-pointer hover:bg-slate-200 rounded-xl p-1">
                   <div className="flex items-center">
                     <Image
                       alt={token.label}
@@ -150,8 +151,7 @@ export default function Payment(props: any) {
             type="number"
             step="0.000000"
             placeholder="0.00"
-            onChange={handleAmountChange}
-          ></input>
+            onChange={handleAmountChange}></input>
 
           <Button
             sx={{
@@ -161,8 +161,7 @@ export default function Payment(props: any) {
               right: 25,
             }}
             className="bg-white shadow-md rounded-xl text-slate-900 hover:shadow-xl hover:bg-white"
-            onClick={() => setSelectorVisibility(!selectorVisibility)}
-          >
+            onClick={() => setSelectorVisibility(!selectorVisibility)}>
             <div className="flex items-center w-full ml-1">
               <Image
                 alt={selectedToken.label}
@@ -177,18 +176,16 @@ export default function Payment(props: any) {
             </div>
           </Button>
         </div>
-        <Button
+        <button
           className={cx(
             "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
           )}
-          onClick={isConnected ? createRequest : openConnectModal}
-        >
+          onClick={isConnected ? createRequest : openConnectModal}>
           {ipfsLoading ? (
             <>
               <svg
                 className="animate-spin h-5 w-5 mr-3 bg-sky-500"
-                viewBox="0 0 24 24"
-              ></svg>
+                viewBox="0 0 24 24"></svg>
               <p>Processing...</p>
             </>
           ) : isConnected ? (
@@ -196,11 +193,31 @@ export default function Payment(props: any) {
           ) : (
             "Connect Wallet"
           )}
-        </Button>
+        </button>
       </div>
-      <div className="flex justify-center">
-        <Share path={path} amount={amount} tokenLabel={selectedToken?.label} />
-      </div>
+
+      {isShareActive && (
+        <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen z-30">
+          <div
+            onClick={() => setIsShareActive(!isShareActive)}
+            className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30">
+            {/* <div className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-10 z-10"></div>
+      {/* <InputLabel>{selectedToken.tokenId ? "ERC20" : "Select"}</InputLabel> */}
+          </div>
+          <div
+            className={cx(
+              styles.shareBackground,
+              "z-20 rounded-3xl shadow-xl py-2 px-2 md:w-96 w-full m-5"
+            )}>
+            <Share
+              visibility={() => setIsShareActive}
+              path={path}
+              amount={amount}
+              token={selectedToken}
+            />
+          </div>
+        </section>
+      )}
     </>
   );
 }
