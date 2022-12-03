@@ -156,11 +156,13 @@ export default function Payment(props: any) {
             onChange={handleAmountChange}
           ></input>
 
-          <Button
-            sx={{
-              width: 120,
+          <button
+            type="button"
+            style={{
+              width: 110,
+              height: 38,
               position: "absolute",
-              top: -23,
+              top: -20,
               right: 25,
             }}
             className="bg-white shadow-md rounded-xl text-slate-900 hover:shadow-xl hover:bg-white"
@@ -170,7 +172,7 @@ export default function Payment(props: any) {
               <Image
                 alt={selectedToken.label}
                 src={selectedToken.logo}
-                className="pr-1"
+                className="pr-1 ml-1"
                 width={30}
                 height={30}
               />
@@ -178,7 +180,7 @@ export default function Payment(props: any) {
                 {selectedToken.label}
               </span>
             </div>
-          </Button>
+          </button>
         </div>
         <button
           type="button"
