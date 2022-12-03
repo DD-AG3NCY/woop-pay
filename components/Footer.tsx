@@ -21,7 +21,7 @@ export default function Footer() {
         <p className="text-white">
           Built with 💙 and ☕ by{" "}
           <a
-            className="font-semibold hover:underline"
+            className="font-semibold hover:underline underline-offset-2"
             target="_blank"
             rel="noreferrer"
             href={ALEX_LINK}
@@ -30,7 +30,7 @@ export default function Footer() {
           </a>
           &{" "}
           <a
-            className="font-semibold hover:underline"
+            className="font-semibold hover:underline underline-offset-2"
             target="_blank"
             rel="noreferrer"
             href={D_D_LINK}
