@@ -1,6 +1,5 @@
 import * as React from "react";
 import Head from "next/head";
-import Request from "../components/Request/Request";
 import Footer from "../components/Footer";
 
 import Alert from "@mui/material/Alert";
@@ -37,12 +36,14 @@ export default function Home() {
         className={cx(
           styles.baseContainer,
           "h-screen w-full flex justify-center items-center"
-        )}>
+        )}
+      >
         <section
           className={cx(
             styles.containerBase,
             "h-screen w-full absolute top-0 z-0 opacity-50"
-          )}></section>
+          )}
+        ></section>
 
         <Container maxWidth="sm" className="w-full z-10">
           <Box
@@ -50,7 +51,8 @@ export default function Home() {
             className={cx(
               styles.containerBox,
               "p-2 rounded-3xl shadow-md w-full"
-            )}>
+            )}
+          >
             <Payment />
           </Box>
         </Container>
