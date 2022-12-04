@@ -80,7 +80,7 @@ export const setEtherscanAddress = (
   }
 };
 
-export const baseUrl: string = "https://web3-pay-alpha.vercel.app/woop/";
+export const baseUrl: string = "https://woop-pay-alpha.vercel.app/woop/";
 
 export const selectToken = (
   token: string,
