@@ -26,7 +26,7 @@ export default function Home() {
     <>
       <Head>
         <title>woop-pay</title>
-        <meta name="description" content="web3 payment requests made simple" />
+        <meta name="description" content="web3 payment requests made easy" />
         <link rel="icon" href="./icon.svg" />
       </Head>
 

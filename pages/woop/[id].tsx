@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Alert from "@mui/material/Alert";
 import Confetti from "react-confetti";
 import useWindowSize from "./../../hooks/useWindowSize/useWindowSize";
 
@@ -40,7 +39,8 @@ const Request = () => {
   const [amount, setAmount] = React.useState<string>("0.1");
   const [recipient, setRecipient] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
-  const [badRequest, setBadRequest] = React.useState<string>("");
+  const [woopBadRequest, setWoopBadRequest] = React.useState<string>("");
+  const [badRequest, setBadRequest] = React.useState<boolean>(false);
   const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
@@ -66,7 +66,7 @@ const Request = () => {
       }
     } catch (error) {
       console.error(error);
-      setBadRequest("Something happened");
+      setBadRequest(true);
     }
   };
 
@@ -117,6 +117,26 @@ const Request = () => {
       hash: dataNative?.hash,
     });
 
+  React.useEffect(() => {
+    if (isNativeTx) {
+      if (!sendTransaction && !badRequest) {
+        setWoopBadRequest(
+          "Payment not possible due to insufficient funds or contract"
+        );
+      } else {
+        setWoopBadRequest("");
+      }
+    } else {
+      if (!write && !badRequest) {
+        setWoopBadRequest(
+          "Payment not possible due to insufficient funds or contract"
+        );
+      } else {
+        setWoopBadRequest("");
+      }
+    }
+  }, [isNativeTx, sendTransaction, write]);
+
   const colors = [
     "rgba(16, 130, 178, 1)",
     "rgba(79, 76, 227, 1)",
@@ -143,7 +163,7 @@ const Request = () => {
     <div>
       <Head>
         <title>woop-pay</title>
-        <meta name="description" content="web3 payment requests made simple" />
+        <meta name="description" content="web3 payment requests made easy" />
         <link rel="icon" href="../icon.svg" />
       </Head>
 
@@ -153,37 +173,14 @@ const Request = () => {
         className={cx(
           styles.baseContainer,
           "h-screen w-full flex justify-center items-center"
-        )}>
-        {/* NOTIFICATIONS */}
-
-        {/*  TODO: Remove and add this errors to the error component logic  */}
-        {/*         <div className="fixed top-8 bg-white rounded">
-          {isNativeTx
-            ? (isPrepareErrorNative || isErrorNative) && (
-                <Alert variant="filled" severity="error">
-                  Error: Payment not possible due to insufficient funds or
-                  contract
-                </Alert>
-              )
-            : (isPrepareError || isError) && (
-                <Alert variant="filled" severity="error">
-                  Error: Payment not possible due to insufficient funds or
-                  contract
-                </Alert>
-              )}
-
-          {badRequest && (
-            <Alert variant="filled" severity="error">
-              Error: Payment not found
-            </Alert>
-          )}
-        </div>
- */}
+        )}
+      >
         <section
           className={cx(
             styles.containerBase,
             "h-screen w-full absolute top-0 z-0 flex opacity-50 items-center"
-          )}></section>
+          )}
+        ></section>
 
         {isSuccess ||
           (isSuccessNative && (
@@ -197,18 +194,20 @@ const Request = () => {
 
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">
+          <div className={"mb-2"}>
+            <ErrorsUi errorMsg={woopBadRequest} />
+          </div>
           <Box
             component="form"
-            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}>
-            <div className="absolute left-2 -top-16 mb-2">
-              <ErrorsUi errorMsg={badRequest} />
-            </div>
+            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}
+          >
             <section className="justify-items-left font-base text-white">
               <div
                 className={cx(
                   styles.topContainer,
                   "mb-2 pl-6 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
-                )}>
+                )}
+              >
                 <p className="font-base font-bold text-xl">
                   {badRequest
                     ? "No Woop to pay here"
@@ -240,7 +239,8 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}>
+                        )}
+                      >
                         Go back
                       </button>
                     </Link>
@@ -257,7 +257,8 @@ const Request = () => {
                         {"Are on "}
                         <a
                           className="underline underline-offset-4"
-                          href={`${network}/${data?.hash}`}>
+                          href={`${network}/${data?.hash}`}
+                        >
                           their way
                         </a>
                         {" to "}
@@ -268,7 +269,8 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}>
+                        )}
+                      >
                         Finish
                       </button>
                     </Link>
@@ -285,7 +287,8 @@ const Request = () => {
                         {"Are on "}
                         <a
                           className="underline underline-offset-4"
-                          href={`${network}/${dataNative?.hash}`}>
+                          href={`${network}/${dataNative?.hash}`}
+                        >
                           their way
                         </a>
                         {" to "}
@@ -296,7 +299,8 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}>
+                        )}
+                      >
                         Finish
                       </button>
                     </Link>
@@ -332,12 +336,14 @@ const Request = () => {
                       }
                       onClick={
                         isNativeTx ? () => sendTransaction?.() : () => write?.()
-                      }>
+                      }
+                    >
                       {isNativeTx ? (
                         isLoadingNative ? (
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24">
+                            viewBox="0 0 24 24"
+                          >
                             <circle
                               cx="12"
                               cy="12"
@@ -356,7 +362,8 @@ const Request = () => {
                         <>
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24">
+                            viewBox="0 0 24 24"
+                          >
                             <circle
                               cx="12"
                               cy="12"
