@@ -1,6 +1,5 @@
 import * as React from "react";
 import Head from "next/head";
-import Request from "../components/Request/Request";
 import Footer from "../components/Footer";
 
 import Alert from "@mui/material/Alert";
@@ -9,6 +8,9 @@ import cx from "classnames";
 
 import { useAccount, useConnect } from "wagmi";
 import Header from "../components/header";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Payment from "../components/Payment/Payment";
 
 export default function Home() {
   const { error } = useConnect();
@@ -28,11 +30,6 @@ export default function Home() {
         <link rel="icon" href="./icon.svg" />
       </Head>
 
-      {error && (
-        <Alert variant="filled" severity="error">
-          {error.message}
-        </Alert>
-      )}
       <Header />
 
       <article
@@ -41,26 +38,6 @@ export default function Home() {
           "h-screen w-full flex justify-center items-center"
         )}
       >
-        <div className="fixed top-8 bg-white rounded">
-          {error && (
-            <Alert variant="filled" severity="error">
-              {error.message}
-            </Alert>
-          )}
-
-          {badRequest && (
-            <Alert variant="filled" severity="error">
-              {`Error: The payment creation failed`}
-            </Alert>
-          )}
-
-          {amountZeroRequest && (
-            <Alert variant="filled" severity="error">
-              {`Error: You can't create a payment request with value 0`}
-            </Alert>
-          )}
-        </div>
-
         <section
           className={cx(
             styles.containerBase,
@@ -68,12 +45,17 @@ export default function Home() {
           )}
         ></section>
 
-        {
-          <Request
-            setBadRequest={setBadRequest}
-            setAmountZeroRequest={setAmountZeroRequest}
-          />
-        }
+        <Container maxWidth="sm" className="w-full z-10">
+          <Box
+            component="form"
+            className={cx(
+              styles.containerBox,
+              "p-2 rounded-3xl shadow-md w-full"
+            )}
+          >
+            <Payment />
+          </Box>
+        </Container>
       </article>
       <div className="absolute bottom-0 left-0 w-full">
         <Footer />

@@ -25,6 +25,7 @@ import Header from "../../components/header";
 import styles from "./woop.module.scss";
 import cx from "classnames";
 import Link from "next/link";
+import ErrorsUi from "../../components/ErrorsUi/ErrorsUi";
 
 interface Request {
   version: string;
@@ -39,7 +40,7 @@ const Request = () => {
   const [amount, setAmount] = React.useState<string>("0.1");
   const [recipient, setRecipient] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
-  const [badRequest, setBadRequest] = React.useState<boolean>(false);
+  const [badRequest, setBadRequest] = React.useState<string>("");
   const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
@@ -65,7 +66,7 @@ const Request = () => {
       }
     } catch (error) {
       console.error(error);
-      setBadRequest(true);
+      setBadRequest("Something happened");
     }
   };
 
@@ -152,10 +153,11 @@ const Request = () => {
         className={cx(
           styles.baseContainer,
           "h-screen w-full flex justify-center items-center"
-        )}
-      >
+        )}>
         {/* NOTIFICATIONS */}
-        <div className="fixed top-8 bg-white rounded">
+
+        {/*  TODO: Remove and add this errors to the error component logic  */}
+        {/*         <div className="fixed top-8 bg-white rounded">
           {isNativeTx
             ? (isPrepareErrorNative || isErrorNative) && (
                 <Alert variant="filled" severity="error">
@@ -176,45 +178,37 @@ const Request = () => {
             </Alert>
           )}
         </div>
-
+ */}
         <section
           className={cx(
             styles.containerBase,
             "h-screen w-full absolute top-0 z-0 flex opacity-50 items-center"
-          )}
-        ></section>
+          )}></section>
 
-        {isSuccess && (
-          <Confetti
-            colors={colors}
-            className="z-10"
-            width={width}
-            height={height}
-          />
-        )}
-
-        {isSuccessNative && (
-          <Confetti
-            colors={colors}
-            className="z-10"
-            width={width}
-            height={height}
-          />
-        )}
+        {isSuccess ||
+          (isSuccessNative && (
+            <Confetti
+              colors={colors}
+              className="z-10"
+              width={width}
+              height={height}
+            />
+          ))}
 
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">
           <Box
             component="form"
-            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}
-          >
+            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}>
+            <div className="absolute left-2 -top-16 mb-2">
+              <ErrorsUi errorMsg={badRequest} />
+            </div>
             <section className="justify-items-left font-base text-white">
               <div
                 className={cx(
                   styles.topContainer,
                   "mb-2 pl-6 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
-                )}
-              >
+                )}>
                 <p className="font-base font-bold text-xl">
                   {badRequest
                     ? "No Woop to pay here"
@@ -246,8 +240,7 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
-                      >
+                        )}>
                         Go back
                       </button>
                     </Link>
@@ -264,8 +257,7 @@ const Request = () => {
                         {"Are on "}
                         <a
                           className="underline underline-offset-4"
-                          href={`${network}/${data?.hash}`}
-                        >
+                          href={`${network}/${data?.hash}`}>
                           their way
                         </a>
                         {" to "}
@@ -276,8 +268,7 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
-                      >
+                        )}>
                         Finish
                       </button>
                     </Link>
@@ -294,8 +285,7 @@ const Request = () => {
                         {"Are on "}
                         <a
                           className="underline underline-offset-4"
-                          href={`${network}/${dataNative?.hash}`}
-                        >
+                          href={`${network}/${dataNative?.hash}`}>
                           their way
                         </a>
                         {" to "}
@@ -306,8 +296,7 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
-                      >
+                        )}>
                         Finish
                       </button>
                     </Link>
@@ -343,14 +332,12 @@ const Request = () => {
                       }
                       onClick={
                         isNativeTx ? () => sendTransaction?.() : () => write?.()
-                      }
-                    >
+                      }>
                       {isNativeTx ? (
                         isLoadingNative ? (
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
+                            viewBox="0 0 24 24">
                             <circle
                               cx="12"
                               cy="12"
@@ -369,8 +356,7 @@ const Request = () => {
                         <>
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
+                            viewBox="0 0 24 24">
                             <circle
                               cx="12"
                               cy="12"
