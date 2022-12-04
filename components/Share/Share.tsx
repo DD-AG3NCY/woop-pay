@@ -97,8 +97,7 @@ export const Share: React.FC<{
               className={cx(
                 styles.buttons,
                 "w-full cursor-pointer font-base h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize flex items-center justify-center"
-              )}
-            >
+              )}>
               {"Back"}
             </div>
             <div
@@ -123,8 +122,7 @@ export const Share: React.FC<{
               className={cx(
                 styles.buttons,
                 "w-full font-base cursor-pointer text-sm focus:outline-0 focus:text-slate-700  h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize hover:border-slate-700 hover:bg-slate-200 hover:text-slate-500 flex items-center justify-center"
-              )}
-            >
+              )}>
               {!navigator.share && copySuccess
                 ? "Copied"
                 : !copySuccess
@@ -140,24 +138,21 @@ export const Share: React.FC<{
               <div className="mr-1 flex items-center">
                 <WhatsappShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
-                >
+                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}>
                   <WhatsappIcon size={15} round />
                 </WhatsappShareButton>
               </div>
               <div className="mr-1 flex items-center">
                 <TelegramShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
-                >
+                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}>
                   <TelegramIcon size={15} round />
                 </TelegramShareButton>
               </div>
               <div className="mr-1 flex items-center">
                 <TwitterShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
-                >
+                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}>
                   <TwitterIcon size={15} round />
                 </TwitterShareButton>
               </div>
@@ -165,7 +160,7 @@ export const Share: React.FC<{
           </div>
         </div>
       ) : (
-        <h2></h2>
+        <></>
       )}
     </div>
   );
