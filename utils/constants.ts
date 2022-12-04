@@ -1,4 +1,5 @@
 import ethLogo from "../public/eth.png";
+import wethLogo from "../public/weth.png";
 import daiLogo from "../public/dai.png";
 import usdcLogo from "../public/usdc.png";
 import uniLogo from "../public/uni.png";
@@ -22,6 +23,14 @@ export const tokensDetails: Token[] = [
     goerli: "0x0000000000000000000000000000000000000000",
     optimism: "0x0000000000000000000000000000000000000000",
     arbitrum: "0x0000000000000000000000000000000000000000",
+  },
+  {
+    label: "WETH",
+    logo: wethLogo,
+    mainnet: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    goerli: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
+    optimism: "0x4200000000000000000000000000000000000006",
+    arbitrum: "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
   },
   {
     label: "DAI",
