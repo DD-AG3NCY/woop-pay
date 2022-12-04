@@ -19,9 +19,9 @@ export default function Footer() {
       </div>
       <div className="hidden md:block">
         <p className="text-white">
-          Built with 💙 and ☕ by{" "}
+          Built with 💙 by{" "}
           <a
-            className="font-semibold hover:underline underline-offset-2"
+            className="font-semibold hover:underline underline-offset-4"
             target="_blank"
             rel="noreferrer"
             href={ALEX_LINK}
@@ -30,7 +30,7 @@ export default function Footer() {
           </a>
           &{" "}
           <a
-            className="font-semibold hover:underline underline-offset-2"
+            className="font-semibold hover:underline underline-offset-4"
             target="_blank"
             rel="noreferrer"
             href={D_D_LINK}
