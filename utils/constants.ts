@@ -49,15 +49,34 @@ export const tokensDetails: Token[] = [
   },
 ];
 
-export const setEtherscanBase = (network: string) => {
+export const setEtherscanBase = (network: string, hash: string | undefined) => {
   if (network == "arbitrum") {
-    return "https://arbiscan.io/tx/";
+    return `https://arbiscan.io/tx/${hash}`;
   } else if (network == "goerli") {
-    return "https://goerli.etherscan.io/tx/";
+    return `https://goerli.etherscan.io/tx/${hash}`;
   } else if (network == "optimism") {
-    return "https://optimistic.etherscan.io/tx/";
+    return `https://optimistic.etherscan.io/tx/${hash}`;
+  } else if (network == "mainnet") {
+    return `https://etherscan.io/tx/${hash}`;
   } else {
-    return "https://etherscan.io/tx/";
+    return "...";
+  }
+};
+
+export const setEtherscanAddress = (
+  network: string,
+  address: string | undefined
+) => {
+  if (network == "arbitrum") {
+    return `https://arbiscan.io/address/${address}`;
+  } else if (network == "goerli") {
+    return `https://goerli.etherscan.io/address/${address}`;
+  } else if (network == "optimism") {
+    return `https://optimistic.etherscan.io/address/${address}`;
+  } else if (network == "mainnet") {
+    return `https://etherscan.io/address/${address}`;
+  } else {
+    return "...";
   }
 };
 

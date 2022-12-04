@@ -17,7 +17,11 @@ import {
   useAccount,
 } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { setEtherscanBase, tokensDetails } from "../../utils/constants";
+import {
+  setEtherscanBase,
+  setEtherscanAddress,
+  tokensDetails,
+} from "../../utils/constants";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
@@ -64,7 +68,7 @@ const Request = () => {
       setRequest(json);
       setAmount(json.value);
       setRecipient(json.from);
-      setNetwork(setEtherscanBase(json.network));
+      setNetwork(json.network);
 
       if (json.tokenName == "ETH") {
         setIsNativeTx(true);
@@ -274,7 +278,7 @@ const Request = () => {
                         {"Are on "}
                         <a
                           className="underline underline-offset-4"
-                          href={`${network}/${data?.hash}`}
+                          href={`${setEtherscanBase(network, data?.hash)}`}
                         >
                           their way
                         </a>
@@ -304,7 +308,10 @@ const Request = () => {
                         {"Are on "}
                         <a
                           className="underline underline-offset-4"
-                          href={`${network}/${dataNative?.hash}`}
+                          href={`${setEtherscanBase(
+                            network,
+                            dataNative?.hash
+                          )}`}
                         >
                           their way
                         </a>
@@ -332,7 +339,12 @@ const Request = () => {
                       {request && findIcon(request?.tokenName)}
                     </div>
                     <p className="text-xs text-slate-300 mb-2">
-                      {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                      <a
+                        className="underline underline-offset-4"
+                        href={`${setEtherscanAddress(network, request?.from)}`}
+                      >
+                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                      </a>
                       {" requested you:"}
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
