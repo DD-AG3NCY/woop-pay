@@ -14,7 +14,9 @@ import {
   useWaitForTransaction,
   usePrepareSendTransaction,
   useSendTransaction,
+  useAccount,
 } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { setEtherscanBase, tokensDetails } from "../../utils/constants";
 
 import ERC20 from "../../abi/ERC20.abi.json";
@@ -42,8 +44,11 @@ const Request = () => {
   const [woopBadRequest, setWoopBadRequest] = React.useState<string>("");
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
   const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
+  const [isConnected, setIsConnected] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
+  const { isConnected: connected } = useAccount();
+  const { openConnectModal } = useConnectModal();
   const { width, height } = useWindowSize();
 
   // querying ipfs
@@ -75,6 +80,14 @@ const Request = () => {
       callIpfs();
     }
   }, [id]);
+
+  React.useEffect(() => {
+    if (connected) {
+      setIsConnected(true);
+    } else {
+      setIsConnected(false);
+    }
+  }, [connected]);
 
   // wagmi erc20 transaction
   const {
@@ -118,24 +131,28 @@ const Request = () => {
     });
 
   React.useEffect(() => {
-    if (isNativeTx) {
-      if (!sendTransaction && !badRequest) {
-        setWoopBadRequest(
-          "Payment not possible due to insufficient funds or contract"
-        );
-      } else {
-        setWoopBadRequest("");
-      }
+    if (!isConnected) {
+      setWoopBadRequest("");
     } else {
-      if (!write && !badRequest) {
-        setWoopBadRequest(
-          "Payment not possible due to insufficient funds or contract"
-        );
+      if (isNativeTx) {
+        if (!sendTransaction && !badRequest) {
+          setWoopBadRequest(
+            "Payment not possible due to insufficient funds or contract error"
+          );
+        } else {
+          setWoopBadRequest("");
+        }
       } else {
-        setWoopBadRequest("");
+        if (!write && !badRequest) {
+          setWoopBadRequest(
+            "Payment not possible due to insufficient funds or contract error"
+          );
+        } else {
+          setWoopBadRequest("");
+        }
       }
     }
-  }, [isNativeTx, sendTransaction, write]);
+  }, [isNativeTx, badRequest, isConnected, sendTransaction, write]);
 
   const colors = [
     "rgba(16, 130, 178, 1)",
@@ -330,15 +347,22 @@ const Request = () => {
                         "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                       )}
                       disabled={
-                        isNativeTx
+                        isConnected &&
+                        (isNativeTx
                           ? !sendTransaction || isLoadingNative
-                          : !write || isLoading
+                          : !write || isLoading)
                       }
                       onClick={
-                        isNativeTx ? () => sendTransaction?.() : () => write?.()
+                        !isConnected
+                          ? openConnectModal
+                          : isNativeTx
+                          ? () => sendTransaction?.()
+                          : () => write?.()
                       }
                     >
-                      {isNativeTx ? (
+                      {!isConnected ? (
+                        "Connect Wallet"
+                      ) : isNativeTx ? (
                         isLoadingNative ? (
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
