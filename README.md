@@ -1,6 +1,6 @@
-# web3-pay
+# woop-pay
 
-web3-pay is a web application to make web3 payment requests frictionless
+woop-pay is a web application to make web3 payment requests frictionless
 
 
 ### Libraries
@@ -46,4 +46,4 @@ npm run dev
 
 Live deployment is made via Github / Vercel integration, as a vercel.app, from master branch.
 
-Open [web3-pay](https://web3-pay-alpha.vercel.app/)
+Open [woop-pay](https://woop-pay-alpha.vercel.app/)
