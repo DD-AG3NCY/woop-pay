@@ -70,7 +70,9 @@ const Request = () => {
       setRecipient(json.from);
       setNetwork(json.network);
 
-      if (json.tokenName == "ETH") {
+      let tokenName: string = json.tokenName;
+
+      if (tokenName == "ETH" || "MATIC") {
         setIsNativeTx(true);
       }
     } catch (error) {
@@ -128,17 +130,13 @@ const Request = () => {
     } else {
       if (isNativeTx) {
         if (!sendTransaction && !badRequest) {
-          setWoopBadRequest(
-            "Payment not possible due to insufficient funds or contract error"
-          );
+          setWoopBadRequest("Payment not possible due to insufficient funds");
         } else {
           setWoopBadRequest("");
         }
       } else {
         if (!write && !badRequest) {
-          setWoopBadRequest(
-            "Payment not possible due to insufficient funds or contract error"
-          );
+          setWoopBadRequest("Payment not possible due to insufficient funds");
         } else {
           setWoopBadRequest("");
         }
@@ -174,7 +172,7 @@ const Request = () => {
         <title>woop-pay</title>
         <meta
           name="description"
-          content="woop-pay is an application to make web3 payment requests easy"
+          content="woop-pay makes web3 payment requests easy"
         />
         <link rel="icon" href="../icon.svg" />
       </Head>
@@ -324,8 +322,6 @@ const Request = () => {
               ) : (
                 <div className="px-4 pb-4 pt-1 relative">
                   <>
-                    {/* <p className="mb-1 text-2xl">
-                    </p> */}
                     <div className="absolute top-0 right-3 p-1">
                       {request && findIcon(request?.tokenName)}
                     </div>

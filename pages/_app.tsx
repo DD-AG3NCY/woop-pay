@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.goerli, chain.optimism, chain.arbitrum],
+  [chain.mainnet, chain.goerli, chain.optimism, chain.arbitrum, chain.polygon],
   [publicProvider()]
 );
 

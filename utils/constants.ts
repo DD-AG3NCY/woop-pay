@@ -1,4 +1,5 @@
 import ethLogo from "../public/eth.png";
+import maticLogo from "../public/matic.png";
 import wethLogo from "../public/weth.png";
 import daiLogo from "../public/dai.png";
 import usdcLogo from "../public/usdc.png";
@@ -23,6 +24,16 @@ export const tokensDetails: Token[] = [
     goerli: "0x0000000000000000000000000000000000000000",
     optimism: "0x0000000000000000000000000000000000000000",
     arbitrum: "0x0000000000000000000000000000000000000000",
+    matic: "0x0000000000000000000000000000000000000000",
+  },
+  {
+    label: "MATIC",
+    logo: maticLogo,
+    mainnet: "0x0000000000000000000000000000000000000000",
+    goerli: "0x0000000000000000000000000000000000000000",
+    optimism: "0x0000000000000000000000000000000000000000",
+    arbitrum: "0x0000000000000000000000000000000000000000",
+    matic: "0x0000000000000000000000000000000000000000",
   },
   {
     label: "WETH",
@@ -31,6 +42,7 @@ export const tokensDetails: Token[] = [
     goerli: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
     optimism: "0x4200000000000000000000000000000000000006",
     arbitrum: "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
+    matic: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
   },
   {
     label: "DAI",
@@ -39,6 +51,7 @@ export const tokensDetails: Token[] = [
     goerli: "0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60",
     optimism: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
     arbitrum: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+    matic: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
   },
   {
     label: "USDC",
@@ -47,6 +60,7 @@ export const tokensDetails: Token[] = [
     goerli: "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C",
     optimism: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
     arbitrum: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+    matic: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
   },
   {
     label: "UNI",
@@ -55,6 +69,7 @@ export const tokensDetails: Token[] = [
     goerli: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
     optimism: "0x6fd9d7AD17242c41f7131d257212c54A0e816691",
     arbitrum: "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0",
+    matic: "0xb33EaAd8d922B1083446DC23f610c2567fB5180f",
   },
 ];
 
@@ -67,6 +82,8 @@ export const setEtherscanBase = (network: string, hash: string | undefined) => {
     return `https://optimistic.etherscan.io/tx/${hash}`;
   } else if (network == "mainnet") {
     return `https://etherscan.io/tx/${hash}`;
+  } else if (network == "matic") {
+    return `https://polygonscan.com/tx/${hash}`;
   } else {
     return "...";
   }
@@ -84,6 +101,8 @@ export const setEtherscanAddress = (
     return `https://optimistic.etherscan.io/address/${address}`;
   } else if (network == "mainnet") {
     return `https://etherscan.io/address/${address}`;
+  } else if (network == "matic") {
+    return `https://polygonscan.com/address/${address}`;
   } else {
     return "...";
   }

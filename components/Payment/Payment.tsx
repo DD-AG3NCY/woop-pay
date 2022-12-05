@@ -83,7 +83,11 @@ export default function Payment(props: any) {
 
   React.useEffect(() => {
     if (chain) {
+      setSelectedToken(tokensDetails[0]);
       setChainId(chain.network);
+      if (chain.network == "matic") {
+        setSelectedToken(tokensDetails[1]);
+      }
     }
   }, [chain]);
 
@@ -99,35 +103,43 @@ export default function Payment(props: any) {
             <p className="font-base font-semibold text-slate-700 pl-4 pb-3 pt-2 border-b mb-3">
               Select a token:
             </p>
-            {tokensDetails.map((token, i) => {
-              return (
-                <MenuItem
-                  key={token.label}
-                  onClick={() => {
-                    setSelectedToken(token);
-                    setSelectorVisibility(!selectorVisibility);
-                  }}
-                  value={token.label}
-                  sx={{
-                    marginBottom: tokensDetails.length - 1 === i ? 0 : 1,
-                  }}
-                  className="cursor-pointer hover:bg-slate-200 rounded-xl p-1"
-                >
-                  <div className="flex items-center">
-                    <Image
-                      alt={token.label}
-                      src={token.logo}
-                      className="p-1"
-                      width={40}
-                      height={40}
-                    />
-                    <span className="ml-3 text-slate-700 font-base font-semibold">
-                      {token.label}
-                    </span>
-                  </div>
-                </MenuItem>
-              );
-            })}
+            {tokensDetails
+              .filter((token) => {
+                if (chainId == "matic") {
+                  if (token.label != "ETH") return token;
+                } else {
+                  if (token.label != "MATIC") return token;
+                }
+              })
+              .map((token, i) => {
+                return (
+                  <MenuItem
+                    key={token.label}
+                    onClick={() => {
+                      setSelectedToken(token);
+                      setSelectorVisibility(!selectorVisibility);
+                    }}
+                    value={token.label}
+                    sx={{
+                      marginBottom: tokensDetails.length - 1 === i ? 0 : 1,
+                    }}
+                    className="cursor-pointer hover:bg-slate-200 rounded-xl p-1"
+                  >
+                    <div className="flex items-center">
+                      <Image
+                        alt={token.label}
+                        src={token.logo}
+                        className="p-1"
+                        width={40}
+                        height={40}
+                      />
+                      <span className="ml-3 text-slate-700 font-base font-semibold">
+                        {token.label}
+                      </span>
+                    </div>
+                  </MenuItem>
+                );
+              })}
           </div>
         </section>
       )}
