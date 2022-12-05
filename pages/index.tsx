@@ -1,23 +1,18 @@
 import * as React from "react";
 import Head from "next/head";
 import Footer from "../components/Footer";
+import Payment from "../components/Payment/Payment";
+import Header from "../components/Heading";
 
-import Alert from "@mui/material/Alert";
 import styles from "./index.module.scss";
 import cx from "classnames";
 
-import { useAccount, useConnect } from "wagmi";
-import Header from "../components/header";
+import { useAccount } from "wagmi";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Payment from "../components/Payment/Payment";
 
 export default function Home() {
-  const { error } = useConnect();
-  const [badRequest, setBadRequest] = React.useState<boolean>(false);
-  const [amountZeroRequest, setAmountZeroRequest] =
-    React.useState<boolean>(false);
-
   const { isConnected } = useAccount();
   const [connected, setConnected] = React.useState<boolean>(false);
   React.useEffect(() => setConnected(isConnected), [isConnected]);
@@ -26,7 +21,10 @@ export default function Home() {
     <>
       <Head>
         <title>woop-pay</title>
-        <meta name="description" content="web3 payment requests made easy" />
+        <meta
+          name="description"
+          content="woop-pay is an application to make web3 payment requests easy"
+        />
         <link rel="icon" href="./icon.svg" />
       </Head>
 

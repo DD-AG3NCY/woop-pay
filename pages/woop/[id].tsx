@@ -26,7 +26,7 @@ import {
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
 import { utils } from "ethers";
-import Header from "../../components/header";
+import Header from "../../components/Heading";
 import styles from "./woop.module.scss";
 import cx from "classnames";
 import Link from "next/link";
@@ -94,40 +94,28 @@ const Request = () => {
   }, [connected]);
 
   // wagmi erc20 transaction
-  const {
-    config,
-    error: prepareError,
-    isError: isPrepareError,
-  } = usePrepareContractWrite({
+  const { config } = usePrepareContractWrite({
     address: request?.tokenAddress,
     abi: ERC20,
     functionName: "transfer",
     args: [request?.from, utils.parseEther(amount)],
   });
 
-  const { data, error, isError, write } = useContractWrite(config);
+  const { data, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
 
   //wagmi native transaction
-  const {
-    config: configNative,
-    error: prepareErrorNative,
-    isError: isPrepareErrorNative,
-  } = usePrepareSendTransaction({
+  const { config: configNative } = usePrepareSendTransaction({
     request: {
       to: recipient,
       value: amount ? utils.parseEther(amount) : undefined,
     },
   });
-  const {
-    data: dataNative,
-    error: errorNative,
-    isError: isErrorNative,
-    sendTransaction,
-  } = useSendTransaction(configNative);
+  const { data: dataNative, sendTransaction } =
+    useSendTransaction(configNative);
 
   const { isLoading: isLoadingNative, isSuccess: isSuccessNative } =
     useWaitForTransaction({
@@ -184,7 +172,10 @@ const Request = () => {
     <div>
       <Head>
         <title>woop-pay</title>
-        <meta name="description" content="web3 payment requests made easy" />
+        <meta
+          name="description"
+          content="woop-pay is an application to make web3 payment requests easy"
+        />
         <link rel="icon" href="../icon.svg" />
       </Head>
 
