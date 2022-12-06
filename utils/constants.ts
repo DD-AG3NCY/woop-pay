@@ -1,6 +1,7 @@
 import ethLogo from "../public/eth.png";
 import maticLogo from "../public/matic.png";
 import wethLogo from "../public/weth.png";
+import wbtcLogo from "../public/wbtc.png";
 import daiLogo from "../public/dai.png";
 import usdcLogo from "../public/usdc.png";
 import uniLogo from "../public/uni.png";
@@ -44,6 +45,15 @@ export const tokensDetails: Token[] = [
     optimism: "0x4200000000000000000000000000000000000006",
     arbitrum: "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
     matic: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+  },
+  {
+    label: "WBTC",
+    logo: wbtcLogo,
+    homestead: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+    goerli: "0xC04B0d3107736C32e19F1c62b2aF67BE61d63a05",
+    optimism: "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
+    arbitrum: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+    matic: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
   },
   {
     label: "DAI",
@@ -116,7 +126,7 @@ export const selectToken = (
   network: string
 ): string | undefined => {
   const networks = ["goerli", "homestead", "optimism", "arbitrum", "matic"];
-  const tokens = ["ETH", "MATIC", "WETH", "DAI", "USDC", "UNI"];
+  const tokens = ["ETH", "MATIC", "WETH", "WBTC", "DAI", "USDC", "UNI"];
 
   let selectedToken: Token | undefined;
 
