@@ -15,6 +15,7 @@ import {
   usePrepareSendTransaction,
   useSendTransaction,
   useAccount,
+  useNetwork,
 } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
@@ -45,13 +46,17 @@ const Request = () => {
   const [amount, setAmount] = React.useState<string>("0.1");
   const [recipient, setRecipient] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
+  const [networkName, setNetworkName] = React.useState<string>("");
   const [woopBadRequest, setWoopBadRequest] = React.useState<string>("");
+  const [woopBadNetwork, setWoopBadNetwork] = React.useState<string>("");
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
+  const [wrongNetwork, setWrongNetwork] = React.useState<boolean>(false);
   const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
   const [isConnected, setIsConnected] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
   const { isConnected: connected } = useAccount();
+  const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
   const { width, height } = useWindowSize();
 
@@ -69,6 +74,7 @@ const Request = () => {
       setAmount(json.value);
       setRecipient(json.from);
       setNetwork(json.network);
+      setNetworkName(json.networkName);
 
       let tokenName: string = json.tokenName;
 
@@ -80,20 +86,6 @@ const Request = () => {
       setBadRequest(true);
     }
   };
-
-  React.useEffect(() => {
-    if (id) {
-      callIpfs();
-    }
-  }, [id]);
-
-  React.useEffect(() => {
-    if (connected) {
-      setIsConnected(true);
-    } else {
-      setIsConnected(false);
-    }
-  }, [connected]);
 
   // wagmi erc20 transaction
   const { config } = usePrepareContractWrite({
@@ -124,6 +116,7 @@ const Request = () => {
       hash: dataNative?.hash,
     });
 
+  // react use effects
   React.useEffect(() => {
     if (!isConnected) {
       setWoopBadRequest("");
@@ -143,6 +136,31 @@ const Request = () => {
       }
     }
   }, [isNativeTx, badRequest, isConnected, sendTransaction, write]);
+
+  React.useEffect(() => {
+    if (id) {
+      callIpfs();
+    }
+  }, [id]);
+
+  React.useEffect(() => {
+    if (network) {
+      setWrongNetwork(false);
+      setWoopBadNetwork("");
+      if (network != chain?.network) {
+        setWrongNetwork(true);
+        setWoopBadNetwork(`Wrong network. Please connect to ${networkName}`);
+      }
+    }
+  }, [chain, id]);
+
+  React.useEffect(() => {
+    if (connected) {
+      setIsConnected(true);
+    } else {
+      setIsConnected(false);
+    }
+  }, [connected]);
 
   const colors = [
     "rgba(16, 130, 178, 1)",
@@ -205,7 +223,7 @@ const Request = () => {
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">
           <div className={"mb-2"}>
-            <ErrorsUi errorMsg={woopBadRequest} />
+            <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
           </div>
           <Box
             component="form"
@@ -346,10 +364,11 @@ const Request = () => {
                         "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                       )}
                       disabled={
-                        isConnected &&
+                        !isConnected ||
                         (isNativeTx
                           ? !sendTransaction || isLoadingNative
-                          : !write || isLoading)
+                          : !write || isLoading) ||
+                        wrongNetwork
                       }
                       onClick={
                         !isConnected

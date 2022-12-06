@@ -18,10 +18,11 @@ export default function Payment(props: any) {
   const [selectedToken, setSelectedToken] = React.useState<{
     label: string;
     logo: any;
-    mainnet: string;
+    homestead: string;
     goerli: string;
     optimism: string;
     arbitrum: string;
+    matic: string;
   }>(tokensDetails[0]);
   const [amount, setAmount] = React.useState<string>("0");
   const [path, setPath] = React.useState<string>("");
@@ -58,6 +59,7 @@ export default function Payment(props: any) {
           from: address,
           value: amount,
           network: chain?.network,
+          networkName: chain?.name,
           tokenName: selectedToken.label,
           tokenAddress: selectToken(selectedToken.label, chainId),
         }).finally(() => {
@@ -146,7 +148,7 @@ export default function Payment(props: any) {
 
       <div className="p-2 flex flex-col w-full relative">
         <div className="absolute left-2 -top-16 mb-2">
-          <ErrorsUi errorMsg={badRequest} />
+          <ErrorsUi errorMsg={badRequest} errorNtk={""} />
         </div>
         <p className="font-medium font-base text-sm text-white mb-2 pl-2">
           <span className="md:block hidden">Select the amount to receive:</span>
