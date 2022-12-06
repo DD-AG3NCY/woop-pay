@@ -78,7 +78,7 @@ const Request = () => {
 
       let tokenName: string = json.tokenName;
 
-      if (tokenName == "ETH" || "MATIC") {
+      if (tokenName == "ETH" || tokenName == "MATIC") {
         setIsNativeTx(true);
       }
     } catch (error) {
@@ -120,6 +120,7 @@ const Request = () => {
   React.useEffect(() => {
     if (!isConnected) {
       setWoopBadRequest("");
+      setWoopBadNetwork("");
     } else {
       if (isNativeTx) {
         if (!sendTransaction && !badRequest) {
@@ -274,6 +275,38 @@ const Request = () => {
                     </Link>
                   </div>
                 </>
+              ) : !isConnected ? (
+                <div className="px-4 pb-4 pt-1 relative">
+                  <>
+                    <div className="absolute top-0 right-3 p-1">
+                      {request && findIcon(request?.tokenName)}
+                    </div>
+                    <p className="text-xs text-slate-300 mb-2">
+                      <a
+                        className="underline underline-offset-4"
+                        href={`${setEtherscanAddress(network, request?.from)}`}
+                      >
+                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                      </a>
+                      {" requested you:"}
+                    </p>
+                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
+                      {request?.value} {request?.tokenName}
+                    </div>
+                  </>
+
+                  <div className="">
+                    <button
+                      type="button"
+                      className={cx(
+                        "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                      )}
+                      onClick={openConnectModal}
+                    >
+                      Connect Wallet
+                    </button>
+                  </div>
+                </div>
               ) : isSuccess ? (
                 <>
                   <div className="px-4 pb-4 pt-1">
@@ -364,23 +397,15 @@ const Request = () => {
                         "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                       )}
                       disabled={
-                        !isConnected ||
                         (isNativeTx
                           ? !sendTransaction || isLoadingNative
-                          : !write || isLoading) ||
-                        wrongNetwork
+                          : !write || isLoading) || wrongNetwork
                       }
                       onClick={
-                        !isConnected
-                          ? openConnectModal
-                          : isNativeTx
-                          ? () => sendTransaction?.()
-                          : () => write?.()
+                        isNativeTx ? () => sendTransaction?.() : () => write?.()
                       }
                     >
-                      {!isConnected ? (
-                        "Connect Wallet"
-                      ) : isNativeTx ? (
+                      {isNativeTx ? (
                         isLoadingNative ? (
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
