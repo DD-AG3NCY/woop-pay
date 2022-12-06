@@ -22,6 +22,10 @@ export default function Home() {
       <Head>
         <title>woop-pay</title>
         <meta
+          name="google-site-verification"
+          content="1BZiBRM8VTsaPYw0QR3qMP_M0TkX4F4u1-lUGXf27XQ"
+        />
+        <meta
           name="description"
           content="woop-pay makes web3 payment requests easy"
         />
