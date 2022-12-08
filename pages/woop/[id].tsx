@@ -37,6 +37,7 @@ interface Request {
   version: string;
   from: string;
   value: string;
+  decimals: number;
   tokenName: string;
   tokenAddress: string;
 }
@@ -71,13 +72,20 @@ const Request = () => {
 
       const json = await response.json();
       setRequest(json);
-      setAmount(json.value);
       setRecipient(json.from);
       setNetwork(json.network);
       setNetworkName(json.networkName);
 
-      let tokenName: string = json.tokenName;
+      if (json.decimals != 18) {
+        const amount: string = (
+          Number(json.value) / Number(10 ** (18 - json.decimals))
+        ).toFixed(18);
+        setAmount(amount);
+      } else {
+        setAmount(json.value);
+      }
 
+      let tokenName: string = json.tokenName;
       if (tokenName == "ETH" || tokenName == "MATIC") {
         setIsNativeTx(true);
       }
@@ -211,15 +219,21 @@ const Request = () => {
           )}
         ></section>
 
-        {isSuccess ||
-          (isSuccessNative && (
-            <Confetti
-              colors={colors}
-              className="z-10"
-              width={width}
-              height={height}
-            />
-          ))}
+        {isSuccess ? (
+          <Confetti
+            colors={colors}
+            className="z-10"
+            width={width}
+            height={height}
+          />
+        ) : isSuccessNative ? (
+          <Confetti
+            colors={colors}
+            className="z-10"
+            width={width}
+            height={height}
+          />
+        ) : null}
 
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">

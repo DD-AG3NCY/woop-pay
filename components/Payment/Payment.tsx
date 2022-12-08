@@ -12,12 +12,17 @@ import { useAccount, useNetwork } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 import { uploadIpfs } from "../../utils/ipfs";
-import { selectToken, tokensDetails } from "../../utils/constants";
+import {
+  selectToken,
+  selectTokenDecimals,
+  tokensDetails,
+} from "../../utils/constants";
 
 export default function Payment(props: any) {
   const [selectedToken, setSelectedToken] = React.useState<{
     label: string;
     logo: any;
+    decimals: number;
     homestead: string;
     goerli: string;
     optimism: string;
@@ -58,6 +63,7 @@ export default function Payment(props: any) {
           version: "1.0.0",
           from: address,
           value: amount,
+          decimals: selectTokenDecimals(selectedToken.label),
           network: chain?.network,
           networkName: chain?.name,
           tokenName: selectedToken.label,
