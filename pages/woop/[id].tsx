@@ -196,10 +196,10 @@ const Request = () => {
   return (
     <div>
       <Head>
-        <title>woop-pay</title>
+        <title>Woop Pay - Create Cryptocurrency Payment Requests</title>
         <meta
           name="description"
-          content="woop-pay makes web3 payment requests easy"
+          content="WOOP PAY is a simple interface to create, share, and pay cryptocurrency payment requests"
         />
         <link rel="icon" href="../icon.svg" />
       </Head>

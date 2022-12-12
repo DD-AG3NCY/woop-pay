@@ -20,14 +20,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>woop-pay</title>
+        <title>Woop Pay - Create Cryptocurrency Payment Requests</title>
         <meta
           name="google-site-verification"
           content="1BZiBRM8VTsaPYw0QR3qMP_M0TkX4F4u1-lUGXf27XQ"
         />
         <meta
           name="description"
-          content="woop-pay makes web3 payment requests easy"
+          content="WOOP PAY is a simple interface to create, share, and pay cryptocurrency payment requests"
         />
         <link rel="icon" href="./icon.svg" />
       </Head>
