@@ -13,7 +13,10 @@ export default function Footer() {
         <Link href="/terms" className="mr-3">
           <p>Terms & conditions</p>
         </Link>
-        <Link href="/about" className="mr-3">
+        <Link
+          href="https://medium.com/@alessandromaci/woop-pay-simplifying-cryptocurrency-payment-requests-63e3bff2531d"
+          className="mr-3"
+        >
           <p>About</p>
         </Link>
       </div>

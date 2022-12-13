@@ -88,7 +88,7 @@ export const Share: React.FC<{
           <div className="flex justify-center">
             <div ref={qrContainer}></div>
           </div>
-          <p className="font-base text-xs font-medium text-slate-500 mt-2">
+          <p className="font-base text-base font-medium text-slate-500 mt-2">
             Share this payment request:
           </p>
           <div className="mt-2 flex gap-2 place-content-evenly">
@@ -122,43 +122,43 @@ export const Share: React.FC<{
               }}
               className={cx(
                 styles.buttons,
-                "w-full font-base cursor-pointer text-sm focus:outline-0 focus:text-slate-700  h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize hover:border-slate-700 hover:bg-slate-200 hover:text-slate-500 flex items-center justify-center"
+                "w-full font-base cursor-pointer focus:outline-0 focus:text-slate-700  h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize hover:border-slate-700 hover:bg-slate-200 hover:text-slate-500 flex items-center justify-center"
               )}
             >
               {!navigator.share && copySuccess
                 ? "Copied"
                 : !copySuccess
-                ? "Copy Link"
+                ? "Share Link"
                 : "Share"}
             </div>
           </div>
           <div className="flex justify-between mt-3">
             <section className="flex items-center">
-              <p className="font-base text-xs font-medium text-slate-500 mr-1 ml-1">
-                Or share:
+              <p className="font-base text-base font-medium text-slate-500 mr-2 ml-1">
+                Share:
               </p>
-              <div className="mr-1 flex items-center">
+              <div className="mr-2 flex items-center">
                 <WhatsappShareButton
                   url={`${baseUrl}${path}`}
                   title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
                 >
-                  <WhatsappIcon size={15} round />
+                  <WhatsappIcon size={30} round />
                 </WhatsappShareButton>
               </div>
-              <div className="mr-1 flex items-center">
+              <div className="mr-2 flex items-center">
                 <TelegramShareButton
                   url={`${baseUrl}${path}`}
                   title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
                 >
-                  <TelegramIcon size={15} round />
+                  <TelegramIcon size={30} round />
                 </TelegramShareButton>
               </div>
-              <div className="mr-1 flex items-center">
+              <div className="flex items-center">
                 <TwitterShareButton
                   url={`${baseUrl}${path}`}
                   title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
                 >
-                  <TwitterIcon size={15} round />
+                  <TwitterIcon size={30} round />
                 </TwitterShareButton>
               </div>
             </section>
