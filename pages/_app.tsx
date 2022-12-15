@@ -5,6 +5,7 @@ import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -13,11 +14,16 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.goerli, chain.optimism, chain.arbitrum, chain.polygon],
-  [publicProvider()]
+
+  [
+    publicProvider(),
+    //this rpc backup will only work with mainnet
+    alchemyProvider({ apiKey: process.env.ALCHEMY_ID || "" }),
+  ]
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "web3-pay",
+  appName: "woop-pay",
   chains,
 });
 

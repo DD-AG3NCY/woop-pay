@@ -89,7 +89,7 @@ export const Share: React.FC<{
             <div ref={qrContainer}></div>
           </div>
           <p className="font-base text-base font-medium text-slate-500 mt-2">
-            Share this payment request:
+            Send this payment request:
           </p>
           <div className="mt-2 flex gap-2 place-content-evenly">
             <div
