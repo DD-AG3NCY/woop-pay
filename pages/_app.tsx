@@ -21,6 +21,9 @@ const { chains, provider } = configureChains(
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_MAINNET_API_KEY!,
     }),
     alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_GOERLI_API_KEY!,
+    }),
+    alchemyProvider({
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_MAINNET_API_KEY!,
     }),
     alchemyProvider({

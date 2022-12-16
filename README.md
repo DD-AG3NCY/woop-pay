@@ -24,10 +24,11 @@ add environment variable
 ```text
 NEXT_PUBLIC_INFURA_PROJECT_ID={project_id}
 NEXT_PUBLIC_INFURA_SECRET={secret}
-NEXT_PUBLIC_ALCHEMY_ETHEREUM_MAINNET_API_KEY={key}
-NEXT_PUBLIC_ALCHEMY_POLYGON_MAINNET_API_KEY={key}
-NEXT_PUBLIC_ALCHEMY_OPTIMISM_MAINNET_API_KEY={key}
-NEXT_PUBLIC_ALCHEMY_ARBITRUM_MAINNET_API_KEY={key}
+NEXT_PUBLIC_ALCHEMY_ETHEREUM_MAINNET_API_KEY={key-mainnet}
+NEXT_PUBLIC_ALCHEMY_ETHEREUM_GOERLI_API_KEY={key-goerli}
+NEXT_PUBLIC_ALCHEMY_POLYGON_MAINNET_API_KEY={key-polygon}
+NEXT_PUBLIC_ALCHEMY_OPTIMISM_MAINNET_API_KEY={key-optimism}
+NEXT_PUBLIC_ALCHEMY_ARBITRUM_MAINNET_API_KEY={key-arbitrum}
 ```
 
 3. Install dependencies
@@ -46,6 +47,6 @@ npm run dev
 
 ### Production
 
-Live deployment is made via Github / Vercel integration, as a vercel.app, from master branch.
+Live deployment is made via Github / Vercel integration from master branch.
 
 Open [Woop Pay](https://wooppay.xyz)
