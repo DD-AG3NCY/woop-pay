@@ -196,10 +196,10 @@ const Request = () => {
   return (
     <div>
       <Head>
-        <title>Woop Pay - Create Cryptocurrency Payment Requests</title>
+        <title>Woop Pay | Create Cryptocurrency Payment Requests</title>
         <meta
           name="description"
-          content="WOOP PAY is a simple interface to create, share, and pay cryptocurrency payment requests"
+          content="Woop Pay is a web application that simplifies cryptocurrency payment requests. You can connect your wallet to create a payment request and share it. Woop Pay supports native tokens ETHER and MATIC, and popular ERC20 tokens such as DAI, USDC, TETHER, WETH, and WBTC. It also supports multiple networks within the Ethereum ecosystem: Mainnet, Goerli, Arbitrum, Optimism, and Polygon."
         />
         <link rel="icon" href="../icon.svg" />
       </Head>
