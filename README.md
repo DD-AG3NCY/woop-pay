@@ -1,16 +1,14 @@
-# woop-pay
+# Woop Pay
 
-woop-pay is a web application to make web3 payment requests frictionless
-
+Woop Pay is a web application that simplifies cryptocurrency payment requests. You can connect your wallet to create a payment request and share it. Woop Pay supports native tokens ETHER and MATIC, and popular ERC20 tokens such as DAI, USDC, TETHER, WETH, and WBTC. It also supports multiple networks within the Ethereum ecosystem: Mainnet, Goerli, Arbitrum, Optimism, and Polygon.
 
 ### Libraries
 
-- NextJs 
+- NextJs
 - Wagmi
 - Rainbow Kit
 - Tailwind CSS
 - ipfs-http
-- Next-qr-code
 - Next-share
 
 ### Setup
@@ -26,6 +24,10 @@ add environment variable
 ```text
 NEXT_PUBLIC_INFURA_PROJECT_ID={project_id}
 NEXT_PUBLIC_INFURA_SECRET={secret}
+NEXT_PUBLIC_ALCHEMY_ETHEREUM_MAINNET_API_KEY={key}
+NEXT_PUBLIC_ALCHEMY_POLYGON_MAINNET_API_KEY={key}
+NEXT_PUBLIC_ALCHEMY_OPTIMISM_MAINNET_API_KEY={key}
+NEXT_PUBLIC_ALCHEMY_ARBITRUM_MAINNET_API_KEY={key}
 ```
 
 3. Install dependencies
@@ -46,4 +48,4 @@ npm run dev
 
 Live deployment is made via Github / Vercel integration, as a vercel.app, from master branch.
 
-Open [woop-pay](https://woop-pay-alpha.vercel.app/)
+Open [Woop Pay](https://wooppay.xyz)

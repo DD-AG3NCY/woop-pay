@@ -217,10 +217,10 @@ export default function Payment(props: any) {
                   cx="12"
                   cy="12"
                   r="10"
-                  stroke-width="4"
+                  strokeWidth="4"
                   stroke="currentColor"
-                  stroke-dasharray="32"
-                  stroke-linecap="round"
+                  strokeDasharray="32"
+                  strokeLinecap="round"
                   fill="transparent"
                 />
               </svg>

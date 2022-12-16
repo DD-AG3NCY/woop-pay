@@ -17,8 +17,18 @@ const { chains, provider } = configureChains(
 
   [
     publicProvider(),
-    //this rpc backup will only work with mainnet
-    alchemyProvider({ apiKey: process.env.ALCHEMY_ID || "" }),
+    alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_MAINNET_API_KEY!,
+    }),
+    alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_MAINNET_API_KEY!,
+    }),
+    alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_OPTIMISM_MAINNET_API_KEY!,
+    }),
+    alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ARBITRUM_MAINNET_API_KEY!,
+    }),
   ]
 );
 
