@@ -73,7 +73,7 @@ List of token types supported: ETH, MATIC, WETH, WBTC, DAI, USDC, USDT
 
 List of network names supported: goerli, homestead, optimism, arbitrum, matic
 
-# Code example
+### Code example
 
 This is an example of a React component that allows to generate Woop Pay links programatically
 
