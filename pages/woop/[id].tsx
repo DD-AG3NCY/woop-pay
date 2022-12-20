@@ -302,7 +302,7 @@ const Request = () => {
                       >
                         {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
                       </a>
-                      {" requested you:"}
+                      {" requested:"}
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
                       {request?.value} {request?.tokenName}
@@ -329,12 +329,11 @@ const Request = () => {
                         {request?.value} {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2">
-                        {"Are on "}
                         <a
                           className="underline underline-offset-4"
                           href={`${setEtherscanBase(network, data?.hash)}`}
                         >
-                          their way
+                          sent
                         </a>
                         {" to "}
                         {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
@@ -359,7 +358,6 @@ const Request = () => {
                         {request?.value} {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2">
-                        {"Are on "}
                         <a
                           className="underline underline-offset-4"
                           href={`${setEtherscanBase(
@@ -367,7 +365,7 @@ const Request = () => {
                             dataNative?.hash
                           )}`}
                         >
-                          their way
+                          sent
                         </a>
                         {" to "}
                         {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
@@ -397,7 +395,7 @@ const Request = () => {
                       >
                         {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
                       </a>
-                      {" requested you:"}
+                      {" requested:"}
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
                       {request?.value} {request?.tokenName}

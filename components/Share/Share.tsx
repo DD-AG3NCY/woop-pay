@@ -106,8 +106,8 @@ export const Share: React.FC<{
                 if (navigator.share) {
                   navigator
                     .share({
-                      title: "WOOP",
-                      text: `Hey, you've been requested to pay ${amount} ${token.label} with WOOP`,
+                      title: "Woop Pay",
+                      text: `Hey, can you please send me ${amount} ${token.label} via Woop Pay`,
                       url: `${baseUrl}${path}`,
                     })
                     .then(() => console.log("Successful share"))
@@ -140,7 +140,7 @@ export const Share: React.FC<{
               <div className="mr-2 flex items-center">
                 <WhatsappShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
+                  title={`Hey, can you please send me ${amount} ${token.label} via Woop Pay`}
                 >
                   <WhatsappIcon size={30} round />
                 </WhatsappShareButton>
@@ -148,7 +148,7 @@ export const Share: React.FC<{
               <div className="mr-2 flex items-center">
                 <TelegramShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
+                  title={`Hey, can you please send me ${amount} ${token.label} via Woop Pay`}
                 >
                   <TelegramIcon size={30} round />
                 </TelegramShareButton>
@@ -156,7 +156,7 @@ export const Share: React.FC<{
               <div className="flex items-center">
                 <TwitterShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, you've been requested to pay ${amount} ${token.label} with WOOP`}
+                  title={`Hey, can you please send me ${amount} ${token.label} via Woop Pay`}
                 >
                   <TwitterIcon size={30} round />
                 </TwitterShareButton>

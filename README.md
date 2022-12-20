@@ -45,7 +45,37 @@ npm run dev
 
 5. 📱 Open http://localhost:3000 to see the app
 
-### Production
+## Integrating with Woop Pay
+
+It is possible to integrate Woop Pay with your application by programatically generating an URL request. The URL will look like the follwing:
+
+```bash
+https://www.wooppay.xyz/create/params?from=0xd4218255175160583A7d7F4854Ab2Eef4F45B144&token=ETH&value=0.00005&network=homestead
+```
+
+The URL is made of several fields, that are all mandatory to create the request link:
+
+```bash
+URL slug (hardcoded) => https://www.wooppay.xyz/create/
+
+Object id (hardcoded) => params?
+
+Receiver (dynamic) => from={wallet address}
+
+Token (dynamic) => &token={token type}
+
+Amount (dynamic) => &value={amount requested}
+
+Network (dynamic) => &network={network name}
+```
+
+List of token types supported: ETH, MATIC, WETH, WBTC, DAI, USDC, USDT
+
+List of network names supported: goerli, homestead, optimism, arbitrum, matic
+
+In case of questions about the integration, please send a message to alessandro@wooppay.xyz
+
+## Production
 
 Live deployment is made via Github / Vercel integration from master branch.
 
