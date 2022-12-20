@@ -73,7 +73,92 @@ List of token types supported: ETH, MATIC, WETH, WBTC, DAI, USDC, USDT
 
 List of network names supported: goerli, homestead, optimism, arbitrum, matic
 
-In case of questions about the integration, please send a message to alessandro@wooppay.xyz
+# Code example
+
+This is an example of a React component that allows to generate Woop Pay links programatically
+
+```bash
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+
+function PaymentLinkGenerator() {
+  const [walletAddress, setWalletAddress] = useState('')
+  const [tokenType, setTokenType] = useState('')
+  const [amount, setAmount] = useState('')
+  const [networkName, setNetworkName] = useState('')
+  const [paymentLink, setPaymentLink] = useState('')
+  const router = useRouter()
+  const baseUrl = 'https://www.wooppay.xyz/create/'
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target
+    if (name === 'walletAddress') {
+      setWalletAddress(value)
+    } else if (name === 'tokenType') {
+      setTokenType(value)
+    } else if (name === 'amount') {
+      setAmount(value)
+    } else if (name === 'networkName') {
+      setNetworkName(value)
+    }
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const queryParams = {
+      from: walletAddress,
+      token: tokenType,
+      value: amount,
+      network: networkName
+    }
+    const paymentLink = `${baseUrl}params?${new URLSearchParams(queryParams)}`
+    setPaymentLink(paymentLink)
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor='walletAddress'>Wallet Address:</label>
+      <input
+        type='text'
+        name='walletAddress'
+        value={walletAddress}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor='tokenType'>Token Type:</label>
+      <input
+        type='text'
+        name='tokenType'
+        value={tokenType}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor='amount'>Amount:</label>
+      <input
+        type='text'
+        name='amount'
+        value={amount}
+        onChange={handleInputChange}
+      />
+      <br />
+      <label htmlFor='networkName'>Network Name:</label>
+      <input
+        type='text'
+        name='networkName'
+        value={networkName}
+        onChange={handleInputChange}
+      />
+      <br />
+      <button type='submit'>Generate Payment Link</button>
+      {paymentLink && (
+        <a href={paymentLink}>Make Payment</a>
+      )}
+    </form>
+  )
+}
+```
+
+This feature is still in beta mode. Play carefully and always double-check the receiver of the transaction. In case of questions about the integration, please send a message to alessandro@wooppay.xyz
 
 ## Production
 
