@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 import Head from "next/head";
 
 function buildMetaTitle(title: string) {
@@ -27,41 +27,34 @@ const SEO: React.FC<SEO_Props> = (props) => {
 
   const twitterHandler = "@woop_pay";
 
-  useEffect(() => {
-    console.log(rrssImg);
-    return () => {};
-  }, []);
-
   return (
-    <>
-      <Head>
-        <html lang="en" />
-        {props.children}
-        <link rel="icon" href="./icon.svg" />
-        {title && buildMetaTitle(title)}
-        {description && buildMetaDescription(description)}
-        <link rel="canonical" href={url} />
-        <link rel="icon" href="./icon.svg" />
-        {/* FACEBOOK */}
+    <Head>
+      {/* <html lang="en" /> */}
+      {props.children}
+      <link rel="icon" href="./icon.svg" />
+      {title && buildMetaTitle(title)}
+      {description && buildMetaDescription(description)}
+      <link rel="canonical" href={url} />
+      <link rel="icon" href="./icon.svg" />
+      {/* FACEBOOK */}
 
-        <meta property="og:url" content={url} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={rrssImg} />
-        {/*<meta property="og:image:width"              content="pixels" /> CHANGE AMMOUT*/}
-        {/*<meta property="og:image:height"              content="pixels" /> CHANGE AMMOUT*/}
-        {/*<meta property="og:image:type" content="image/jpeg | image/gif | image/png" /> CHANGE AMMOUT*/}
+      <meta property="og:url" content={url} />
+      <meta property="og:type" content="article" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={rrssImg} />
+      {/*<meta property="og:image:width"              content="pixels" /> CHANGE AMMOUT*/}
+      {/*<meta property="og:image:height"              content="pixels" /> CHANGE AMMOUT*/}
+      {/*<meta property="og:image:type" content="image/jpeg | image/gif | image/png" /> CHANGE AMMOUT*/}
 
-        {/*TWITTER*/}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={rrssImg} />
-        <meta name="twitter:site" content={url} />
-        <meta name="twitter:creator" content={twitterHandler} />
-      </Head>
-    </>
+      {/*TWITTER*/}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={rrssImg} />
+      <meta name="twitter:site" content={url} />
+      <meta name="twitter:creator" content={twitterHandler} />
+    </Head>
   );
 };
 

@@ -21,9 +21,9 @@ export default function Home() {
   return (
     <>
       <SEO
-        title={"Woop Pay | Create Cryptocurrency Payment Requests"}
+        title="Woop Pay | Create Cryptocurrency Payment Requests"
         description="Woop Pay is a web application that simplifies cryptocurrency payment requests. You can connect your wallet to create a payment request and share it. Woop Pay supports native tokens ETHER and MATIC, and popular ERC20 tokens such as DAI, USDC, TETHER, WETH, and WBTC. It also supports multiple networks within the Ethereum ecosystem: Mainnet, Goerli, Arbitrum, Optimism, and Polygon."
-        rrssImg={"./RRSS.png"}
+        rrssImg="./RRSS.png"
       />
 
       <Header />
@@ -32,12 +32,14 @@ export default function Home() {
         className={cx(
           styles.baseContainer,
           "h-screen w-full flex justify-center items-center"
-        )}>
+        )}
+      >
         <section
           className={cx(
             styles.containerBase,
             "h-screen w-full absolute top-0 z-0 opacity-50"
-          )}></section>
+          )}
+        ></section>
 
         <Container maxWidth="sm" className="w-full z-10">
           <Box
@@ -45,7 +47,8 @@ export default function Home() {
             className={cx(
               styles.containerBox,
               "p-2 rounded-3xl shadow-md w-full"
-            )}>
+            )}
+          >
             <Payment />
           </Box>
         </Container>
