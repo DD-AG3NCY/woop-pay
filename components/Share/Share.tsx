@@ -1,5 +1,4 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
 import {
   WhatsappShareButton,
   WhatsappIcon,
@@ -8,16 +7,12 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from "next-share";
-import { useQRCode } from "next-qrcode";
 import { baseUrl } from "../../utils/constants";
 import { useEffect, useRef, useState } from "react";
 
 import cx from "classnames";
-import Image from "next/image";
-import shareImg from "../public/share.svg";
 import styles from "./share.module.scss";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
-import dynamic from "next/dynamic";
 
 export const Share: React.FC<{
   path: string;
