@@ -32,6 +32,7 @@ import styles from "./woop.module.scss";
 import cx from "classnames";
 import Link from "next/link";
 import ErrorsUi from "../../components/ErrorsUi/ErrorsUi";
+import SEO from "../../components/Seo";
 
 interface Request {
   version: string;
@@ -195,22 +196,21 @@ const Request = () => {
 
   return (
     <div>
-      <Head>
-        <title>
-          {"You've been requested a Woop of "} {request?.value}{" "}
-          {request?.tokenName}
-        </title>
-        <meta
-          name="description"
-          content={
-            request?.from.slice(0, 4) +
-            "..." +
-            request?.from.slice(-4) +
-            " requested you to send a payment through Woop Pay"
-          }
-        />
-        <link rel="icon" href="../icon.svg" />
-      </Head>
+      <SEO
+        title={
+          "You've been requested a Woop of " +
+          request?.value +
+          " " +
+          request?.tokenName
+        }
+        rrssImg={"./RRSS.png"}
+        description={
+          request?.from.slice(0, 4) +
+          "..." +
+          request?.from.slice(-4) +
+          " requested you to send a payment through Woop Pay"
+        }
+      />
 
       <Header />
 
