@@ -13,6 +13,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import Script from "next/script";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { pageview } from "../utils/ga";
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.goerli, chain.optimism, chain.arbitrum, chain.polygon],
@@ -50,6 +53,7 @@ const wagmiClient = createClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const router = useRouter();
 
   const theme = React.useMemo(
     () =>
@@ -60,6 +64,16 @@ export default function App({ Component, pageProps }: AppProps) {
       }),
     [prefersDarkMode]
   );
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      pageview(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <>
