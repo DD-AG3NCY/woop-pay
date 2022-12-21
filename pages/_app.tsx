@@ -12,6 +12,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
+import Script from "next/script";
+
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.goerli, chain.optimism, chain.arbitrum, chain.polygon],
 
@@ -60,14 +62,34 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 
   return (
-    <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider modalSize="compact" chains={chains}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline>
-            <Component {...pageProps} />
-          </CssBaseline>
-        </ThemeProvider>
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <>
+      <Script
+        id="ga-script"
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-2TY295GGG4`}
+      />
+      <Script
+        id="ga-script-2"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-2TY295GGG4');
+          `,
+        }}
+      />
+      <WagmiConfig client={wagmiClient}>
+        <RainbowKitProvider modalSize="compact" chains={chains}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline>
+              <Component {...pageProps} />
+            </CssBaseline>
+          </ThemeProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </>
   );
 }
