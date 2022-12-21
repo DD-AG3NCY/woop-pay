@@ -1,6 +1,5 @@
 import * as React from "react";
 import Image from "next/image";
-import Head from "next/head";
 import { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
@@ -36,6 +35,7 @@ import styles from "./create.module.scss";
 import cx from "classnames";
 import Link from "next/link";
 import ErrorsUi from "../../components/ErrorsUi/ErrorsUi";
+import SEO from "../../components/Seo";
 
 interface Request {
   from: any;
@@ -228,14 +228,11 @@ const Request = () => {
 
   return (
     <div>
-      <Head>
-        <title>Woop Pay | Create Cryptocurrency Payment Requests</title>
-        <meta
-          name="description"
-          content="Woop Pay is a web application that simplifies cryptocurrency payment requests. You can connect your wallet to create a payment request and share it. Woop Pay supports native tokens ETHER and MATIC, and popular ERC20 tokens such as DAI, USDC, TETHER, WETH, and WBTC. It also supports multiple networks within the Ethereum ecosystem: Mainnet, Goerli, Arbitrum, Optimism, and Polygon."
-        />
-        <link rel="icon" href="../icon.svg" />
-      </Head>
+      <SEO
+        title={"You've been requested a Woop"}
+        rrssImg={"./RRSS.png"}
+        description={"Link request to send a payment through Woop Pay"}
+      />
 
       <Header />
 
