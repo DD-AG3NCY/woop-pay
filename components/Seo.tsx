@@ -25,7 +25,7 @@ const SEO: React.FC<SEO_Props> = (props) => {
 
   let url = "https://www.wooppay.xyz/";
 
-  const twitterHandler = "";
+  const twitterHandler = "@woop_pay";
 
   useEffect(() => {
     console.log(rrssImg);
