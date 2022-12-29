@@ -34,7 +34,7 @@ export const Share: React.FC<{
       const qrCodeBuild = new QRCodeStyling({
         width: 357,
         height: 357,
-        image: "/O.svg",
+        image: "icon.svg",
         dotsOptions: {
           gradient: {
             type: "linear",
@@ -48,7 +48,7 @@ export const Share: React.FC<{
         },
         imageOptions: {
           crossOrigin: "anonymous",
-          margin: 15,
+          margin: 10,
         },
         backgroundOptions: {
           color: "transparent",
