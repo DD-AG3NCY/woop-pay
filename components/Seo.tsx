@@ -31,11 +31,10 @@ const SEO: React.FC<SEO_Props> = (props) => {
     <Head>
       {/* <html lang="en" /> */}
       {props.children}
-      <link rel="icon" href="./icon.svg" />
+      <link rel="icon" href="../icon.svg" />
       {title && buildMetaTitle(title)}
       {description && buildMetaDescription(description)}
       <link rel="canonical" href={url} />
-      <link rel="icon" href="./icon.svg" />
       {/* FACEBOOK */}
 
       <meta property="og:url" content={url} />

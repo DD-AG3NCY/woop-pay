@@ -165,13 +165,17 @@ const Request = () => {
     } else {
       if (isNativeTx) {
         if (!sendTransaction) {
-          setWoopBadRequest("Payment not possible due to insufficient funds");
+          setWoopBadRequest(
+            `Payment not possible due to insufficient ${request?.tokenName} balance`
+          );
         } else {
           setWoopBadRequest("");
         }
       } else {
         if (!write) {
-          setWoopBadRequest("Payment not possible due to insufficient funds");
+          setWoopBadRequest(
+            `Payment not possible due to insufficient ${request?.tokenName} balance`
+          );
         } else {
           setWoopBadRequest("");
         }
@@ -229,9 +233,9 @@ const Request = () => {
   return (
     <div>
       <SEO
-        title={"You've been requested a Woop"}
-        rrssImg={"./RRSS.png"}
-        description={"Link request to send a payment through Woop Pay"}
+        title={"Woop Pay | Payment Request"}
+        rrssImg="./RRSS.png"
+        description={"You've been requested to send a payment through Woop Pay"}
       />
 
       <Header />
