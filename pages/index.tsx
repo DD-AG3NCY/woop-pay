@@ -1,5 +1,4 @@
 import * as React from "react";
-import Head from "next/head";
 import Footer from "../components/Footer";
 import Payment from "../components/Payment/Payment";
 import Header from "../components/Heading";
