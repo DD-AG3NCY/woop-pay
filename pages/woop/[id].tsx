@@ -95,6 +95,38 @@ const Request = () => {
     }
   };
 
+  const callIpfsForNetwork: any = async () => {
+    try {
+      const response = await fetch(
+        `https://web3-pay.infura-ipfs.io/ipfs/${id}`
+      );
+
+      if (!response.ok) throw new Error(response.statusText);
+
+      const json = await response.json();
+      const result = {
+        network: json.network,
+        networkName: json.networkName,
+      };
+      return result;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const checkAndUpdateNetwork = (result: any) => {
+    if (result?.network != chain?.network) {
+      setWrongNetwork(true);
+      setWoopBadNetwork(
+        `Wrong network. Please connect to ${result?.networkName}`
+      );
+    } else {
+      setWrongNetwork(false);
+      setWoopBadNetwork("");
+    }
+    setNetwork(result?.network);
+  };
+
   // wagmi erc20 transaction
   const { config } = usePrepareContractWrite({
     address: request?.tokenAddress,
@@ -153,17 +185,7 @@ const Request = () => {
   React.useEffect(() => {
     if (id) {
       callIpfs();
-    }
-  }, [id]);
-
-  React.useEffect(() => {
-    if (network) {
-      setWrongNetwork(false);
-      setWoopBadNetwork("");
-      if (network != chain?.network) {
-        setWrongNetwork(true);
-        setWoopBadNetwork(`Wrong network. Please connect to ${networkName}`);
-      }
+      callIpfsForNetwork().then((result: any) => checkAndUpdateNetwork(result));
     }
   }, [chain, id]);
 
@@ -238,9 +260,14 @@ const Request = () => {
 
         {/* CONTENT */}
         <Container maxWidth="xs" className="z-10">
-          <div className={"mb-2"}>
-            <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
-          </div>
+          {!badRequest ? (
+            <div className={"mb-2"}>
+              <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
+            </div>
+          ) : (
+            <></>
+          )}
+
           <Box
             component="form"
             className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}
@@ -276,9 +303,7 @@ const Request = () => {
               {badRequest ? (
                 <>
                   <div className="px-4 pb-4 pt-1">
-                    <div className="mt-3 md:text-2xl text-xl text-center w-full font-bold my-6">
-                      Check the link 🙏
-                    </div>
+                    <div className="mt-6"></div>
                     <Link href="/">
                       <button
                         className={cx(
