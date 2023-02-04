@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.10.14",
+    "@pushprotocol/restapi": "^0.3.2",
     "@rainbow-me/rainbowkit": "^0.8.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",

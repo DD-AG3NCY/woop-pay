@@ -22,6 +22,7 @@ import {
   setEtherscanAddress,
   tokensDetails,
 } from "../../utils/constants";
+import {sendNotification} from "../../utils/push"
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
@@ -196,6 +197,13 @@ const Request = () => {
       setIsConnected(false);
     }
   }, [connected]);
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      console.log("sending");
+      sendNotification();
+    }
+  }, [isSuccess])
 
   const colors = [
     "rgba(16, 130, 178, 1)",
