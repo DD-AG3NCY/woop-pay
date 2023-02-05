@@ -199,12 +199,13 @@ const Request = () => {
   }, [connected]);
 
   React.useEffect(() => {
-    if (isSuccess) {
-      console.log("sending");
-      if(request) {
-      sendNotification(recipient, id, request)};
+    if (isSuccess || isSuccessNative) {
+      console.log("sending notification");
+      if (request) {
+        sendNotification(recipient, id, request);
+      }
     }
-  }, [isSuccess])
+  }, [isSuccess, isSuccessNative]);
 
   const colors = [
     "rgba(16, 130, 178, 1)",
