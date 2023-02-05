@@ -75,7 +75,7 @@ export default function Payment(props: any) {
         setIsShareActive(true);
       } catch (error) {
         console.error(error);
-        setBadRequest("Something happened, check your conection");
+        setBadRequest("Oops! Something went wrong. Please try again later.");
         setIpfsLoading(false);
       }
     }

@@ -201,7 +201,8 @@ const Request = () => {
   React.useEffect(() => {
     if (isSuccess) {
       console.log("sending");
-      sendNotification();
+      if(request) {
+      sendNotification(recipient, id, request)};
     }
   }, [isSuccess])
 
