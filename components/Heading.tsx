@@ -2,6 +2,7 @@ import Image from "next/image";
 import logo from "../public/logo.svg";
 import Wallet from "./Wallet";
 import styles from "./Wallet.module.scss";
+import Notification from "./Notification/Notification";
 import cx from "classnames";
 
 import React, { useEffect } from "react";
@@ -33,10 +34,14 @@ const Header: React.FC<IHeaderProps> = (props) => {
               "font-base text-xs text-white mt-2 ml-1 opacity-60"
             )}
           >
-            Web 3 payments made easy
+            Web 3 payments made simple
           </p>
         </div>
       </Link>
+
+      <div>
+        <Notification />
+      </div>
 
       <div className="md:block">
         <Wallet />

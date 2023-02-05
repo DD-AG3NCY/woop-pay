@@ -45,3 +45,16 @@ export const sendNotification = async (recipient: string, id: any, request: Requ
     console.error('Error: ', err);
   }
 }
+
+export const retrieveNotifications = async (address: string | undefined) => {
+
+  const notifications = await PushAPI.user.getFeeds({
+    user: `eip155:5:${address}`, // user address in CAIP
+    env: 'staging'
+  });
+
+  console.log(notifications)
+
+  return notifications;
+
+}
