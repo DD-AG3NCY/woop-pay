@@ -6,7 +6,7 @@ import styles from "./notification.module.scss";
 export default function Notification() {
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const { address } = useAccount();
-  const [notifications, setNotifications] = React.useState([]);
+  const [notifications, setNotifications] = React.useState<any>([]);
 
   const retrieveData = async () => {
     const data = await retrieveNotifications(address);
@@ -32,7 +32,7 @@ export default function Notification() {
             </tr>
           </thead>
           <tbody>
-            {notifications.map((notification, index) => (
+            {notifications.map((notification: any, index: any) => (
               <tr key={index}>
                 <td>
                   {notification?.title}: {notification?.message}
