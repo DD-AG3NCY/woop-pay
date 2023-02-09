@@ -20,27 +20,33 @@ export default function Notification() {
   }, [showModal]);
 
   return (
-    <div>
-      <button type="button" onClick={() => setShowModal(true)}>
-        See Notifications
+    <div className={styles.notificationContainer}>
+      <button
+        type="button"
+        className={styles.notificationButton}
+        onClick={() => setShowModal(!showModal)}
+      >
+        Click
       </button>
       {showModal && (
-        <table className={styles.container}>
-          <thead>
-            <tr>
-              <th>Woop Pay Notifications</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notifications.map((notification: any, index: any) => (
-              <tr key={index}>
-                <td>
-                  {notification?.title}: {notification?.message}
-                </td>
+        <div className={styles.notificationModal}>
+          <table className={styles.notificationTable}>
+            <thead>
+              <tr>
+                <th>Woop Pay Notifications</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {notifications.map((notification: any, index: any) => (
+                <tr key={index} className={styles.notificationRow}>
+                  <td>
+                    {notification?.title}: {notification?.message}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

@@ -1,42 +1,33 @@
-$extraDark: #181820;
-$dark: #2b2c3b;
-$red: #ff7370;
-$green: #03cea4;
-$gray: #eceeef;
-$error: #f36;
-$text: #d6edff;
-$success: #81e979;
-$white: #ffffff;
+.notificationContainer {
+  position: relative;
+  display: inline-block;
+}
 
-$size-unit: 8px;
-$x1: $size-unit;
-$x2: $size-unit * 2;
-$x3: $size-unit * 3;
-$x4: $size-unit * 4;
-$x5: $size-unit * 5;
-$x6: $size-unit * 6;
-$x8: $size-unit * 8;
+.notificationButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
 
-$space-nano: $size-unit;
-$space-normal: $size-unit * 2;
-$space-large: $size-unit * 3;
-$space-mega: $size-unit * 4;
-$space-huge: $size-unit * 8;
-$space-super: $size-unit * 16;
+.notificationModal {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: rgb(35, 74, 182);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  min-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
 
-$phone: 640px;
-$tablet: 768px;
-$small: 900px;
-$desktop: 1200px;
+.notificationTable {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-.container {
-  min-width: $small;
-  max-width: $small;
-  margin: $space-large auto;
-  display: flex;
-  padding: $space-mega;
-  background-color: $dark;
-  border-radius: $x4;
-  flex: 1;
-  flex-direction: column;
+.notificationRow {
+  border-bottom: 1px solid lightgray;
+  padding: 10px 0;
 }
