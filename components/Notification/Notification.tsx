@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { retrieveNotifications } from "../../utils/push";
 import { useAccount } from "wagmi";
 import styles from "./notification.module.scss";
@@ -26,7 +27,12 @@ export default function Notification() {
         className={styles.notificationButton}
         onClick={() => setShowModal(!showModal)}
       >
-        Click
+        <Image
+          alt="Notification"
+          src="/notification-bell.svg"
+          width={30}
+          height={30}
+        />
       </button>
       {showModal && (
         <div className={styles.notificationModal}>
