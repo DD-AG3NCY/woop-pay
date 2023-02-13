@@ -1,13 +1,20 @@
 import * as React from "react";
 import Image from "next/image";
-import { retrieveNotifications } from "../../utils/push";
-import { useAccount } from "wagmi";
+import {
+  retrieveNotifications,
+  retrieveSubscriptions,
+  optIn,
+  optOut,
+} from "../../utils/push";
+import { useAccount, useSigner } from "wagmi";
 import { pushUrl } from "../../utils/constants";
 import styles from "./notification.module.scss";
 
 export default function Notification() {
   const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
   const { address } = useAccount();
+  const { data: signer } = useSigner();
   const [notifications, setNotifications] = React.useState<any>([]);
 
   const retrieveData = async () => {
@@ -15,11 +22,36 @@ export default function Notification() {
     setNotifications(data);
   };
 
+  const retrieveIsSubscribed = async () => {
+    const subs = await retrieveSubscriptions(address);
+    setIsSubscribed(subs);
+  };
+
+  const activateNotifications = async () => {
+    const res: any = await optIn(address, signer);
+    if (res) {
+      setIsSubscribed(true);
+    }
+  };
+
+  const disableNotifications = async () => {
+    const res: any = await optOut(address, signer);
+    if (res) {
+      setIsSubscribed(false);
+    }
+  };
+
   React.useEffect(() => {
     if (showModal) {
       retrieveData();
     }
   }, [showModal]);
+
+  React.useEffect(() => {
+    if (address) {
+      retrieveIsSubscribed();
+    }
+  }, [address]);
 
   return (
     <div className={styles.notificationContainer}>
@@ -54,9 +86,23 @@ export default function Notification() {
             {"More notifications?"} <a href={pushUrl}>Check here</a>
           </div>
           <div>
-            <button type="button" className={styles.notificationOptButton}>
-              Opt-in
-            </button>
+            {isSubscribed ? (
+              <button
+                type="button"
+                className={styles.notificationOptButton}
+                onClick={() => disableNotifications()}
+              >
+                Disable Notifications
+              </button>
+            ) : (
+              <button
+                type="button"
+                className={styles.notificationOptButton}
+                onClick={() => activateNotifications()}
+              >
+                Enable Notifications
+              </button>
+            )}
           </div>
         </div>
       )}
