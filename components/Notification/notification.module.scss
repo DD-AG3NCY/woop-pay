@@ -1,10 +1,11 @@
 .notificationContainer {
   position: relative;
   display: inline-block;
+  margin: 5px;
 }
 
 .notificationButton {
-  background-color: transparent;
+  background-color: white;
   border: none;
   cursor: pointer;
   outline: none;
@@ -13,12 +14,12 @@
 .notificationModal {
   position: absolute;
   top: 40px;
-  right: 0;
+  right: 5px;
   background-color: rgb(35, 74, 182);
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 20px;
-  min-width: 300px;
-  max-height: 400px;
+  min-width: 100px;
+  max-height: 150px;
   overflow-y: auto;
 }
 

@@ -4,8 +4,9 @@ import Wallet from "./Wallet";
 import styles from "./Wallet.module.scss";
 import Notification from "./Notification/Notification";
 import cx from "classnames";
+import { useAccount } from "wagmi";
 
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 type IHeaderProps = {};
@@ -13,9 +14,15 @@ type IHeaderProps = {};
 const defaultProps = {};
 
 const Header: React.FC<IHeaderProps> = (props) => {
-  const {} = props;
+  const { address } = useAccount();
+  const [showNotification, setShowNotification] =
+    React.useState<boolean>(false);
 
-  useEffect(() => {}, []);
+  React.useEffect(() => {
+    if (address) {
+      setShowNotification(true);
+    }
+  }, [address]);
 
   return (
     <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-10">
@@ -39,11 +46,8 @@ const Header: React.FC<IHeaderProps> = (props) => {
         </div>
       </Link>
 
-      <div>
-        <Notification />
-      </div>
-
-      <div className="md:block">
+      <div className="flex">
+        {showNotification ? <Notification /> : <></>}
         <Wallet />
       </div>
     </div>

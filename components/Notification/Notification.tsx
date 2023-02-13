@@ -37,17 +37,10 @@ export default function Notification() {
       {showModal && (
         <div className={styles.notificationModal}>
           <table className={styles.notificationTable}>
-            <thead>
-              <tr>
-                <th>Woop Pay Notifications</th>
-              </tr>
-            </thead>
             <tbody>
               {notifications.map((notification: any, index: any) => (
                 <tr key={index} className={styles.notificationRow}>
-                  <td>
-                    {notification?.title}: {notification?.message}
-                  </td>
+                  <td>{notification?.message}</td>
                 </tr>
               ))}
             </tbody>

@@ -28,12 +28,12 @@ export const sendNotification = async (
       type: 3, // target
       identityType: 2, // direct payload
       notification: {
-        title: `Woop Payment Received at ${date} ${time} (UTC)`,
-        body: `Payment Received`,
+        title: `Woop Payment Received`,
+        body: `Woop Payment Received`,
       },
       payload: {
-        title: `Woop Payment Received at ${date} ${time} (UTC)`,
-        body: `Good news! ${recipient} has come through and paid ${request.value} ${request.tokenName} you requested using this link https://www.wooppay.xyz/woop/${id}. Thanks for using our platform.`,
+        title: `Woop Payment Received`,
+        body: `${date} ${time} (UTC): ${recipient} paid ${request.value} ${request.tokenName}. Thanks for using Woop Pay.`,
         cta: "",
         img: "",
       },
