@@ -6,7 +6,7 @@ import Notification from "./Notification/Notification";
 import cx from "classnames";
 import { useAccount } from "wagmi";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 
 type IHeaderProps = {};
@@ -21,6 +21,8 @@ const Header: React.FC<IHeaderProps> = (props) => {
   React.useEffect(() => {
     if (address) {
       setShowNotification(true);
+    } else {
+      setShowNotification(false);
     }
   }, [address]);
 
@@ -47,7 +49,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
       </Link>
 
       <div className="flex">
-        {showNotification ? <Notification /> : <></>}
+        {showNotification && <Notification />}
         <Wallet />
       </div>
     </div>

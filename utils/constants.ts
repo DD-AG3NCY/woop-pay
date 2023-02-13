@@ -129,6 +129,8 @@ export const setEtherscanAddress = (
 
 export const baseUrl: string = "https://wooppay.xyz/woop/";
 
+export const pushUrl: string = "https://staging.push.org/#/channels";
+
 export const networks: any = [
   "goerli",
   "homestead",

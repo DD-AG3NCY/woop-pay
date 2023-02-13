@@ -1,7 +1,8 @@
 .notificationContainer {
   position: relative;
   display: inline-block;
-  margin: 5px;
+  margin-top: 2px;
+  margin-right: 10px;
 }
 
 .notificationButton {
@@ -9,6 +10,7 @@
   border: none;
   cursor: pointer;
   outline: none;
+  border-radius: 10px;
 }
 
 .notificationModal {
@@ -16,11 +18,11 @@
   top: 40px;
   right: 5px;
   background-color: rgb(35, 74, 182);
+  border-radius: 20px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 20px;
   min-width: 100px;
-  max-height: 150px;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .notificationTable {
@@ -31,4 +33,12 @@
 .notificationRow {
   border-bottom: 1px solid lightgray;
   padding: 10px 0;
+}
+
+.notificationOptButton {
+  background-color: rgb(185, 22, 164);
+  border: none;
+  cursor: pointer;
+  outline: none;
+  border-radius: 10px;
 }
