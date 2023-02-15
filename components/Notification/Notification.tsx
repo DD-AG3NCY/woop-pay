@@ -70,12 +70,15 @@ export default function Notification() {
       {showModal && (
         <div className={styles.notificationModal}>
           <table className={styles.notificationTable}>
+            <thead className="font-medium font-base text-sm text-black">
+              Latest transactions
+            </thead>
             <tbody>
               {notifications
                 .slice(0, 3)
                 .map((notification: any, index: any) => (
                   <tr key={index} className={styles.notificationRow}>
-                    <td className="font-medium font-base text-sm text-white">
+                    <td className="font-medium font-base text-sm text-black">
                       {notification?.message}
                     </td>
                   </tr>
@@ -85,7 +88,7 @@ export default function Notification() {
           <div className="font-medium font-base text-sm text-white mt-2 text-center">
             {"More notifications?"} <a href={pushUrl}>Check here</a>
           </div>
-          <div>
+          <div className="text-center mt-2">
             {isSubscribed ? (
               <button
                 type="button"

@@ -34,7 +34,12 @@ export const sendNotification = async (
       },
       payload: {
         title: `Woop Payment Received`,
-        body: `${date} ${time} (UTC): ${recipient} paid ${request.value} ${request.tokenName}. Thanks for using Woop Pay.`,
+        body: `${date} ${time} (UTC): ${recipient.slice(
+          0,
+          4
+        )}...${recipient.slice(-4)} paid ${request.value} ${
+          request.tokenName
+        }. Thanks for using Woop Pay`,
         cta: "",
         img: "",
       },
