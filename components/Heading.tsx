@@ -41,16 +41,15 @@ const Header: React.FC<IHeaderProps> = (props) => {
             className={cx(
               styles.image,
               "font-base text-xs text-white mt-2 ml-1 opacity-60"
-            )}
-          >
+            )}>
             Web 3 payments made simple
           </p>
         </div>
       </Link>
 
       <div className="flex">
-        {showNotification && <Notification />}
         <Wallet />
+        {showNotification && <Notification />}
       </div>
     </div>
   );

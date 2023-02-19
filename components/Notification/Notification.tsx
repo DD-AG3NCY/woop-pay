@@ -9,6 +9,7 @@ import {
 import { useAccount, useSigner } from "wagmi";
 import { pushUrl } from "../../utils/constants";
 import styles from "./notification.module.scss";
+import cx from "classnames";
 
 export default function Notification() {
   const [showModal, setShowModal] = React.useState<boolean>(false);
@@ -19,6 +20,7 @@ export default function Notification() {
 
   const retrieveData = async () => {
     const data = await retrieveNotifications(address);
+    console.log(data);
     setNotifications(data);
   };
 
@@ -57,56 +59,56 @@ export default function Notification() {
     <div className={styles.notificationContainer}>
       <button
         type="button"
-        className={styles.notificationButton}
-        onClick={() => setShowModal(!showModal)}
-      >
+        className={cx(
+          styles.notificationButton,
+          "flex items-center justify-center shadow-lg"
+        )}
+        onClick={() => setShowModal(!showModal)}>
         <Image
           alt="Notification"
           src="/notification-bell.svg"
-          width={35}
-          height={40}
+          width={20}
+          height={20}
         />
       </button>
       {showModal && (
         <div className={styles.notificationModal}>
-          <table className={styles.notificationTable}>
-            <thead className="font-medium font-base text-sm text-black">
-              Latest transactions
-            </thead>
-            <tbody>
+          <div className={styles.notificationTable}>
+            <div className="font-semibold font-base text-lg text-slate-600 mb-5">
+              Your woops
+            </div>
+            <div>
               {notifications
                 .slice(0, 3)
                 .map((notification: any, index: any) => (
-                  <tr key={index} className={styles.notificationRow}>
-                    <td className="font-medium font-base text-sm text-black">
-                      {notification?.message}
-                    </td>
-                  </tr>
+                  <div
+                    key={index}
+                    className="font-base text-sm text-slate-700 pt-2">
+                    · {notification?.message}
+                  </div>
                 ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
           <div className="font-medium font-base text-sm text-white mt-2 text-center">
             {"More notifications?"} <a href={pushUrl}>Check here</a>
           </div>
-          <div className="text-center mt-2">
+          {/*           <div className="text-center mt-2">
             {isSubscribed ? (
               <button
                 type="button"
                 className={styles.notificationOptButton}
-                onClick={() => disableNotifications()}
-              >
+                onClick={() => disableNotifications()}>
                 Disable Notifications
               </button>
             ) : (
               <button
                 type="button"
                 className={styles.notificationOptButton}
-                onClick={() => activateNotifications()}
-              >
+                onClick={() => activateNotifications()}>
                 Enable Notifications
               </button>
             )}
-          </div>
+          </div> */}
         </div>
       )}
     </div>
