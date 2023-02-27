@@ -48,6 +48,7 @@ export default function Notification() {
 
   React.useEffect(() => {
     if (showModal) {
+      retrieveIsSubscribed();
       retrieveData();
     }
   }, [showModal]);
