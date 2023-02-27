@@ -10,6 +10,9 @@ import { useAccount, useSigner } from "wagmi";
 import { pushUrl } from "../../utils/constants";
 import styles from "./notification.module.scss";
 import cx from "classnames";
+import bellCrossedIcon from "../../public/bell-close.svg";
+import bellIcon from "../../public/bell-open.svg";
+import Link from "next/link";
 
 export default function Notification() {
   const [showModal, setShowModal] = React.useState<boolean>(false);
@@ -20,7 +23,7 @@ export default function Notification() {
 
   const retrieveData = async () => {
     const data = await retrieveNotifications(address);
-    console.log(data);
+    console.log("Notifications => ", data);
     setNotifications(data);
   };
 
@@ -56,7 +59,7 @@ export default function Notification() {
   }, [address]);
 
   return (
-    <div className={styles.notificationContainer}>
+    <div className={cx(styles.notificationContainer, "z-30")}>
       <button
         type="button"
         className={cx(
@@ -72,43 +75,61 @@ export default function Notification() {
         />
       </button>
       {showModal && (
-        <div className={styles.notificationModal}>
+        <div className={cx(styles.notificationModal, "shadow rounded-3xl")}>
           <div className={styles.notificationTable}>
-            <div className="font-semibold font-base text-lg text-slate-600 mb-5">
-              Your woops
+            <div className="font-bold text-slate-500 border-b-2 border-slate-300 py-4 px-4 font-base text-xl mb-5 flex justify-between items-center">
+              <p className="pl-2">Received Woops</p>
+              <div className="text-center">
+                {isSubscribed ? (
+                  <button
+                    type="button"
+                    className={
+                      "p-2 border-slate-500 border hover:bg-slate-100 bg-white cursor:pointer rounded-xl transi"
+                    }
+                    onClick={() => disableNotifications()}>
+                    <Image
+                      src={bellCrossedIcon}
+                      width={20}
+                      height={20}
+                      alt="bell-close"
+                    />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={cx(
+                      styles.notificationOptButton,
+                      "transition-colors"
+                    )}
+                    onClick={() => activateNotifications()}>
+                    <Image src={bellIcon} width={20} height={20} alt="bell" />
+                  </button>
+                )}
+              </div>
             </div>
-            <div>
+            <div className="px-6">
+              {/* TODO: Set page for notification listing */}
+              <Link
+                href="/notifications"
+                className="text-slate-600 text-sm underline mb-2">
+                {"See more (" + notifications.length + ")"}
+              </Link>
               {notifications
                 .slice(0, 3)
                 .map((notification: any, index: any) => (
-                  <div
+                  /* TODO: Set tx of woop */
+                  <Link
+                    href="https://etherescan.com/"
                     key={index}
-                    className="font-base text-sm text-slate-700 pt-2">
-                    · {notification?.message}
-                  </div>
+                    className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-100 mt-3">
+                    {notification?.message}
+                  </Link>
                 ))}
             </div>
           </div>
           <div className="font-medium font-base text-sm text-white mt-2 text-center">
             {"More notifications?"} <a href={pushUrl}>Check here</a>
           </div>
-          {/*           <div className="text-center mt-2">
-            {isSubscribed ? (
-              <button
-                type="button"
-                className={styles.notificationOptButton}
-                onClick={() => disableNotifications()}>
-                Disable Notifications
-              </button>
-            ) : (
-              <button
-                type="button"
-                className={styles.notificationOptButton}
-                onClick={() => activateNotifications()}>
-                Enable Notifications
-              </button>
-            )}
-          </div> */}
         </div>
       )}
     </div>

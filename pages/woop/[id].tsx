@@ -243,14 +243,12 @@ const Request = () => {
         className={cx(
           styles.baseContainer,
           "h-screen w-full flex justify-center items-center"
-        )}
-      >
+        )}>
         <section
           className={cx(
             styles.containerBase,
             "h-screen w-full absolute top-0 z-0 flex opacity-50 items-center"
-          )}
-        ></section>
+          )}></section>
 
         {isSuccess ? (
           <Confetti
@@ -269,9 +267,9 @@ const Request = () => {
         ) : null}
 
         {/* CONTENT */}
-        <Container maxWidth="xs" className="z-10">
+        <Container maxWidth="xs" className="">
           {!badRequest ? (
-            <div className={"mb-2"}>
+            <div className={"mb-2 z-20"}>
               <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
             </div>
           ) : (
@@ -280,25 +278,26 @@ const Request = () => {
 
           <Box
             component="form"
-            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}
-          >
+            className={cx(
+              styles.containerBox,
+              "rounded-3xl shadow-md w-full relative z-20"
+            )}>
             <section className="justify-items-left font-base text-white">
               <div
                 className={cx(
                   styles.topContainer,
                   "mb-2 pl-6 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
-                )}
-              >
+                )}>
                 <p className="font-base font-bold text-xl">
                   {badRequest
                     ? "No Woop to pay here"
                     : isNativeTx
                     ? isSuccessNative
                       ? "Woop sent!"
-                      : "You've received a Woop! "
+                      : "A Woop has been requested! "
                     : isSuccess
                     ? "Woop sent!"
-                    : "You've received a Woop! "}
+                    : "A Woop has been requested! "}
                 </p>
                 <p className="text-3xl ml-2">
                   {badRequest
@@ -318,8 +317,7 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
-                      >
+                        )}>
                         Go back
                       </button>
                     </Link>
@@ -334,8 +332,7 @@ const Request = () => {
                     <p className="text-xs text-slate-300 mb-2">
                       <a
                         className="underline underline-offset-4"
-                        href={`${setEtherscanAddress(network, request?.from)}`}
-                      >
+                        href={`${setEtherscanAddress(network, request?.from)}`}>
                         {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
                       </a>
                       {" requested:"}
@@ -351,8 +348,7 @@ const Request = () => {
                       className={cx(
                         "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                       )}
-                      onClick={openConnectModal}
-                    >
+                      onClick={openConnectModal}>
                       Connect Wallet
                     </button>
                   </div>
@@ -367,8 +363,7 @@ const Request = () => {
                       <p className="text-xs text-slate-300 mb-2">
                         <a
                           className="underline underline-offset-4"
-                          href={`${setEtherscanBase(network, data?.hash)}`}
-                        >
+                          href={`${setEtherscanBase(network, data?.hash)}`}>
                           sent
                         </a>
                         {" to "}
@@ -379,8 +374,7 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
-                      >
+                        )}>
                         Finish
                       </button>
                     </Link>
@@ -399,8 +393,7 @@ const Request = () => {
                           href={`${setEtherscanBase(
                             network,
                             dataNative?.hash
-                          )}`}
-                        >
+                          )}`}>
                           sent
                         </a>
                         {" to "}
@@ -411,8 +404,7 @@ const Request = () => {
                       <button
                         className={cx(
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
-                      >
+                        )}>
                         Finish
                       </button>
                     </Link>
@@ -427,8 +419,7 @@ const Request = () => {
                     <p className="text-xs text-slate-300 mb-2">
                       <a
                         className="underline underline-offset-4"
-                        href={`${setEtherscanAddress(network, request?.from)}`}
-                      >
+                        href={`${setEtherscanAddress(network, request?.from)}`}>
                         {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
                       </a>
                       {" requested:"}
@@ -451,14 +442,12 @@ const Request = () => {
                       }
                       onClick={
                         isNativeTx ? () => sendTransaction?.() : () => write?.()
-                      }
-                    >
+                      }>
                       {isNativeTx ? (
                         isLoadingNative ? (
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
+                            viewBox="0 0 24 24">
                             <circle
                               cx="12"
                               cy="12"
@@ -477,8 +466,7 @@ const Request = () => {
                         <>
                           <svg
                             className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
+                            viewBox="0 0 24 24">
                             <circle
                               cx="12"
                               cy="12"
