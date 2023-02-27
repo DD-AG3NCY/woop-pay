@@ -87,7 +87,10 @@ export default function Notification() {
                     className={
                       "p-2 border-slate-500 border hover:bg-slate-100 bg-white cursor:pointer rounded-xl transi"
                     }
-                    onClick={() => disableNotifications()}
+                    onClick={() => {
+                      disableNotifications();
+                      setShowModal(false);
+                    }}
                   >
                     <Image
                       src={bellCrossedIcon}
@@ -103,33 +106,42 @@ export default function Notification() {
                       styles.notificationOptButton,
                       "transition-colors"
                     )}
-                    onClick={() => activateNotifications()}
+                    onClick={() => {
+                      activateNotifications();
+                      setShowModal(false);
+                    }}
                   >
                     <Image src={bellIcon} width={20} height={20} alt="bell" />
                   </button>
                 )}
               </div>
             </div>
-            <div className="px-6">
-              {/* TODO: Set page for notification listing */}
-              <Link
-                href={pushUrl}
-                className="text-slate-600 text-sm underline mb-2"
-              >
-                {"See more (" + notifications.length + ")"}
-              </Link>
-              {notifications
-                .slice(0, 3)
-                .map((notification: any, index: any) => (
-                  <Link
-                    href={notification?.notification?.body}
-                    key={index}
-                    className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-100 mt-3 mb-3"
-                  >
-                    {notification?.message}
-                  </Link>
-                ))}
-            </div>
+            {isSubscribed ? (
+              <div className="px-6">
+                {/* TODO: Set page for notification listing */}
+                <Link
+                  href={pushUrl}
+                  className="text-slate-600 text-sm underline mb-2"
+                >
+                  {"See more"}
+                </Link>
+                {notifications
+                  .slice(0, 3)
+                  .map((notification: any, index: any) => (
+                    <Link
+                      href={notification?.notification?.body}
+                      key={index}
+                      className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-100 mt-3 mb-3"
+                    >
+                      {notification?.message}
+                    </Link>
+                  ))}
+              </div>
+            ) : (
+              <div className="px-6 text-slate-600 text-sm mb-3">
+                {"Notification disabled"}
+              </div>
+            )}
           </div>
         </div>
       )}
