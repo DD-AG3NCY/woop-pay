@@ -66,7 +66,8 @@ export default function Notification() {
           styles.notificationButton,
           "flex items-center justify-center shadow-lg"
         )}
-        onClick={() => setShowModal(!showModal)}>
+        onClick={() => setShowModal(!showModal)}
+      >
         <Image
           alt="Notification"
           src="/notification-bell.svg"
@@ -86,7 +87,8 @@ export default function Notification() {
                     className={
                       "p-2 border-slate-500 border hover:bg-slate-100 bg-white cursor:pointer rounded-xl transi"
                     }
-                    onClick={() => disableNotifications()}>
+                    onClick={() => disableNotifications()}
+                  >
                     <Image
                       src={bellCrossedIcon}
                       width={20}
@@ -101,7 +103,8 @@ export default function Notification() {
                       styles.notificationOptButton,
                       "transition-colors"
                     )}
-                    onClick={() => activateNotifications()}>
+                    onClick={() => activateNotifications()}
+                  >
                     <Image src={bellIcon} width={20} height={20} alt="bell" />
                   </button>
                 )}
@@ -110,25 +113,23 @@ export default function Notification() {
             <div className="px-6">
               {/* TODO: Set page for notification listing */}
               <Link
-                href="/notifications"
-                className="text-slate-600 text-sm underline mb-2">
+                href={pushUrl}
+                className="text-slate-600 text-sm underline mb-2"
+              >
                 {"See more (" + notifications.length + ")"}
               </Link>
               {notifications
                 .slice(0, 3)
                 .map((notification: any, index: any) => (
-                  /* TODO: Set tx of woop */
                   <Link
-                    href="https://etherescan.com/"
+                    href={notification?.notification?.body}
                     key={index}
-                    className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-100 mt-3">
+                    className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-100 mt-3 mb-3"
+                  >
                     {notification?.message}
                   </Link>
                 ))}
             </div>
-          </div>
-          <div className="font-medium font-base text-sm text-white mt-2 text-center">
-            {"More notifications?"} <a href={pushUrl}>Check here</a>
           </div>
         </div>
       )}

@@ -16,8 +16,9 @@ interface Request {
 
 export const sendNotification = async (
   recipient: string,
-  id: any,
-  request: Request
+  networkName: string,
+  request: Request,
+  etherscanLink: any
 ) => {
   try {
     const now = new Date();
@@ -30,7 +31,7 @@ export const sendNotification = async (
       identityType: 2, // direct payload
       notification: {
         title: `Woop Payment Received`,
-        body: `Woop Payment Received`,
+        body: `${etherscanLink}`,
       },
       payload: {
         title: `Woop Payment Received`,
@@ -39,7 +40,7 @@ export const sendNotification = async (
           4
         )}...${recipient.slice(-4)} paid ${request.value} ${
           request.tokenName
-        }. Thanks for using Woop Pay`,
+        } on network ${networkName}. Thanks for using Woop Pay`,
         cta: "",
         img: "",
       },

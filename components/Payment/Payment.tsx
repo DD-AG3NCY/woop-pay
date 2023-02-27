@@ -157,8 +157,8 @@ export default function Payment(props: any) {
           <ErrorsUi errorMsg={badRequest} errorNtk={""} />
         </div>
         <p className="font-medium font-base text-sm text-white mb-2 pl-2">
-          <span className="md:block hidden">Select the amount to receive:</span>
-          <span className="md:hidden">Receiving:</span>
+          <span className="md:block hidden">Select the amount to request:</span>
+          <span className="md:hidden">Requesting:</span>
         </p>
 
         <div className="relative">
