@@ -20,6 +20,7 @@ export default function Notification() {
   const { address } = useAccount();
   const { data: signer } = useSigner();
   const [notifications, setNotifications] = React.useState<any>([]);
+  const modalRef = React.useRef<HTMLDivElement>(null);
 
   const retrieveData = async () => {
     const data = await retrieveNotifications(address);
@@ -45,6 +46,23 @@ export default function Notification() {
       setIsSubscribed(false);
     }
   };
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setShowModal(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
 
   React.useEffect(() => {
     if (showModal) {
@@ -77,7 +95,10 @@ export default function Notification() {
         />
       </button>
       {showModal && (
-        <div className={cx(styles.notificationModal, "shadow rounded-3xl")}>
+        <div
+          ref={modalRef}
+          className={cx(styles.notificationModal, "shadow rounded-3xl")}
+        >
           <div className={styles.notificationTable}>
             <div className="font-bold text-slate-500 border-b-2 border-slate-300 py-4 px-4 font-base text-xl mb-5 flex justify-between items-center">
               <p className="pl-2">Received Woops</p>
