@@ -1,5 +1,6 @@
 import Image from "next/image";
 import logo from "../public/logo.svg";
+import logoMobile from "../public/icon.svg";
 import Wallet from "./Wallet";
 import styles from "./Wallet.module.scss";
 import Notification from "./Notification/Notification";
@@ -27,7 +28,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
   }, [address]);
 
   return (
-    <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-10">
+    <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-30">
       <Link href={"/"}>
         <div>
           <Image
@@ -35,12 +36,19 @@ const Header: React.FC<IHeaderProps> = (props) => {
             src={logo}
             width={260}
             height={120}
-            className={cx(styles.image)}
+            className={cx(styles.image, "hidden md:block")}
+          />
+          <Image
+            alt="woop-pay"
+            src={logoMobile}
+            width={40}
+            height={40}
+            className={cx("md:hidden")}
           />
           <p
             className={cx(
               styles.image,
-              "font-base text-xs text-white mt-2 ml-1 opacity-60"
+              "font-base hidden md:block text-xs text-white mt-2 ml-1 opacity-60"
             )}>
             Web 3 payments made simple
           </p>

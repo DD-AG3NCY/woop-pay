@@ -16,12 +16,12 @@
 
 .notificationModal {
   position: absolute;
-  border: 1px solid rgba(33, 35, 167, 0.5);
-  z-index: 100;
   top: 52px;
   right: 0px;
   background-color: white;
-  min-width: 340px;
+  width: calc(100vw - 60px);
+  max-width: 338px;
+  height: calc(100vh - 106px);
   overflow: auto;
 }
 
@@ -43,6 +43,5 @@
     background-color: rgb(236, 249, 254);
     box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.10);
   }
-  cursor: pointer;
   border-radius: 10px;
 }
