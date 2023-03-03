@@ -35,14 +35,12 @@ export default function Payment(props: any) {
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
   const [isConnected, setIsConnected] = React.useState<boolean>(false);
-  const { address } = useAccount();
+  const { isConnected: connected, address } = useAccount();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
 
   const [selectorVisibility, setSelectorVisibility] =
     React.useState<boolean>(false);
-
-  const { isConnected: connected } = useAccount();
   const [isShareActive, setIsShareActive] = useState<boolean>(false);
   const [badRequest, setBadRequest] = useState<any>("");
 
@@ -74,7 +72,7 @@ export default function Payment(props: any) {
         const { path } = await uploadIpfs(data).finally(() => {
           setIpfsLoading(false);
           event({
-            action: "Create Woop",
+            action: "create_woop",
             category: selectedToken.label,
             label: chain ? chain?.name : "",
             value: amount,
@@ -93,6 +91,12 @@ export default function Payment(props: any) {
   React.useEffect(() => {
     if (connected) {
       setIsConnected(true);
+      event({
+        action: "visit_woop_request",
+        category: "",
+        label: address ? address : "",
+        value: "",
+      });
     } else {
       setIsConnected(false);
     }
@@ -114,7 +118,8 @@ export default function Payment(props: any) {
         <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen z-30">
           <div
             onClick={() => setSelectorVisibility(!selectorVisibility)}
-            className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30"></div>
+            className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30"
+          ></div>
           <div className="z-20 bg-white rounded-xl shadow-xl py-2 px-2 md:w-80 w-full m-5">
             <p className="font-base font-semibold text-slate-700 pl-4 pb-3 pt-2 border-b mb-3">
               Select a token:
@@ -139,7 +144,8 @@ export default function Payment(props: any) {
                     sx={{
                       marginBottom: tokensDetails.length - 1 === i ? 0 : 1,
                     }}
-                    className="cursor-pointer hover:bg-slate-200 rounded-xl p-1">
+                    className="cursor-pointer hover:bg-slate-200 rounded-xl p-1"
+                  >
                     <div className="flex items-center">
                       <Image
                         alt={token.label}
@@ -178,7 +184,8 @@ export default function Payment(props: any) {
             type="number"
             step="0.000000"
             placeholder="0.00"
-            onChange={handleAmountChange}></input>
+            onChange={handleAmountChange}
+          ></input>
 
           <button
             type="button"
@@ -190,7 +197,8 @@ export default function Payment(props: any) {
               right: 25,
             }}
             className="bg-white shadow-md rounded-xl text-slate-900 hover:shadow-xl hover:bg-white"
-            onClick={() => setSelectorVisibility(!selectorVisibility)}>
+            onClick={() => setSelectorVisibility(!selectorVisibility)}
+          >
             <div className="flex items-center w-full ml-1">
               <Image
                 alt={selectedToken.label}
@@ -210,12 +218,14 @@ export default function Payment(props: any) {
           className={cx(
             "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
           )}
-          onClick={isConnected ? createRequest : openConnectModal}>
+          onClick={isConnected ? createRequest : openConnectModal}
+        >
           {ipfsLoading ? (
             <>
               <svg
                 className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                viewBox="0 0 24 24">
+                viewBox="0 0 24 24"
+              >
                 <circle
                   cx="12"
                   cy="12"
@@ -240,12 +250,14 @@ export default function Payment(props: any) {
         <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen z-30">
           <div
             onClick={() => setIsShareActive(!isShareActive)}
-            className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30"></div>
+            className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30"
+          ></div>
           <div
             className={cx(
               styles.shareBackground,
               "z-20 rounded-3xl shadow-xl py-2 px-2 md:w-96 w-full m-5"
-            )}>
+            )}
+          >
             <Share
               visibility={setIsShareActive}
               path={path}

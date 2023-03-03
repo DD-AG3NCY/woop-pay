@@ -22,6 +22,7 @@ import {
   setEtherscanAddress,
   tokensDetails,
 } from "../../utils/constants";
+import { event } from "../../utils/ga";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
@@ -56,7 +57,7 @@ const Request = () => {
   const [isConnected, setIsConnected] = React.useState<boolean>(false);
   const router = useRouter();
   const { id } = router.query;
-  const { isConnected: connected } = useAccount();
+  const { isConnected: connected, address } = useAccount();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
   const { width, height } = useWindowSize();
@@ -89,6 +90,12 @@ const Request = () => {
       if (tokenName == "ETH" || tokenName == "MATIC") {
         setIsNativeTx(true);
       }
+      event({
+        action: "visit_woop_payment",
+        category: json.networkName,
+        label: address ? address : "",
+        value: `${json.value} ${json.tokenName}`,
+      });
     } catch (error) {
       console.error(error);
       setBadRequest(true);
@@ -196,6 +203,17 @@ const Request = () => {
       setIsConnected(false);
     }
   }, [connected]);
+
+  React.useEffect(() => {
+    if (isSuccess || isSuccessNative) {
+      event({
+        action: "paid_woop",
+        category: networkName,
+        label: address ? address : "",
+        value: `${amount} ${request?.tokenName}`,
+      });
+    }
+  }, [isSuccess, isSuccessNative]);
 
   const colors = [
     "rgba(16, 130, 178, 1)",
