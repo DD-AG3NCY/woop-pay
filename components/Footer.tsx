@@ -5,7 +5,7 @@ export default function Footer() {
   const ALEX_LINK = `https://twitter.com/${ALEX_HANDLE}`;
   const D_D_LINK = "https://agency.developerdao.com/";
   return (
-    <footer className="flex justify-center md:justify-between p-5 font-base text-sm opacity-70">
+    <footer className="flex justify-center md:justify-between p-5 font-base text-sm text-white opacity-70">
       <div className="hidden md:flex">
         <Link href="/policy" className="mr-3" target="_blank">
           <p>Privacy policy</p>
@@ -24,7 +24,7 @@ export default function Footer() {
       <div>
         <Link
           href="https://9n0ejb90nk6.typeform.com/to/YHsYaII6"
-          className="mr-3 hover:underline underline-offset-4"
+          className="mr-3 hover:underline underline-offset-4 text-white"
           target="_blank"
         >
           <p>We would love your feedback!</p>
