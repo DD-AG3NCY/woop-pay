@@ -4,6 +4,7 @@ import * as ethers from "ethers";
 const Pkey = `0x${process.env.NEXT_PUBLIC_PK}`;
 const signer = new ethers.Wallet(Pkey);
 const channelAddress = "0x338EF19fA2eC0fc4d1277B1307a613fA1FBbc0cb";
+const environment = "staging";
 
 interface Request {
   version: string;
@@ -16,6 +17,7 @@ interface Request {
 
 export const sendNotification = async (
   recipient: string,
+  sender: string | undefined,
   networkName: string,
   request: Request,
   etherscanLink: any
@@ -35,10 +37,9 @@ export const sendNotification = async (
       },
       payload: {
         title: `Woop Payment Received`,
-        body: `${date} ${time} (UTC): ${recipient.slice(
-          0,
-          4
-        )}...${recipient.slice(-4)} paid ${request.value} ${
+        body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
+          -4
+        )} paid ${request.value} ${
           request.tokenName
         } on network ${networkName}. Thanks for using Woop Pay`,
         cta: "",
@@ -46,7 +47,7 @@ export const sendNotification = async (
       },
       recipients: `eip155:5:${recipient}`, // recipient address
       channel: `eip155:5:${channelAddress}`,
-      env: "staging",
+      env: environment,
     });
 
     // apiResponse?.status === 204, if sent successfully!
@@ -69,7 +70,7 @@ export const optIn = async (address: any, signer: any) => {
       console.error("opt in error");
       return false;
     },
-    env: "staging",
+    env: environment,
   });
 };
 
@@ -86,14 +87,14 @@ export const optOut = async (address: any, signer: any) => {
       console.error("opt out error");
       return false;
     },
-    env: "staging",
+    env: environment,
   });
 };
 
 export const retrieveNotifications = async (address: string | undefined) => {
   const notifications = await PushAPI.user.getFeeds({
     user: `eip155:5:${address}`, // user address in CAIP
-    env: "staging",
+    env: environment,
   });
 
   return notifications;
@@ -102,7 +103,7 @@ export const retrieveNotifications = async (address: string | undefined) => {
 export const retrieveSubscriptions = async (address: string | undefined) => {
   const subscriptions = await PushAPI.user.getSubscriptions({
     user: `eip155:5:${address}`, // user address in CAIP
-    env: "staging",
+    env: environment,
   });
 
   return subscriptions.some(
