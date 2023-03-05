@@ -78,7 +78,7 @@ export default function Notification() {
   }, [address]);
 
   return (
-    <div className={cx(styles.notificationContainer, "z-30")}>
+    <div className={cx(styles.notificationContainer, "z-30")} ref={modalRef}>
       <button
         type="button"
         className={cx(
@@ -96,7 +96,6 @@ export default function Notification() {
       </button>
       {showModal && (
         <div
-          ref={modalRef}
           className={cx(
             styles.notificationModal,
             "shadow rounded-xl z-30 pb-2"
