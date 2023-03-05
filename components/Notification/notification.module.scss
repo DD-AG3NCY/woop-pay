@@ -25,7 +25,6 @@
   overflow: auto;
 }
 
-
 .notificationTable {
   width: 100%;
   border-collapse: collapse;
@@ -39,9 +38,9 @@
 .notificationOptButton {
   padding: 5px;
   border: 1px solid #5baacb;
-  &:hover{
+  &:hover {
     background-color: rgb(236, 249, 254);
-    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.10);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
   }
   border-radius: 10px;
 }

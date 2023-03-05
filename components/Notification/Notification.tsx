@@ -85,7 +85,8 @@ export default function Notification() {
           styles.notificationButton,
           "flex items-center justify-center shadow-lg"
         )}
-        onClick={() => setShowModal(!showModal)}>
+        onClick={() => setShowModal(!showModal)}
+      >
         <Image
           alt="Notification"
           src="/notification-bell.svg"
@@ -99,7 +100,8 @@ export default function Notification() {
           className={cx(
             styles.notificationModal,
             "shadow rounded-xl z-30 pb-2"
-          )}>
+          )}
+        >
           <div className={styles.notificationTable}>
             <div className="font-bold text-slate-500 border-b-2 border-slate-300 py-4 px-4 font-base text-xl mb-5 flex justify-between items-center">
               <p className="pl-2">Received Woops</p>
@@ -113,7 +115,8 @@ export default function Notification() {
                     onClick={() => {
                       disableNotifications();
                       setShowModal(false);
-                    }}>
+                    }}
+                  >
                     <Image
                       src={bellCrossedIcon}
                       width={20}
@@ -131,7 +134,8 @@ export default function Notification() {
                     onClick={() => {
                       activateNotifications();
                       setShowModal(false);
-                    }}>
+                    }}
+                  >
                     <Image src={bellIcon} width={20} height={20} alt="bell" />
                   </button>
                 )}
@@ -140,7 +144,7 @@ export default function Notification() {
             {isSubscribed ? (
               <div className="px-6 h-full">
                 {/* TODO: Set page for notification listing */}
-                <div className="h-full overflow-scroll ">
+                <div className="h-full">
                   {notifications.length > 0 ? (
                     /*                     <Link
                       href={pushUrl}
@@ -153,23 +157,22 @@ export default function Notification() {
                       No tracked Woops
                     </p>
                   )}
-                  {notifications
-                    .slice(0, 22)
-                    .map((notification: any, index: any) => (
-                      <Link
-                        href={notification?.notification?.body}
-                        key={index}
-                        className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-50 transition-colors cursor-pointer hover:bg-slate-100 mt-3 mb-3">
-                        {notification?.message}
-                      </Link>
-                    ))}
+                  {notifications.map((notification: any, index: any) => (
+                    <Link
+                      href={notification?.notification?.body}
+                      key={index}
+                      className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-50 transition-colors cursor-pointer hover:bg-slate-100 mt-3 mb-3"
+                    >
+                      {notification?.message}
+                    </Link>
+                  ))}
                 </div>
               </div>
             ) : (
               <div className="px-6 text-sm mb-3">
                 <p className="text-slate-600">{"Woop tracking disabled"}</p>
                 <p className="my-3 text-slate-400">
-                  {"Enable ENS PUSH notifications"}
+                  {"Enable PUSH notifications"}
                 </p>
                 <button
                   type="button"
@@ -180,7 +183,8 @@ export default function Notification() {
                   onClick={() => {
                     activateNotifications();
                     setShowModal(false);
-                  }}>
+                  }}
+                >
                   <Image src={bellIcon} width={25} height={25} alt="bell" />
                 </button>
               </div>
