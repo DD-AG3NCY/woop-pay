@@ -5,19 +5,29 @@ export default function Footer() {
   const ALEX_LINK = `https://twitter.com/${ALEX_HANDLE}`;
   const D_D_LINK = "https://agency.developerdao.com/";
   return (
-    <footer className="flex justify-center md:justify-between p-5 font-base text-sm opacity-70">
-      <div className="flex text-white text-sm">
-        <Link href="/policy" className="mr-3">
+    <footer className="flex justify-center md:justify-between p-5 font-base text-sm text-white opacity-70">
+      <div className="hidden md:flex">
+        <Link href="/policy" className="mr-3" target="_blank">
           <p>Privacy policy</p>
         </Link>
-        <Link href="/terms" className="mr-3">
+        <Link href="/terms" className="mr-3" target="_blank">
           <p>Terms & conditions</p>
         </Link>
         <Link
           href="https://medium.com/@alessandromaci/woop-pay-simplifying-cryptocurrency-payment-requests-63e3bff2531d"
           className="mr-3"
+          target="_blank"
         >
           <p>About</p>
+        </Link>
+      </div>
+      <div>
+        <Link
+          href="https://9n0ejb90nk6.typeform.com/to/YHsYaII6"
+          className="mr-3 hover:underline underline-offset-4 text-white"
+          target="_blank"
+        >
+          <p>We would love your feedback!</p>
         </Link>
       </div>
       <div className="hidden md:block">

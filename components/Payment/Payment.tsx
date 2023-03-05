@@ -17,6 +17,7 @@ import {
   selectTokenDecimals,
   tokensDetails,
 } from "../../utils/constants";
+import { event } from "../../utils/ga";
 
 export default function Payment(props: any) {
   const [selectedToken, setSelectedToken] = React.useState<{
@@ -34,14 +35,12 @@ export default function Payment(props: any) {
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
   const [isConnected, setIsConnected] = React.useState<boolean>(false);
-  const { address } = useAccount();
+  const { isConnected: connected, address } = useAccount();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
 
   const [selectorVisibility, setSelectorVisibility] =
     React.useState<boolean>(false);
-
-  const { isConnected: connected } = useAccount();
   const [isShareActive, setIsShareActive] = useState<boolean>(false);
   const [badRequest, setBadRequest] = useState<any>("");
 
@@ -59,7 +58,7 @@ export default function Payment(props: any) {
     } else {
       try {
         setIpfsLoading(true);
-        const { path } = await uploadIpfs({
+        const data = {
           version: "1.0.0",
           from: address,
           value: amount,
@@ -68,8 +67,16 @@ export default function Payment(props: any) {
           networkName: chain?.name,
           tokenName: selectedToken.label,
           tokenAddress: selectToken(selectedToken.label, chainId),
-        }).finally(() => {
+        };
+
+        const { path } = await uploadIpfs(data).finally(() => {
           setIpfsLoading(false);
+          event({
+            action: "create_woop",
+            category: selectedToken.label,
+            label: chain ? chain?.name : "",
+            value: amount,
+          });
         });
         setPath(path);
         setIsShareActive(true);
@@ -84,6 +91,12 @@ export default function Payment(props: any) {
   React.useEffect(() => {
     if (connected) {
       setIsConnected(true);
+      event({
+        action: "visit_woop_request",
+        category: "",
+        label: address ? address : "",
+        value: "",
+      });
     } else {
       setIsConnected(false);
     }

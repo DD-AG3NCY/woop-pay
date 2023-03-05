@@ -23,6 +23,7 @@ import {
   tokensDetails,
 } from "../../utils/constants";
 import { sendNotification } from "../../utils/push";
+import { event } from "../../utils/ga";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
@@ -90,6 +91,12 @@ const Request = () => {
       if (tokenName == "ETH" || tokenName == "MATIC") {
         setIsNativeTx(true);
       }
+      event({
+        action: "visit_woop_payment",
+        category: json.networkName,
+        label: address ? address : "",
+        value: `${json.value} ${json.tokenName}`,
+      });
     } catch (error) {
       console.error(error);
       setBadRequest(true);
@@ -210,6 +217,12 @@ const Request = () => {
           request,
           etherscanLink
         );
+        event({
+        action: "paid_woop",
+        category: networkName,
+        label: address ? address : "",
+        value: `${amount} ${request?.tokenName}`,
+      });
       }
     }
     if (isSuccessNative) {
@@ -223,6 +236,12 @@ const Request = () => {
           request,
           etherscanLink
         );
+      event({
+        action: "paid_woop",
+        category: networkName,
+        label: address ? address : "",
+        value: `${amount} ${request?.tokenName}`,
+      });
       }
     }
   }, [isSuccess, isSuccessNative]);
