@@ -6,8 +6,7 @@ import {
   optIn,
   optOut,
 } from "../../utils/push";
-import { useAccount, useSigner } from "wagmi";
-import { pushUrl } from "../../utils/constants";
+import { useAccount, useSigner, useNetwork } from "wagmi";
 import styles from "./notification.module.scss";
 import cx from "classnames";
 import bellCrossedIcon from "../../public/bell-close.svg";
@@ -17,7 +16,9 @@ import Link from "next/link";
 export default function Notification() {
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
+  const [isMainnet, setIsMainnet] = React.useState<boolean>(false);
   const { address } = useAccount();
+  const { chain } = useNetwork();
   const { data: signer } = useSigner();
   const [notifications, setNotifications] = React.useState<any>([]);
   const modalRef = React.useRef<HTMLDivElement>(null);
@@ -30,6 +31,7 @@ export default function Notification() {
 
   const retrieveIsSubscribed = async () => {
     const subs = await retrieveSubscriptions(address);
+    console.log(subs);
     setIsSubscribed(subs);
   };
 
@@ -65,6 +67,11 @@ export default function Notification() {
   }, [modalRef]);
 
   React.useEffect(() => {
+    if (chain?.network == "homestead") {
+      setIsMainnet(true);
+    } else {
+      setIsMainnet(false);
+    }
     if (showModal) {
       retrieveIsSubscribed();
       retrieveData();
@@ -105,7 +112,9 @@ export default function Notification() {
             <div className="font-bold text-slate-500 border-b-2 border-slate-300 py-4 px-4 font-base text-xl mb-5 flex justify-between items-center">
               <p className="pl-2">Received Woops</p>
               <div className="text-center">
-                {isSubscribed ? (
+                {!isMainnet ? (
+                  <></>
+                ) : isSubscribed ? (
                   <button
                     type="button"
                     className={
@@ -142,14 +151,8 @@ export default function Notification() {
             </div>
             {isSubscribed ? (
               <div className="px-6 h-full">
-                {/* TODO: Set page for notification listing */}
                 <div className="h-full">
                   {notifications.length > 0 ? (
-                    /*                     <Link
-                      href={pushUrl}
-                      className="text-slate-600 text-sm underline mb-3">
-                      {"See more"}
-                    </Link> */
                     <></>
                   ) : (
                     <p className="text-slate-500 text-sm mb-3">
@@ -166,6 +169,14 @@ export default function Notification() {
                     </Link>
                   ))}
                 </div>
+              </div>
+            ) : !isMainnet ? (
+              <div className="px-6 text-sm mb-3">
+                <p className="text-slate-600">
+                  {
+                    "Woop tracking disabled. To enable PUSH notification, change your network to Ethereum Mainnet"
+                  }
+                </p>
               </div>
             ) : (
               <div className="px-6 text-sm mb-3">
