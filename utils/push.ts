@@ -4,7 +4,8 @@ import * as ethers from "ethers";
 const Pkey = `0x${process.env.NEXT_PUBLIC_PK}`;
 const signer = new ethers.Wallet(Pkey);
 const channelAddress = "0x338EF19fA2eC0fc4d1277B1307a613fA1FBbc0cb";
-const environment = "staging";
+const environment = "prod";
+const environmentInteger = "1";
 
 interface Request {
   version: string;
@@ -45,8 +46,8 @@ export const sendNotification = async (
         cta: "",
         img: "",
       },
-      recipients: `eip155:5:${recipient}`, // recipient address
-      channel: `eip155:5:${channelAddress}`,
+      recipients: `eip155:${environmentInteger}:${recipient}`, // recipient address
+      channel: `eip155:${environmentInteger}:${channelAddress}`,
       env: environment,
     });
 
@@ -60,14 +61,14 @@ export const sendNotification = async (
 export const optIn = async (address: any, signer: any) => {
   await PushAPI.channels.subscribe({
     signer: signer,
-    channelAddress: `eip155:5:${channelAddress}`, // channel address in CAIP
-    userAddress: `eip155:5:${address}`, // user address in CAIP
+    channelAddress: `eip155:${environmentInteger}:${channelAddress}`, // channel address in CAIP
+    userAddress: `eip155:${environmentInteger}:${address}`, // user address in CAIP
     onSuccess: () => {
       console.log("opt in success");
       return true;
     },
-    onError: () => {
-      console.error("opt in error");
+    onError: (error) => {
+      console.error(error);
       return false;
     },
     env: environment,
@@ -77,8 +78,8 @@ export const optIn = async (address: any, signer: any) => {
 export const optOut = async (address: any, signer: any) => {
   await PushAPI.channels.unsubscribe({
     signer: signer,
-    channelAddress: `eip155:5:${channelAddress}`, // channel address in CAIP
-    userAddress: `eip155:5:${address}`, // user address in CAIP
+    channelAddress: `eip155:${environmentInteger}:${channelAddress}`, // channel address in CAIP
+    userAddress: `eip155:${environmentInteger}:${address}`, // user address in CAIP
     onSuccess: () => {
       console.log("opt out success");
       return true;
@@ -93,7 +94,7 @@ export const optOut = async (address: any, signer: any) => {
 
 export const retrieveNotifications = async (address: string | undefined) => {
   const notifications = await PushAPI.user.getFeeds({
-    user: `eip155:5:${address}`, // user address in CAIP
+    user: `eip155:${environmentInteger}:${address}`, // user address in CAIP
     env: environment,
   });
 
@@ -102,7 +103,7 @@ export const retrieveNotifications = async (address: string | undefined) => {
 
 export const retrieveSubscriptions = async (address: string | undefined) => {
   const subscriptions = await PushAPI.user.getSubscriptions({
-    user: `eip155:5:${address}`, // user address in CAIP
+    user: `eip155:${environmentInteger}:${address}`, // user address in CAIP
     env: environment,
   });
 
