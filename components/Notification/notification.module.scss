@@ -1,0 +1,46 @@
+.notificationContainer {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.notificationButton {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  border-radius: 14px;
+  height: 40px;
+  width: 40px;
+}
+
+.notificationModal {
+  position: absolute;
+  top: 52px;
+  right: 0px;
+  background-color: white;
+  width: calc(100vw - 60px);
+  max-width: 338px;
+  height: calc(100vh - 106px);
+  overflow: auto;
+}
+
+.notificationTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notificationRow {
+  border-bottom: 1px solid lightgray;
+  padding: 10px 0;
+}
+
+.notificationOptButton {
+  padding: 5px;
+  border: 1px solid #5baacb;
+  &:hover {
+    background-color: rgb(236, 249, 254);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+  }
+  border-radius: 10px;
+}

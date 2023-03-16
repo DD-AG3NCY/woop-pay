@@ -22,6 +22,7 @@ import {
   setEtherscanAddress,
   tokensDetails,
 } from "../../utils/constants";
+import { sendNotification } from "../../utils/push";
 import { event } from "../../utils/ga";
 
 import ERC20 from "../../abi/ERC20.abi.json";
@@ -205,13 +206,43 @@ const Request = () => {
   }, [connected]);
 
   React.useEffect(() => {
-    if (isSuccess || isSuccessNative) {
+    if (isSuccess) {
+      console.log("sending notification");
+      if (request) {
+        const etherscanLink = setEtherscanBase(network, data?.hash);
+        sendNotification(
+          recipient,
+          address,
+          networkName,
+          request,
+          etherscanLink
+        );
+        event({
+        action: "paid_woop",
+        category: networkName,
+        label: address ? address : "",
+        value: `${amount} ${request?.tokenName}`,
+      });
+      }
+    }
+    if (isSuccessNative) {
+      console.log("sending native notification");
+      if (request) {
+        const etherscanLink = setEtherscanBase(network, dataNative?.hash);
+        sendNotification(
+          recipient,
+          address,
+          networkName,
+          request,
+          etherscanLink
+        );
       event({
         action: "paid_woop",
         category: networkName,
         label: address ? address : "",
         value: `${amount} ${request?.tokenName}`,
       });
+      }
     }
   }, [isSuccess, isSuccessNative]);
 
@@ -260,14 +291,7 @@ const Request = () => {
           )}
         ></section>
 
-        {isSuccess ? (
-          <Confetti
-            colors={colors}
-            className="z-10"
-            width={width}
-            height={height}
-          />
-        ) : isSuccessNative ? (
+        {isSuccess || isSuccessNative ? (
           <Confetti
             colors={colors}
             className="z-10"
@@ -277,9 +301,9 @@ const Request = () => {
         ) : null}
 
         {/* CONTENT */}
-        <Container maxWidth="xs" className="z-10">
+        <Container maxWidth="xs" className="">
           {!badRequest ? (
-            <div className={"mb-2"}>
+            <div className={"mb-2 z-20"}>
               <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
             </div>
           ) : (
@@ -288,7 +312,10 @@ const Request = () => {
 
           <Box
             component="form"
-            className={cx(styles.containerBox, "rounded-3xl shadow-md w-full")}
+            className={cx(
+              styles.containerBox,
+              "rounded-3xl shadow-md w-full relative z-20"
+            )}
           >
             <section className="justify-items-left font-base text-white">
               <div
@@ -303,10 +330,10 @@ const Request = () => {
                     : isNativeTx
                     ? isSuccessNative
                       ? "Woop sent!"
-                      : "You've received a Woop! "
+                      : "A Woop has been requested! "
                     : isSuccess
                     ? "Woop sent!"
-                    : "You've received a Woop! "}
+                    : "A Woop has been requested! "}
                 </p>
                 <p className="text-3xl ml-2">
                   {badRequest
