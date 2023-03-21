@@ -35,6 +35,8 @@ export default function Payment(props: any) {
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
   const [isConnected, setIsConnected] = React.useState<boolean>(false);
+  const [allowPayerSelectAmount, setAllowPayerSelectAmount] =
+    React.useState<boolean>(false);
   const { isConnected: connected, address } = useAccount();
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
@@ -101,6 +103,13 @@ export default function Payment(props: any) {
       setIsConnected(false);
     }
   }, [connected]);
+
+  React.useEffect(() => {
+    if (allowPayerSelectAmount) {
+      setAmount("allowPayerSelectAmount");
+      console.log(amount);
+    }
+  }, [allowPayerSelectAmount]);
 
   React.useEffect(() => {
     if (chain) {
@@ -175,17 +184,30 @@ export default function Payment(props: any) {
         </p>
 
         <div className="relative">
-          <input
-            autoFocus={isConnected}
-            className={cx(
-              styles.mainInput,
-              "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
-            )}
-            type="number"
-            step="0.000000"
-            placeholder="0.00"
-            onChange={handleAmountChange}
-          ></input>
+          {allowPayerSelectAmount ? (
+            <input
+              autoFocus={isConnected}
+              className={cx(
+                styles.mainInput,
+                "border-white rounded-xl border font-medium text-3l focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+              )}
+              placeholder="Payer sets amount"
+              value={"Payer sets amount"}
+              readOnly
+            ></input>
+          ) : (
+            <input
+              autoFocus={isConnected}
+              className={cx(
+                styles.mainInput,
+                "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+              )}
+              type="number"
+              step="0.000000"
+              placeholder="0.00"
+              onChange={handleAmountChange}
+            ></input>
+          )}
 
           <button
             type="button"
@@ -244,6 +266,22 @@ export default function Payment(props: any) {
             "Connect Wallet"
           )}
         </button>
+
+        <label className="flex items-center font-base text-sm text-white mt-3 pl-2">
+          <span className="mr-3 ">Let payer choose the amount</span>
+          <div
+            className={`w-8 h-4 bg-gray-400 rounded-full cursor-pointer ${
+              allowPayerSelectAmount ? "bg-green-500" : ""
+            }`}
+            onClick={() => setAllowPayerSelectAmount(!allowPayerSelectAmount)}
+          >
+            <div
+              className={`w-4 h-4 bg-white rounded-full shadow-md transform duration-300 ease-in-out ${
+                allowPayerSelectAmount ? "translate-x-4" : ""
+              }`}
+            ></div>
+          </div>
+        </label>
       </div>
 
       {isShareActive && (
