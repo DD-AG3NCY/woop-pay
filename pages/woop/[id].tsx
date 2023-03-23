@@ -194,17 +194,13 @@ const Request = () => {
     } else {
       if (isNativeTx) {
         if (!sendTransaction && !badRequest) {
-          setWoopBadRequest(
-            `Payment not possible due to insufficient ${request?.tokenName} balance`
-          );
+          setWoopBadRequest(`Insufficient ${request?.tokenName} balance`);
         } else {
           setWoopBadRequest("");
         }
       } else {
         if (!write && !badRequest) {
-          setWoopBadRequest(
-            `Payment not possible due to insufficient ${request?.tokenName} balance`
-          );
+          setWoopBadRequest(`Insufficient ${request?.tokenName} balance`);
         } else {
           setWoopBadRequest("");
         }
@@ -354,10 +350,10 @@ const Request = () => {
                     : isNativeTx
                     ? isSuccessNative
                       ? "Woop sent!"
-                      : "A Woop has been requested! "
+                      : "Payment requested! "
                     : isSuccess
                     ? "Woop sent!"
-                    : "A Woop has been requested! "}
+                    : "Payment requested! "}
                 </p>
                 <p className="text-3xl ml-2">
                   {badRequest
