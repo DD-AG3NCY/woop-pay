@@ -236,6 +236,7 @@ const Request = () => {
           recipient,
           address,
           networkName,
+          amount,
           request,
           etherscanLink
         );
@@ -255,6 +256,7 @@ const Request = () => {
           recipient,
           address,
           networkName,
+          amount,
           request,
           etherscanLink
         );
@@ -419,7 +421,7 @@ const Request = () => {
                   <div className="px-4 pb-4 pt-1">
                     <div className="mt-3 text-center w-full my-6">
                       <p className="font-bold md:text-5xl text-4xl mb-2">
-                        {request?.value} {request?.tokenName}
+                        {amount} {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2">
                         <a
@@ -448,7 +450,7 @@ const Request = () => {
                   <div className="px-4 pb-4 pt-1">
                     <div className="mt-3 text-center w-full my-6">
                       <p className="font-bold md:text-5xl text-4xl mb-2">
-                        {request?.value} {request?.tokenName}
+                        {amount} {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2">
                         <a
