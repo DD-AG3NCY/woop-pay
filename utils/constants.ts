@@ -75,7 +75,7 @@ export const tokensDetails: Token[] = [
     logo: usdcLogo,
     decimals: 6,
     homestead: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    goerli: "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C",
+    goerli: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
     optimism: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
     arbitrum: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
     matic: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
