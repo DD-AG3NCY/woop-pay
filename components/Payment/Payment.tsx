@@ -30,7 +30,7 @@ export default function Payment(props: any) {
     arbitrum: string;
     matic: string;
   }>(tokensDetails[0]);
-  const [amount, setAmount] = React.useState<string>("0");
+  const [amount, setAmount] = React.useState<string>("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
@@ -56,6 +56,8 @@ export default function Payment(props: any) {
     setBadRequest("");
 
     if (amount == "0") {
+      setBadRequest("You cannot create a WOOP with amount equal to zero");
+    } else if (amount == "") {
       setBadRequest("You cannot create a WOOP with amount equal to zero");
     } else {
       try {
@@ -191,8 +193,8 @@ export default function Payment(props: any) {
                 styles.mainInput,
                 "border-white rounded-xl border font-medium text-3l focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
               )}
-              placeholder="Payer sets amount"
-              value={"Payer sets amount"}
+              placeholder="Payer sets an amount"
+              value={"Payer sets an amount"}
               readOnly
             ></input>
           ) : (
@@ -205,6 +207,7 @@ export default function Payment(props: any) {
               type="number"
               step="0.000000"
               placeholder="0.00"
+              value={amount}
               onChange={handleAmountChange}
             ></input>
           )}

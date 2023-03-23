@@ -46,10 +46,12 @@ interface Request {
 
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
-  const [amount, setAmount] = React.useState<string>("0.1");
+  const [amount, setAmount] = React.useState<string>("0.00001");
   const [recipient, setRecipient] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [networkName, setNetworkName] = React.useState<string>("");
+  const [allowPayerSelectAmount, setAllowPayerSelectAmount] =
+    React.useState<boolean>(false);
   const [woopBadRequest, setWoopBadRequest] = React.useState<string>("");
   const [woopBadNetwork, setWoopBadNetwork] = React.useState<string>("");
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
@@ -78,13 +80,17 @@ const Request = () => {
       setNetwork(json.network);
       setNetworkName(json.networkName);
 
-      if (json.decimals != 18) {
-        const amount: string = (
-          Number(json.value) / Number(10 ** (18 - json.decimals))
-        ).toFixed(18);
-        setAmount(amount);
+      if (json.value == "allowPayerSelectAmount") {
+        setAllowPayerSelectAmount(true);
       } else {
-        setAmount(json.value);
+        if (json.decimals != 18) {
+          const amount: string = (
+            Number(json.value) / Number(10 ** (18 - json.decimals))
+          ).toFixed(18);
+          setAmount(amount);
+        } else {
+          setAmount(json.value);
+        }
       }
 
       let tokenName: string = json.tokenName;
@@ -133,6 +139,22 @@ const Request = () => {
       setWoopBadNetwork("");
     }
     setNetwork(result?.network);
+  };
+
+  const handleAmountChange = (event: any) => {
+    const inputValue = event.target.value;
+
+    if (inputValue === "") {
+      setAmount("0.00001");
+      return;
+    }
+
+    const inputAmount = parseFloat(inputValue);
+    if (inputAmount < 0.1) {
+      setAmount("0.00001");
+    } else {
+      setAmount(inputValue as string);
+    }
   };
 
   // wagmi erc20 transaction
@@ -218,11 +240,11 @@ const Request = () => {
           etherscanLink
         );
         event({
-        action: "paid_woop",
-        category: networkName,
-        label: address ? address : "",
-        value: `${amount} ${request?.tokenName}`,
-      });
+          action: "paid_woop",
+          category: networkName,
+          label: address ? address : "",
+          value: `${amount} ${request?.tokenName}`,
+        });
       }
     }
     if (isSuccessNative) {
@@ -236,12 +258,12 @@ const Request = () => {
           request,
           etherscanLink
         );
-      event({
-        action: "paid_woop",
-        category: networkName,
-        label: address ? address : "",
-        value: `${amount} ${request?.tokenName}`,
-      });
+        event({
+          action: "paid_woop",
+          category: networkName,
+          label: address ? address : "",
+          value: `${amount} ${request?.tokenName}`,
+        });
       }
     }
   }, [isSuccess, isSuccessNative]);
@@ -453,6 +475,92 @@ const Request = () => {
                     </Link>
                   </div>
                 </>
+              ) : allowPayerSelectAmount ? (
+                <div className="px-4 pb-4 pt-1 relative">
+                  <>
+                    <div className="absolute top-0 right-3 p-1">
+                      {request && findIcon(request?.tokenName)}
+                    </div>
+                    <p className="text-xs text-slate-300 mb-2">
+                      <a
+                        className="underline underline-offset-4"
+                        href={`${setEtherscanAddress(network, request?.from)}`}
+                      >
+                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                      </a>
+                      {" requested to set an amount:"}
+                    </p>
+                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6 flex justify-between items-center">
+                      <input
+                        className="bg-transparent text-white focus:outline-none"
+                        type="number"
+                        placeholder="0.00"
+                        onChange={handleAmountChange}
+                        style={{ maxWidth: "70%" }}
+                      />{" "}
+                      <div className="flex-shrink-0">{request?.tokenName}</div>
+                    </div>
+                  </>
+
+                  <div className="">
+                    <button
+                      type="button"
+                      className={cx(
+                        "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                      )}
+                      disabled={
+                        (isNativeTx
+                          ? !sendTransaction || isLoadingNative
+                          : !write || isLoading) || wrongNetwork
+                      }
+                      onClick={
+                        isNativeTx ? () => sendTransaction?.() : () => write?.()
+                      }
+                    >
+                      {isNativeTx ? (
+                        isLoadingNative ? (
+                          <svg
+                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              strokeWidth="4"
+                              stroke="currentColor"
+                              strokeDasharray="32"
+                              strokeLinecap="round"
+                              fill="transparent"
+                            />
+                          </svg>
+                        ) : (
+                          "Pay Woop"
+                        )
+                      ) : isLoading ? (
+                        <>
+                          <svg
+                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              strokeWidth="4"
+                              stroke="currentColor"
+                              strokeDasharray="32"
+                              strokeLinecap="round"
+                              fill="transparent"
+                            />
+                          </svg>
+                        </>
+                      ) : (
+                        "Pay Woop"
+                      )}
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <div className="px-4 pb-4 pt-1 relative">
                   <>
