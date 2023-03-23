@@ -46,7 +46,7 @@ interface Request {
 
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
-  const [amount, setAmount] = React.useState<string>("0.00001");
+  const [amount, setAmount] = React.useState<string>("0.001");
   const [recipient, setRecipient] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [networkName, setNetworkName] = React.useState<string>("");
@@ -82,14 +82,21 @@ const Request = () => {
 
       if (json.value == "allowPayerSelectAmount") {
         setAllowPayerSelectAmount(true);
+        const amount: string = (
+          Number("0.001") / Number(10 ** (18 - json.decimals))
+        ).toFixed(18);
+        console.log(amount);
+        setAmount(amount);
       } else {
         if (json.decimals != 18) {
           const amount: string = (
             Number(json.value) / Number(10 ** (18 - json.decimals))
           ).toFixed(18);
           setAmount(amount);
+          console.log(amount);
         } else {
           setAmount(json.value);
+          console.log(json.value);
         }
       }
 
@@ -145,13 +152,23 @@ const Request = () => {
     const inputValue = event.target.value;
 
     if (inputValue === "") {
-      setAmount("0.00001");
-      return;
+      if (request?.decimals != 18 && request) {
+        const amount: string = (
+          Number("0.001") / Number(10 ** (18 - request?.decimals))
+        ).toFixed(18);
+        setAmount(amount);
+        return;
+      } else {
+        setAmount("0.001");
+        return;
+      }
     }
 
-    const inputAmount = parseFloat(inputValue);
-    if (inputAmount < 0.1) {
-      setAmount("0.00001");
+    if (request?.decimals != 18 && request) {
+      const amount: string = (
+        Number(inputValue) / Number(10 ** (18 - request?.decimals))
+      ).toFixed(18);
+      setAmount(amount);
     } else {
       setAmount(inputValue as string);
     }
@@ -417,7 +434,10 @@ const Request = () => {
                   <div className="px-4 pb-4 pt-1">
                     <div className="mt-3 text-center w-full my-6">
                       <p className="font-bold md:text-5xl text-4xl mb-2">
-                        {amount} {request?.tokenName}
+                        {request?.decimals == 18
+                          ? amount
+                          : Number(amount) * 10 ** 12}{" "}
+                        {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2">
                         <a
@@ -492,10 +512,10 @@ const Request = () => {
                       <input
                         className="bg-transparent text-white focus:outline-none"
                         type="number"
-                        placeholder="0.00"
+                        placeholder="0.001"
                         onChange={handleAmountChange}
-                        style={{ maxWidth: "70%" }}
-                      />{" "}
+                        style={{ maxWidth: "50%" }}
+                      />
                       <div className="flex-shrink-0">{request?.tokenName}</div>
                     </div>
                   </>
