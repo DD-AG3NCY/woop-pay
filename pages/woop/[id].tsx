@@ -413,7 +413,10 @@ const Request = () => {
                       {" requested:"}
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
-                      {request?.value} {request?.tokenName}
+                      {request?.value == "allowPayerSelectAmount"
+                        ? "..."
+                        : request?.value}{" "}
+                      {request?.tokenName}
                     </div>
                   </>
 
