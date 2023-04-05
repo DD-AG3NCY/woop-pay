@@ -27,7 +27,7 @@ export default function Footer() {
           className="mr-3 hover:underline underline-offset-4 text-white"
           target="_blank"
         >
-          <p>We would love your feedback!</p>
+          You can share your feedback here!
         </Link>
       </div>
       <div className="hidden md:block">

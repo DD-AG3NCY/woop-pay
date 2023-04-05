@@ -46,10 +46,12 @@ interface Request {
 
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
-  const [amount, setAmount] = React.useState<string>("0.1");
+  const [amount, setAmount] = React.useState<string>("0.001");
   const [recipient, setRecipient] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [networkName, setNetworkName] = React.useState<string>("");
+  const [allowPayerSelectAmount, setAllowPayerSelectAmount] =
+    React.useState<boolean>(false);
   const [woopBadRequest, setWoopBadRequest] = React.useState<string>("");
   const [woopBadNetwork, setWoopBadNetwork] = React.useState<string>("");
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
@@ -78,13 +80,24 @@ const Request = () => {
       setNetwork(json.network);
       setNetworkName(json.networkName);
 
-      if (json.decimals != 18) {
+      if (json.value == "allowPayerSelectAmount") {
+        setAllowPayerSelectAmount(true);
         const amount: string = (
-          Number(json.value) / Number(10 ** (18 - json.decimals))
+          Number("0.001") / Number(10 ** (18 - json.decimals))
         ).toFixed(18);
+        console.log(amount);
         setAmount(amount);
       } else {
-        setAmount(json.value);
+        if (json.decimals != 18) {
+          const amount: string = (
+            Number(json.value) / Number(10 ** (18 - json.decimals))
+          ).toFixed(18);
+          setAmount(amount);
+          console.log(amount);
+        } else {
+          setAmount(json.value);
+          console.log(json.value);
+        }
       }
 
       let tokenName: string = json.tokenName;
@@ -135,6 +148,32 @@ const Request = () => {
     setNetwork(result?.network);
   };
 
+  const handleAmountChange = (event: any) => {
+    const inputValue = event.target.value;
+
+    if (inputValue === "") {
+      if (request?.decimals != 18 && request) {
+        const amount: string = (
+          Number("0.001") / Number(10 ** (18 - request?.decimals))
+        ).toFixed(18);
+        setAmount(amount);
+        return;
+      } else {
+        setAmount("0.001");
+        return;
+      }
+    }
+
+    if (request?.decimals != 18 && request) {
+      const amount: string = (
+        Number(inputValue) / Number(10 ** (18 - request?.decimals))
+      ).toFixed(18);
+      setAmount(amount);
+    } else {
+      setAmount(inputValue as string);
+    }
+  };
+
   // wagmi erc20 transaction
   const { config } = usePrepareContractWrite({
     address: request?.tokenAddress,
@@ -172,17 +211,13 @@ const Request = () => {
     } else {
       if (isNativeTx) {
         if (!sendTransaction && !badRequest) {
-          setWoopBadRequest(
-            `Payment not possible due to insufficient ${request?.tokenName} balance`
-          );
+          setWoopBadRequest(`Insufficient ${request?.tokenName} balance`);
         } else {
           setWoopBadRequest("");
         }
       } else {
         if (!write && !badRequest) {
-          setWoopBadRequest(
-            `Payment not possible due to insufficient ${request?.tokenName} balance`
-          );
+          setWoopBadRequest(`Insufficient ${request?.tokenName} balance`);
         } else {
           setWoopBadRequest("");
         }
@@ -214,15 +249,16 @@ const Request = () => {
           recipient,
           address,
           networkName,
+          amount,
           request,
           etherscanLink
         );
         event({
-        action: "paid_woop",
-        category: networkName,
-        label: address ? address : "",
-        value: `${amount} ${request?.tokenName}`,
-      });
+          action: "paid_woop",
+          category: networkName,
+          label: address ? address : "",
+          value: `${amount} ${request?.tokenName}`,
+        });
       }
     }
     if (isSuccessNative) {
@@ -233,15 +269,16 @@ const Request = () => {
           recipient,
           address,
           networkName,
+          amount,
           request,
           etherscanLink
         );
-      event({
-        action: "paid_woop",
-        category: networkName,
-        label: address ? address : "",
-        value: `${amount} ${request?.tokenName}`,
-      });
+        event({
+          action: "paid_woop",
+          category: networkName,
+          label: address ? address : "",
+          value: `${amount} ${request?.tokenName}`,
+        });
       }
     }
   }, [isSuccess, isSuccessNative]);
@@ -330,10 +367,10 @@ const Request = () => {
                     : isNativeTx
                     ? isSuccessNative
                       ? "Woop sent!"
-                      : "A Woop has been requested! "
+                      : "Payment requested! "
                     : isSuccess
                     ? "Woop sent!"
-                    : "A Woop has been requested! "}
+                    : "Payment requested! "}
                 </p>
                 <p className="text-3xl ml-2">
                   {badRequest
@@ -397,7 +434,10 @@ const Request = () => {
                   <div className="px-4 pb-4 pt-1">
                     <div className="mt-3 text-center w-full my-6">
                       <p className="font-bold md:text-5xl text-4xl mb-2">
-                        {request?.value} {request?.tokenName}
+                        {request?.decimals == 18
+                          ? amount
+                          : Number(amount) * 10 ** 12}{" "}
+                        {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2">
                         <a
@@ -426,7 +466,7 @@ const Request = () => {
                   <div className="px-4 pb-4 pt-1">
                     <div className="mt-3 text-center w-full my-6">
                       <p className="font-bold md:text-5xl text-4xl mb-2">
-                        {request?.value} {request?.tokenName}
+                        {amount} {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2">
                         <a
@@ -453,6 +493,92 @@ const Request = () => {
                     </Link>
                   </div>
                 </>
+              ) : allowPayerSelectAmount ? (
+                <div className="px-4 pb-4 pt-1 relative">
+                  <>
+                    <div className="absolute top-0 right-3 p-1">
+                      {request && findIcon(request?.tokenName)}
+                    </div>
+                    <p className="text-xs text-slate-300 mb-2">
+                      <a
+                        className="underline underline-offset-4"
+                        href={`${setEtherscanAddress(network, request?.from)}`}
+                      >
+                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                      </a>
+                      {" requested to set an amount:"}
+                    </p>
+                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6 text-center items-center">
+                      <input
+                        className="bg-transparent text-white text-center focus:outline-none mr-1"
+                        type="number"
+                        placeholder="0.001"
+                        onChange={handleAmountChange}
+                        style={{ maxWidth: "100%" }}
+                      />
+                      <div className="flex-shrink-0">{request?.tokenName}</div>
+                    </div>
+                  </>
+
+                  <div className="">
+                    <button
+                      type="button"
+                      className={cx(
+                        "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+                      )}
+                      disabled={
+                        (isNativeTx
+                          ? !sendTransaction || isLoadingNative
+                          : !write || isLoading) || wrongNetwork
+                      }
+                      onClick={
+                        isNativeTx ? () => sendTransaction?.() : () => write?.()
+                      }
+                    >
+                      {isNativeTx ? (
+                        isLoadingNative ? (
+                          <svg
+                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              strokeWidth="4"
+                              stroke="currentColor"
+                              strokeDasharray="32"
+                              strokeLinecap="round"
+                              fill="transparent"
+                            />
+                          </svg>
+                        ) : (
+                          "Pay Woop"
+                        )
+                      ) : isLoading ? (
+                        <>
+                          <svg
+                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              strokeWidth="4"
+                              stroke="currentColor"
+                              strokeDasharray="32"
+                              strokeLinecap="round"
+                              fill="transparent"
+                            />
+                          </svg>
+                        </>
+                      ) : (
+                        "Pay Woop"
+                      )}
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <div className="px-4 pb-4 pt-1 relative">
                   <>
