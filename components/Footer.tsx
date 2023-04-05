@@ -22,13 +22,13 @@ export default function Footer() {
         </Link>
       </div>
       <div>
-        <a
+        <Link
           href="https://9n0ejb90nk6.typeform.com/to/YHsYaII6"
           className="mr-3 hover:underline underline-offset-4 text-white"
           target="_blank"
         >
           You can share your feedback here!
-        </a>
+        </Link>
       </div>
       <div className="hidden md:block">
         <p className="text-white">
