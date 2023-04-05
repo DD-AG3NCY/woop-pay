@@ -508,13 +508,13 @@ const Request = () => {
                       </a>
                       {" requested to set an amount:"}
                     </p>
-                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6 flex justify-between items-center">
+                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6 text-center items-center">
                       <input
-                        className="bg-transparent text-white focus:outline-none"
+                        className="bg-transparent text-white text-center focus:outline-none mr-1"
                         type="number"
                         placeholder="0.001"
                         onChange={handleAmountChange}
-                        style={{ maxWidth: "50%" }}
+                        style={{ maxWidth: "100%" }}
                       />
                       <div className="flex-shrink-0">{request?.tokenName}</div>
                     </div>
