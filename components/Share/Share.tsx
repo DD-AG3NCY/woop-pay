@@ -135,7 +135,9 @@ export const Share: React.FC<{
               <div className="mr-2 flex items-center">
                 <WhatsappShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, can you please send me ${amount} ${token.label} at`}
+                  title={`Hey, can you please send me ${
+                    amount == "allowPayerSelectAmount" ? "test" : amount
+                  } ${token.label} at`}
                 >
                   <WhatsappIcon size={30} round />
                 </WhatsappShareButton>
@@ -143,7 +145,9 @@ export const Share: React.FC<{
               <div className="mr-2 flex items-center">
                 <TelegramShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, can you please send me ${amount} ${token.label} at`}
+                  title={`Hey, can you please send me ${
+                    amount == "allowPayerSelectAmount" ? "some" : amount
+                  } ${token.label} at`}
                 >
                   <TelegramIcon size={30} round />
                 </TelegramShareButton>
@@ -151,7 +155,9 @@ export const Share: React.FC<{
               <div className="flex items-center">
                 <TwitterShareButton
                   url={`${baseUrl}${path}`}
-                  title={`Hey, can you please send me ${amount} ${token.label} at`}
+                  title={`Hey, can you please send me ${
+                    amount == "allowPayerSelectAmount" ? "some" : amount
+                  } ${token.label} at`}
                 >
                   <TwitterIcon size={30} round />
                 </TwitterShareButton>
