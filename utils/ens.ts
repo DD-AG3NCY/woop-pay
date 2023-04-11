@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
 
+const key = process.env.NEXT_PUBLIC_INFURA_KEY;
 const provider = new ethers.providers.JsonRpcProvider(
-  "https://mainnet.infura.io/v3/d1ebc1ce4cf44962ab153dd5b95a2017",
+  `https://mainnet.infura.io/v3/${key}`,
   {
     chainId: 1,
     name: "homestead",
