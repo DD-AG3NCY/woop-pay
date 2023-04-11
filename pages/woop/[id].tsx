@@ -24,6 +24,7 @@ import {
 } from "../../utils/constants";
 import { sendNotification } from "../../utils/push";
 import { event } from "../../utils/ga";
+import { getEnsName } from "../../utils/ens";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
@@ -48,6 +49,7 @@ const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.001");
   const [recipient, setRecipient] = React.useState<string>("");
+  const [ensName, setEnsName] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [networkName, setNetworkName] = React.useState<string>("");
   const [allowPayerSelectAmount, setAllowPayerSelectAmount] =
@@ -85,7 +87,6 @@ const Request = () => {
         const amount: string = (
           Number("0.001") / Number(10 ** (18 - json.decimals))
         ).toFixed(18);
-        console.log(amount);
         setAmount(amount);
       } else {
         if (json.decimals != 18) {
@@ -93,10 +94,8 @@ const Request = () => {
             Number(json.value) / Number(10 ** (18 - json.decimals))
           ).toFixed(18);
           setAmount(amount);
-          console.log(amount);
         } else {
           setAmount(json.value);
-          console.log(json.value);
         }
       }
 
@@ -104,6 +103,12 @@ const Request = () => {
       if (tokenName == "ETH" || tokenName == "MATIC") {
         setIsNativeTx(true);
       }
+
+      const recipient = await getEnsName(json.from);
+      if (recipient) {
+        setEnsName(recipient);
+      }
+
       event({
         action: "visit_woop_payment",
         category: json.networkName,
@@ -507,7 +512,12 @@ const Request = () => {
                         className="underline underline-offset-4"
                         href={`${setEtherscanAddress(network, request?.from)}`}
                       >
-                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                        {ensName
+                          ? ensName
+                          : `${request?.from.slice(
+                              0,
+                              4
+                            )}...${request?.from.slice(-4)}`}
                       </a>
                       {" requested to set an amount:"}
                     </p>
