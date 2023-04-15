@@ -106,8 +106,8 @@ const Request = () => {
       }
 
       const recipient = await getEnsName(
-        "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-        //json.from
+        //"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+        json.from
       );
       if (recipient) {
         setEnsName(recipient);
