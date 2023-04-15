@@ -420,13 +420,13 @@ const Request = () => {
                         {ensName ? (
                           <p className="flex items-center">
                             <span className="mr-1 font-bold">{ensName}</span>
-                            <Image
+                            {/* <Image
                               alt="ens"
                               src={ens}
                               className=""
                               width={20}
                               height={20}
-                            />
+                            /> */}
                           </p>
                         ) : (
                           <span className="font-bold">
