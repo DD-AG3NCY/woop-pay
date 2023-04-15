@@ -118,7 +118,7 @@ export const setEtherscanAddress = (
     return `https://goerli.etherscan.io/address/${address}`;
   } else if (network == "optimism") {
     return `https://optimistic.etherscan.io/address/${address}`;
-  } else if (network == "mainnet") {
+  } else if (network == "homestead") {
     return `https://etherscan.io/address/${address}`;
   } else if (network == "matic") {
     return `https://polygonscan.com/address/${address}`;

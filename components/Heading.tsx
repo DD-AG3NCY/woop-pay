@@ -28,7 +28,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
   }, [address]);
 
   return (
-    <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-30">
+    <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-30 items-center">
       <Link href={"/"}>
         <div>
           <Image
@@ -45,13 +45,6 @@ const Header: React.FC<IHeaderProps> = (props) => {
             height={40}
             className={cx("md:hidden")}
           />
-          <p
-            className={cx(
-              styles.image,
-              "font-base hidden md:block text-xs text-white mt-2 ml-1 opacity-60"
-            )}>
-            Web 3 payments made simple
-          </p>
         </div>
       </Link>
 

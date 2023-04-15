@@ -1,5 +1,6 @@
 import * as React from "react";
 import Image from "next/image";
+// import ens from "../../public/ens.png";
 import { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
@@ -24,6 +25,7 @@ import {
 } from "../../utils/constants";
 import { sendNotification } from "../../utils/push";
 import { event } from "../../utils/ga";
+import { getEnsName } from "../../utils/ens";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
@@ -48,6 +50,7 @@ const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.001");
   const [recipient, setRecipient] = React.useState<string>("");
+  const [ensName, setEnsName] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [networkName, setNetworkName] = React.useState<string>("");
   const [allowPayerSelectAmount, setAllowPayerSelectAmount] =
@@ -85,7 +88,6 @@ const Request = () => {
         const amount: string = (
           Number("0.001") / Number(10 ** (18 - json.decimals))
         ).toFixed(18);
-        console.log(amount);
         setAmount(amount);
       } else {
         if (json.decimals != 18) {
@@ -93,10 +95,8 @@ const Request = () => {
             Number(json.value) / Number(10 ** (18 - json.decimals))
           ).toFixed(18);
           setAmount(amount);
-          console.log(amount);
         } else {
           setAmount(json.value);
-          console.log(json.value);
         }
       }
 
@@ -104,6 +104,15 @@ const Request = () => {
       if (tokenName == "ETH" || tokenName == "MATIC") {
         setIsNativeTx(true);
       }
+
+      const recipient = await getEnsName(
+        //"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+        json.from
+      );
+      if (recipient) {
+        setEnsName(recipient);
+      }
+
       event({
         action: "visit_woop_payment",
         category: json.networkName,
@@ -403,14 +412,30 @@ const Request = () => {
                     <div className="absolute top-0 right-3 p-1">
                       {request && findIcon(request?.tokenName)}
                     </div>
-                    <p className="text-xs text-slate-300 mb-2">
+                    <p className="text-xs text-slate-300 mb-2 flex items-center">
                       <a
                         className="underline underline-offset-4"
                         href={`${setEtherscanAddress(network, request?.from)}`}
                       >
-                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                        {ensName ? (
+                          <p className="flex items-center">
+                            <span className="mr-1 font-bold">{ensName}</span>
+                            {/* <Image
+                              alt="ens"
+                              src={ens}
+                              className=""
+                              width={20}
+                              height={20}
+                            /> */}
+                          </p>
+                        ) : (
+                          <span className="font-bold">
+                            {request?.from.slice(0, 4)}...
+                            {request?.from.slice(-4)}
+                          </span>
+                        )}
                       </a>
-                      {" requested:"}
+                      <span className="ml-1">{"requested:"}</span>
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
                       {request?.value == "allowPayerSelectAmount"
@@ -442,15 +467,34 @@ const Request = () => {
                           : Number(amount) * 10 ** 12}{" "}
                         {request?.tokenName}
                       </p>
-                      <p className="text-xs text-slate-300 mb-2">
+                      <p className="text-xs text-slate-300 mb-2 text-center">
                         <a
-                          className="underline underline-offset-4"
-                          href={`${setEtherscanBase(network, data?.hash)}`}
+                          className="underline underline-offset-4 mr-1"
+                          href={`${setEtherscanBase(
+                            network,
+                            dataNative?.hash
+                          )}`}
                         >
                           sent
                         </a>
-                        {" to "}
-                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                        <span className="mr-1">{"to"}</span>
+                        {ensName ? (
+                          <a>
+                            <span className="mr-1 font-bold">{ensName}</span>
+                            {/* <Image
+                              alt="ens"
+                              src={ens}
+                              className=""
+                              width={20}
+                              height={20}
+                            /> */}
+                          </a>
+                        ) : (
+                          <span className="font-bold">
+                            {request?.from.slice(0, 4)}...
+                            {request?.from.slice(-4)}
+                          </span>
+                        )}
                       </p>
                     </div>
                     <Link href="/">
@@ -471,9 +515,9 @@ const Request = () => {
                       <p className="font-bold md:text-5xl text-4xl mb-2">
                         {amount} {request?.tokenName}
                       </p>
-                      <p className="text-xs text-slate-300 mb-2">
+                      <p className="text-xs text-slate-300 mb-2 text-center">
                         <a
-                          className="underline underline-offset-4"
+                          className="underline underline-offset-4 mr-1"
                           href={`${setEtherscanBase(
                             network,
                             dataNative?.hash
@@ -481,8 +525,24 @@ const Request = () => {
                         >
                           sent
                         </a>
-                        {" to "}
-                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                        <span className="mr-1">{"to"}</span>
+                        {ensName ? (
+                          <a>
+                            <span className="mr-1 font-bold">{ensName}</span>
+                            {/* <Image
+                              alt="ens"
+                              src={ens}
+                              className=""
+                              width={20}
+                              height={20}
+                            /> */}
+                          </a>
+                        ) : (
+                          <span className="font-bold">
+                            {request?.from.slice(0, 4)}...
+                            {request?.from.slice(-4)}
+                          </span>
+                        )}
                       </p>
                     </div>
                     <Link href="/">
@@ -502,15 +562,33 @@ const Request = () => {
                     <div className="absolute top-0 right-3 p-1">
                       {request && findIcon(request?.tokenName)}
                     </div>
-                    <p className="text-xs text-slate-300 mb-2">
+                    <div className="text-xs text-slate-300 mb-2 flex items-center">
                       <a
                         className="underline underline-offset-4"
                         href={`${setEtherscanAddress(network, request?.from)}`}
                       >
-                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                        {ensName ? (
+                          <p className="flex items-center">
+                            <span className="font-bold">{ensName}</span>
+                            {/* <Image
+                              alt="ens"
+                              src={ens}
+                              className=""
+                              width={20}
+                              height={20}
+                            /> */}
+                          </p>
+                        ) : (
+                          <span className="font-bold">
+                            {request?.from.slice(0, 4)}...
+                            {request?.from.slice(-4)}
+                          </span>
+                        )}
                       </a>
-                      {" requested to set an amount:"}
-                    </p>
+                      <span className="ml-1">
+                        {"requested to set an amount:"}
+                      </span>
+                    </div>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6 text-center items-center">
                       <input
                         className="bg-transparent text-white text-center focus:outline-none mr-1"
@@ -588,14 +666,30 @@ const Request = () => {
                     <div className="absolute top-0 right-3 p-1">
                       {request && findIcon(request?.tokenName)}
                     </div>
-                    <p className="text-xs text-slate-300 mb-2">
+                    <p className="text-xs text-slate-300 mb-2 flex items-center">
                       <a
                         className="underline underline-offset-4"
                         href={`${setEtherscanAddress(network, request?.from)}`}
                       >
-                        {request?.from.slice(0, 4)}...{request?.from.slice(-4)}
+                        {ensName ? (
+                          <p className="flex items-center">
+                            <span className="font-bold">{ensName}</span>
+                            {/* <Image
+                              alt="ens"
+                              src={ens}
+                              className=""
+                              width={20}
+                              height={20}
+                            /> */}
+                          </p>
+                        ) : (
+                          <span className="font-bold">
+                            {request?.from.slice(0, 4)}...
+                            {request?.from.slice(-4)}
+                          </span>
+                        )}
                       </a>
-                      {" requested:"}
+                      <span className="ml-1">{"requested:"}</span>
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
                       {request?.value} {request?.tokenName}
