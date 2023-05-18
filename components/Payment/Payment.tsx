@@ -31,6 +31,7 @@ export default function Payment(props: any) {
     matic: string;
   }>(tokensDetails[0]);
   const [amount, setAmount] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
@@ -51,6 +52,10 @@ export default function Payment(props: any) {
     setAmount(event.target.value as string);
   };
 
+  const handleDescriptionChange = (event: any) => {
+    setDescription(event.target.value as string);
+  };
+
   //main functions
   const createRequest = async () => {
     setBadRequest("");
@@ -66,6 +71,7 @@ export default function Payment(props: any) {
           version: "1.0.0",
           from: address,
           value: amount,
+          description: description,
           decimals: selectTokenDecimals(selectedToken.label),
           network: chain?.network,
           networkName: chain?.name,
@@ -109,7 +115,6 @@ export default function Payment(props: any) {
   React.useEffect(() => {
     if (allowPayerSelectAmount) {
       setAmount("allowPayerSelectAmount");
-      console.log(amount);
     }
   }, [allowPayerSelectAmount]);
 
@@ -212,6 +217,18 @@ export default function Payment(props: any) {
             ></input>
           )}
 
+          <input
+            autoFocus={isConnected}
+            className={cx(
+              styles.mainInput,
+              "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+            )}
+            type="string"
+            placeholder="What's this for?"
+            value={description}
+            onChange={handleDescriptionChange}
+          ></input>
+
           <button
             type="button"
             style={{
@@ -303,6 +320,7 @@ export default function Payment(props: any) {
               visibility={setIsShareActive}
               path={path}
               amount={amount}
+              description={description}
               token={selectedToken}
             />
           </div>
