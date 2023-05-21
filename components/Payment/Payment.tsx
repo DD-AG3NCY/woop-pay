@@ -16,6 +16,7 @@ import {
   selectToken,
   selectTokenDecimals,
   tokensDetails,
+  MAX_CHARACTER_LIMIT,
 } from "../../utils/constants";
 import { event } from "../../utils/ga";
 
@@ -32,6 +33,8 @@ export default function Payment(props: any) {
   }>(tokensDetails[0]);
   const [amount, setAmount] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
+  const [characterCount, setCharacterCount] = useState(MAX_CHARACTER_LIMIT);
+  const [previousDescription, setPreviousDescription] = useState("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
@@ -53,7 +56,13 @@ export default function Payment(props: any) {
   };
 
   const handleDescriptionChange = (event: any) => {
-    setDescription(event.target.value as string);
+    //setDescription(event.target.value as string);
+
+    const inputDescription = event.target.value as string;
+    if (inputDescription.length <= MAX_CHARACTER_LIMIT) {
+      setDescription(inputDescription);
+      setCharacterCount(MAX_CHARACTER_LIMIT - inputDescription.length);
+    }
   };
 
   //main functions
@@ -217,17 +226,23 @@ export default function Payment(props: any) {
             ></input>
           )}
 
-          <input
-            autoFocus={isConnected}
-            className={cx(
-              styles.mainInput,
-              "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
-            )}
-            type="string"
-            placeholder="What's this for?"
-            value={description}
-            onChange={handleDescriptionChange}
-          ></input>
+          <div className="relative">
+            <input
+              autoFocus={isConnected}
+              className={cx(
+                styles.mainInput,
+                "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+              )}
+              type="text"
+              placeholder="What's this for?"
+              value={description}
+              onChange={handleDescriptionChange}
+              maxLength={MAX_CHARACTER_LIMIT}
+            />
+            <div className="absolute right-3 bottom-4 text-white text-[7px]">
+              {characterCount}
+            </div>
+          </div>
 
           <button
             type="button"

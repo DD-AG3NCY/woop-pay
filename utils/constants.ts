@@ -131,6 +131,8 @@ export const baseUrl: string = "https://wooppay.xyz/woop/";
 
 export const pushUrl: string = "https://staging.push.org/#/inbox";
 
+export const MAX_CHARACTER_LIMIT: number = 30;
+
 export const networks: any = [
   "goerli",
   "homestead",
