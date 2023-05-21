@@ -50,6 +50,7 @@ const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.001");
   const [recipient, setRecipient] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
   const [ensName, setEnsName] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [networkName, setNetworkName] = React.useState<string>("");
@@ -82,6 +83,7 @@ const Request = () => {
       setRecipient(json.from);
       setNetwork(json.network);
       setNetworkName(json.networkName);
+      setDescription(json.description);
 
       if (json.value == "allowPayerSelectAmount") {
         setAllowPayerSelectAmount(true);
