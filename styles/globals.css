@@ -44,6 +44,10 @@ input[type="number"]::-webkit-outer-spin-button {
   background: #b0b0b0;
 }
 
+.placeholder-text-xs::placeholder {
+  font-size: 20px; /* Adjust the font size as needed */
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
