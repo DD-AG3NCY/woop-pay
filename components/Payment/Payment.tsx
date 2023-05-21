@@ -290,7 +290,7 @@ export default function Payment(props: any) {
         <button
           type="button"
           className={cx(
-            "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700 mt-9"
+            "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white hover:border-white hover:bg-white hover:text-slate-700 mt-12"
           )}
           onClick={isConnected ? createRequest : openConnectModal}
         >
@@ -313,7 +313,7 @@ export default function Payment(props: any) {
               </svg>
             </>
           ) : isConnected ? (
-            "Create a Woop"
+            "Create Woop"
           ) : (
             "Connect Wallet"
           )}
