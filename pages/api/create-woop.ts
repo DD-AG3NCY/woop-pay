@@ -5,6 +5,7 @@ import {
   selectTokenDecimals,
   tokens,
   networks,
+  MAX_CHARACTER_LIMIT,
 } from "../../utils/constants";
 import { ethers } from "ethers";
 
@@ -12,7 +13,7 @@ export default async function createRequest(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { fromAddress, tokenName, networkName, amount } = req.body;
+  const { fromAddress, tokenName, networkName, amount, description } = req.body;
 
   // Check that only POST methods are sent
   if (req.method !== "POST") {
@@ -24,6 +25,13 @@ export default async function createRequest(
     return res
       .status(400)
       .send({ error: "Missing required fields in payload" });
+  }
+
+  // Check if the description field exceeds the maximum character limit
+  if (description && description.length > MAX_CHARACTER_LIMIT) {
+    return res.status(400).send({
+      error: `Description field should not exceed ${MAX_CHARACTER_LIMIT} characters`,
+    });
   }
 
   // Check if address is a valid ethereum address
@@ -53,6 +61,7 @@ export default async function createRequest(
       version: "1.0.0",
       from: String(fromAddress),
       value: String(amount),
+      description: `${description ? String(description) : ""}`,
       decimals: String(selectTokenDecimals(tokenName)),
       network: String(networkName),
       networkName: String(networkName),
