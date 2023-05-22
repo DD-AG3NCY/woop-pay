@@ -110,7 +110,7 @@ export default function Notification() {
         >
           <div className={styles.notificationTable}>
             <div className="font-bold text-slate-500 border-b-2 border-slate-300 py-4 px-4 font-base text-xl mb-5 flex justify-between items-center">
-              <p className="pl-2">Received Woops</p>
+              <p className="pl-2">Woop Payments</p>
               <div className="text-center">
                 {!isMainnet ? (
                   <></>

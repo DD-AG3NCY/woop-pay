@@ -70,9 +70,9 @@ export default function Payment(props: any) {
     setBadRequest("");
 
     if (amount == "0") {
-      setBadRequest("You cannot create a WOOP with amount equal to zero");
+      setBadRequest("The requested amount must be higher than zero");
     } else if (amount == "") {
-      setBadRequest("You cannot create a WOOP with amount equal to zero");
+      setBadRequest("The requested amount must be higher than zero");
     } else {
       try {
         setIpfsLoading(true);
@@ -206,7 +206,7 @@ export default function Payment(props: any) {
               autoFocus={isConnected}
               className={cx(
                 styles.mainInput,
-                "border-white rounded-xl border font-medium text-3l focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+                "border-white rounded-xl border font-medium text-3l focus:outline-0 focus:white w-full h-16 mb-2 font-sans text-white bg-transparent pl-4"
               )}
               placeholder="Payer sets an amount"
               value={"Payer sets an amount"}
@@ -278,7 +278,7 @@ export default function Payment(props: any) {
               autoFocus={isConnected}
               className={cx(
                 styles.mainInput,
-                "border-white rounded-xl border font-medium text-2xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+                "border-white rounded-xl border font-medium text-[22px] focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
               )}
               type="text"
               placeholder="coffee ☕"
