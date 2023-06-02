@@ -7,16 +7,17 @@ export default function Footer() {
   return (
     <footer className="flex justify-center md:justify-between p-5 font-base text-sm text-white opacity-70">
       <div className="hidden md:flex">
-        <Link href="/policy" className="mr-3" target="_blank">
+        <Link href="/policy" className="mr-3" target="_blank" rel="noreferrer">
           <p>Privacy policy</p>
         </Link>
-        <Link href="/terms" className="mr-3" target="_blank">
+        <Link href="/terms" className="mr-3" target="_blank" rel="noreferrer">
           <p>Terms & conditions</p>
         </Link>
         <Link
           href="https://medium.com/@alessandromaci/woop-pay-simplifying-cryptocurrency-payment-requests-63e3bff2531d"
           className="mr-3"
           target="_blank"
+          rel="noreferrer"
         >
           <p>About</p>
         </Link>
@@ -26,6 +27,7 @@ export default function Footer() {
           href="https://9n0ejb90nk6.typeform.com/to/YHsYaII6"
           className="mr-3 hover:underline underline-offset-4 text-white"
           target="_blank"
+          rel="noreferrer"
         >
           You can share your feedback here!
         </Link>
