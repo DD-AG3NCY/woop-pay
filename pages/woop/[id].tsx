@@ -261,6 +261,7 @@ const Request = () => {
           address,
           networkName,
           amount,
+          description,
           request,
           etherscanLink
         );
@@ -281,6 +282,7 @@ const Request = () => {
           address,
           networkName,
           amount,
+          description,
           request,
           etherscanLink
         );
