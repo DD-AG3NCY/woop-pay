@@ -34,7 +34,6 @@ export default function Payment(props: any) {
   const [amount, setAmount] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
   const [characterCount, setCharacterCount] = useState(MAX_CHARACTER_LIMIT);
-  const [previousDescription, setPreviousDescription] = useState("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
