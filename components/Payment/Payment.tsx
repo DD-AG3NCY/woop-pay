@@ -269,9 +269,9 @@ export default function Payment(props: any) {
             </div>
           </label>
 
-          <p className="font-medium font-base text-sm text-white mt-12 mb-2 pl-2">
+          {/* <p className="font-medium font-base text-sm text-white mt-12 mb-2 pl-2">
             <span>What's this for?</span>
-          </p>
+          </p> */}
 
           <div className="relative">
             <input
