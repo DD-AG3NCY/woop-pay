@@ -16,6 +16,7 @@ import {
   selectToken,
   selectTokenDecimals,
   tokensDetails,
+  MAX_CHARACTER_LIMIT,
 } from "../../utils/constants";
 import { event } from "../../utils/ga";
 
@@ -31,6 +32,9 @@ export default function Payment(props: any) {
     matic: string;
   }>(tokensDetails[0]);
   const [amount, setAmount] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
+  const [characterCount, setCharacterCount] = useState(MAX_CHARACTER_LIMIT);
+  const [previousDescription, setPreviousDescription] = useState("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
@@ -51,14 +55,24 @@ export default function Payment(props: any) {
     setAmount(event.target.value as string);
   };
 
+  const handleDescriptionChange = (event: any) => {
+    //setDescription(event.target.value as string);
+
+    const inputDescription = event.target.value as string;
+    if (inputDescription.length <= MAX_CHARACTER_LIMIT) {
+      setDescription(inputDescription);
+      setCharacterCount(MAX_CHARACTER_LIMIT - inputDescription.length);
+    }
+  };
+
   //main functions
   const createRequest = async () => {
     setBadRequest("");
 
     if (amount == "0") {
-      setBadRequest("You cannot create a WOOP with amount equal to zero");
+      setBadRequest("The requested amount must be higher than zero");
     } else if (amount == "") {
-      setBadRequest("You cannot create a WOOP with amount equal to zero");
+      setBadRequest("The requested amount must be higher than zero");
     } else {
       try {
         setIpfsLoading(true);
@@ -66,6 +80,7 @@ export default function Payment(props: any) {
           version: "1.0.0",
           from: address,
           value: amount,
+          description: description,
           decimals: selectTokenDecimals(selectedToken.label),
           network: chain?.network,
           networkName: chain?.name,
@@ -109,7 +124,6 @@ export default function Payment(props: any) {
   React.useEffect(() => {
     if (allowPayerSelectAmount) {
       setAmount("allowPayerSelectAmount");
-      console.log(amount);
     }
   }, [allowPayerSelectAmount]);
 
@@ -133,7 +147,7 @@ export default function Payment(props: any) {
           ></div>
           <div className="z-20 bg-white rounded-xl shadow-xl py-2 px-2 md:w-80 w-full m-5">
             <p className="font-base font-semibold text-slate-700 pl-4 pb-3 pt-2 border-b mb-3">
-              Select a token:
+              Select a token
             </p>
             {tokensDetails
               .filter((token) => {
@@ -180,9 +194,10 @@ export default function Payment(props: any) {
         <div className="absolute left-2 -top-16 mb-2">
           <ErrorsUi errorMsg={badRequest} errorNtk={""} />
         </div>
+
         <p className="font-medium font-base text-sm text-white mb-2 pl-2">
-          <span className="md:block hidden">Select the amount to request:</span>
-          <span className="md:hidden">Requesting:</span>
+          <span className="md:block hidden">Select amount to request</span>
+          <span className="md:hidden">Requesting</span>
         </p>
 
         <div className="relative">
@@ -191,7 +206,7 @@ export default function Payment(props: any) {
               autoFocus={isConnected}
               className={cx(
                 styles.mainInput,
-                "border-white rounded-xl border font-medium text-3l focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+                "border-white rounded-xl border font-medium text-3l focus:outline-0 focus:white w-full h-16 mb-2 font-sans text-white bg-transparent pl-4"
               )}
               placeholder="Payer sets an amount"
               value={"Payer sets an amount"}
@@ -202,7 +217,7 @@ export default function Payment(props: any) {
               autoFocus={isConnected}
               className={cx(
                 styles.mainInput,
-                "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+                "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-2 font-sans text-white bg-transparent pl-4"
               )}
               type="number"
               step="0.000000"
@@ -237,11 +252,54 @@ export default function Payment(props: any) {
               </span>
             </div>
           </button>
+
+          <label className="flex items-center font-base text-sm text-white pl-2">
+            <span className="mr-3 ">Let payer choose the amount</span>
+            <div
+              className={`w-8 h-4 bg-gray-400 rounded-full cursor-pointer ${
+                allowPayerSelectAmount ? "bg-green-500" : ""
+              }`}
+              onClick={() => setAllowPayerSelectAmount(!allowPayerSelectAmount)}
+            >
+              <div
+                className={`w-4 h-4 bg-white rounded-full shadow-md transform duration-300 ease-in-out ${
+                  allowPayerSelectAmount ? "translate-x-4" : ""
+                }`}
+              ></div>
+            </div>
+          </label>
+
+          {/* <p className="font-medium font-base text-sm text-white mt-12 mb-2 pl-2">
+            <span>What's this for?</span>
+          </p> */}
+
+          <div className="font-medium font-base text-sm text-white mt-12 mb-2 pl-2">
+            {`What's this for?`}
+          </div>
+
+          <div className="relative">
+            <input
+              autoFocus={isConnected}
+              className={cx(
+                styles.mainInput,
+                "border-white rounded-xl border font-medium text-[22px] focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+              )}
+              type="text"
+              placeholder="coffee ☕"
+              value={description}
+              onChange={handleDescriptionChange}
+              maxLength={MAX_CHARACTER_LIMIT}
+            />
+            <div className="absolute right-3 bottom-4 text-white text-[8px]">
+              {characterCount}
+            </div>
+          </div>
         </div>
+
         <button
           type="button"
           className={cx(
-            "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
+            "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white hover:border-white hover:bg-white hover:text-slate-700 mt-12"
           )}
           onClick={isConnected ? createRequest : openConnectModal}
         >
@@ -264,27 +322,11 @@ export default function Payment(props: any) {
               </svg>
             </>
           ) : isConnected ? (
-            "Create a Woop"
+            "Create Woop"
           ) : (
             "Connect Wallet"
           )}
         </button>
-
-        <label className="flex items-center font-base text-sm text-white mt-3 pl-2">
-          <span className="mr-3 ">Let payer choose the amount</span>
-          <div
-            className={`w-8 h-4 bg-gray-400 rounded-full cursor-pointer ${
-              allowPayerSelectAmount ? "bg-green-500" : ""
-            }`}
-            onClick={() => setAllowPayerSelectAmount(!allowPayerSelectAmount)}
-          >
-            <div
-              className={`w-4 h-4 bg-white rounded-full shadow-md transform duration-300 ease-in-out ${
-                allowPayerSelectAmount ? "translate-x-4" : ""
-              }`}
-            ></div>
-          </div>
-        </label>
       </div>
 
       {isShareActive && (
@@ -303,6 +345,7 @@ export default function Payment(props: any) {
               visibility={setIsShareActive}
               path={path}
               amount={amount}
+              description={description}
               token={selectedToken}
             />
           </div>

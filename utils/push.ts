@@ -21,6 +21,7 @@ export const sendNotification = async (
   sender: string | undefined,
   networkName: string,
   amount: string,
+  description: string,
   request: Request,
   etherscanLink: any
 ) => {
@@ -41,9 +42,9 @@ export const sendNotification = async (
         title: `Woop Payment Received`,
         body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
           -4
-        )} paid ${amount} ${
-          request.tokenName
-        } on network ${networkName}. Thanks for using Woop Pay`,
+        )} paid ${amount} ${request.tokenName} on network ${networkName}${
+          description ? ` for ${description}` : ""
+        }`,
         cta: "",
         img: "",
       },

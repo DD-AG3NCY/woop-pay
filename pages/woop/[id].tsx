@@ -50,6 +50,7 @@ const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.001");
   const [recipient, setRecipient] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
   const [ensName, setEnsName] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
   const [networkName, setNetworkName] = React.useState<string>("");
@@ -82,6 +83,7 @@ const Request = () => {
       setRecipient(json.from);
       setNetwork(json.network);
       setNetworkName(json.networkName);
+      setDescription(json.description);
 
       if (json.value == "allowPayerSelectAmount") {
         setAllowPayerSelectAmount(true);
@@ -259,6 +261,7 @@ const Request = () => {
           address,
           networkName,
           amount,
+          description,
           request,
           etherscanLink
         );
@@ -279,6 +282,7 @@ const Request = () => {
           address,
           networkName,
           amount,
+          description,
           request,
           etherscanLink
         );
@@ -367,7 +371,7 @@ const Request = () => {
               <div
                 className={cx(
                   styles.topContainer,
-                  "mb-2 pl-6 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
+                  "mb-2 pl-4 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
                 )}
               >
                 <p className="font-base font-bold text-xl">
@@ -376,10 +380,20 @@ const Request = () => {
                     : isNativeTx
                     ? isSuccessNative
                       ? "Woop sent!"
-                      : "Payment requested! "
+                      : description
+                      ? `${
+                          description.charAt(0).toUpperCase() +
+                          description.slice(1)
+                        }`
+                      : "Payment requested!"
                     : isSuccess
                     ? "Woop sent!"
-                    : "Payment requested! "}
+                    : description
+                    ? `${
+                        description.charAt(0).toUpperCase() +
+                        description.slice(1)
+                      }`
+                    : "Payment requested!"}
                 </p>
                 <p className="text-3xl ml-2">
                   {badRequest

@@ -17,10 +17,11 @@ import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
 export const Share: React.FC<{
   path: string;
   amount: string;
+  description: string;
   token: any;
   visibility: any;
 }> = (props) => {
-  const { amount, path, token, visibility } = props;
+  const { amount, description, path, token, visibility } = props;
   const [copySuccess, setCopySuccess] = React.useState(false);
 
   const qrContainer = useRef<any>();
@@ -102,7 +103,7 @@ export const Share: React.FC<{
                   navigator
                     .share({
                       title: "Woop Pay",
-                      text: `Hey, can you please send me ${amount} ${token.label} at`,
+                      text: `Hey, can you please send me ${amount} ${token.label} for ${description} at`,
                       url: `${baseUrl}${path}`,
                     })
                     .then(() => console.log("Successful share"))
@@ -136,8 +137,8 @@ export const Share: React.FC<{
                 <WhatsappShareButton
                   url={`${baseUrl}${path}`}
                   title={`Hey, can you please send me ${
-                    amount == "allowPayerSelectAmount" ? "test" : amount
-                  } ${token.label} at`}
+                    amount == "allowPayerSelectAmount" ? "some" : amount
+                  } ${token.label} for ${description} at`}
                 >
                   <WhatsappIcon size={30} round />
                 </WhatsappShareButton>
@@ -147,7 +148,7 @@ export const Share: React.FC<{
                   url={`${baseUrl}${path}`}
                   title={`Hey, can you please send me ${
                     amount == "allowPayerSelectAmount" ? "some" : amount
-                  } ${token.label} at`}
+                  } ${token.label} for ${description} at`}
                 >
                   <TelegramIcon size={30} round />
                 </TelegramShareButton>
@@ -157,7 +158,7 @@ export const Share: React.FC<{
                   url={`${baseUrl}${path}`}
                   title={`Hey, can you please send me ${
                     amount == "allowPayerSelectAmount" ? "some" : amount
-                  } ${token.label} at`}
+                  } ${token.label} for ${description} at`}
                 >
                   <TwitterIcon size={30} round />
                 </TwitterShareButton>
