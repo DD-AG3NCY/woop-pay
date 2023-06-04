@@ -241,9 +241,7 @@ export default function Payment(props: any) {
             </div>
           </label>
 
-          <p className="">
-            <span>What's this for?</span>
-          </p>
+          <p className="">What's this for?</p>
 
           <div className="relative">
             <input
