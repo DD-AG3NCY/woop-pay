@@ -194,6 +194,7 @@ export default function Payment(props: any) {
         <div className="absolute left-2 -top-16 mb-2">
           <ErrorsUi errorMsg={badRequest} errorNtk={""} />
         </div>
+
         <p className="font-medium font-base text-sm text-white mb-2 pl-2">
           <span className="md:block hidden">Select amount to request</span>
           <span className="md:hidden">Requesting</span>
@@ -216,7 +217,7 @@ export default function Payment(props: any) {
               autoFocus={isConnected}
               className={cx(
                 styles.mainInput,
-                "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
+                "border-white rounded-xl border font-medium text-3xl focus:outline-0 focus:white w-full h-16 mb-2 font-sans text-white bg-transparent pl-4"
               )}
               type="number"
               step="0.000000"
@@ -225,40 +226,6 @@ export default function Payment(props: any) {
               onChange={handleAmountChange}
             ></input>
           )}
-
-          <div className="relative">
-            <input
-              autoFocus={isConnected}
-              className={cx(
-                styles.mainInput,
-                "border-white rounded-xl border font-medium text-2xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
-              )}
-              type="text"
-              placeholder="What's this for?"
-              value={description}
-              onChange={handleDescriptionChange}
-              maxLength={MAX_CHARACTER_LIMIT}
-            />
-            <div className="absolute right-3 bottom-4 text-white text-[7px]">
-              {characterCount}
-            </div>
-          </div>
-
-          <label className="flex items-center font-base text-sm text-white pl-2">
-            <span className="mr-3 ">Let payer choose the amount</span>
-            <div
-              className={`w-8 h-4 bg-gray-400 rounded-full cursor-pointer ${
-                allowPayerSelectAmount ? "bg-green-500" : ""
-              }`}
-              onClick={() => setAllowPayerSelectAmount(!allowPayerSelectAmount)}
-            >
-              <div
-                className={`w-4 h-4 bg-white rounded-full shadow-md transform duration-300 ease-in-out ${
-                  allowPayerSelectAmount ? "translate-x-4" : ""
-                }`}
-              ></div>
-            </div>
-          </label>
 
           <button
             type="button"
