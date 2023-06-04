@@ -273,6 +273,10 @@ export default function Payment(props: any) {
             <span>What's this for?</span>
           </p> */}
 
+          <div className="font-medium font-base text-sm text-white mt-12 mb-2 pl-2">
+            {`What's this for?`}
+          </div>
+
           <div className="relative">
             <input
               autoFocus={isConnected}
