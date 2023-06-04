@@ -253,7 +253,7 @@ export default function Payment(props: any) {
                 "border-white rounded-xl border font-medium text-2xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
               )}
               type="text"
-              placeholder="coffee ☕"
+              placeholder="What's this for?"
               value={description}
               onChange={handleDescriptionChange}
               maxLength={MAX_CHARACTER_LIMIT}
