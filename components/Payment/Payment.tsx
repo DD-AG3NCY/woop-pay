@@ -241,8 +241,6 @@ export default function Payment(props: any) {
             </div>
           </label>
 
-          <p className="">What's this for?</p>
-
           <div className="relative">
             <input
               autoFocus={isConnected}
