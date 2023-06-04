@@ -225,7 +225,7 @@ export default function Payment(props: any) {
             ></input>
           )}
 
-          <label className="flex items-center font-base text-sm text-white pl-2">
+          <label className="flex items-center font-base text-sm text-white pl-2 mb-12">
             <span className="mr-3 ">Let payer choose the amount</span>
             <div
               className={`w-8 h-4 bg-gray-400 rounded-full cursor-pointer ${
@@ -241,6 +241,10 @@ export default function Payment(props: any) {
             </div>
           </label>
 
+          <p className="font-medium font-base text-sm text-white mb-2 pl-2">
+            <span>What's this for?</span>
+          </p>
+
           <div className="relative">
             <input
               autoFocus={isConnected}
@@ -249,7 +253,7 @@ export default function Payment(props: any) {
                 "border-white rounded-xl border font-medium text-2xl focus:outline-0 focus:white w-full h-16 mb-3 font-sans text-white bg-transparent pl-4"
               )}
               type="text"
-              placeholder="What's this for?"
+              placeholder="coffee ☕"
               value={description}
               onChange={handleDescriptionChange}
               maxLength={MAX_CHARACTER_LIMIT}
