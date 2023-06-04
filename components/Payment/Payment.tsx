@@ -225,6 +225,22 @@ export default function Payment(props: any) {
             ></input>
           )}
 
+          <label className="flex items-center font-base text-sm text-white pl-2">
+            <span className="mr-3 ">Let payer choose the amount</span>
+            <div
+              className={`w-8 h-4 bg-gray-400 rounded-full cursor-pointer ${
+                allowPayerSelectAmount ? "bg-green-500" : ""
+              }`}
+              onClick={() => setAllowPayerSelectAmount(!allowPayerSelectAmount)}
+            >
+              <div
+                className={`w-4 h-4 bg-white rounded-full shadow-md transform duration-300 ease-in-out ${
+                  allowPayerSelectAmount ? "translate-x-4" : ""
+                }`}
+              ></div>
+            </div>
+          </label>
+
           <div className="relative">
             <input
               autoFocus={isConnected}
@@ -242,22 +258,6 @@ export default function Payment(props: any) {
               {characterCount}
             </div>
           </div>
-
-          <label className="flex items-center font-base text-sm text-white pl-2">
-            <span className="mr-3 ">Let payer choose the amount</span>
-            <div
-              className={`w-8 h-4 bg-gray-400 rounded-full cursor-pointer ${
-                allowPayerSelectAmount ? "bg-green-500" : ""
-              }`}
-              onClick={() => setAllowPayerSelectAmount(!allowPayerSelectAmount)}
-            >
-              <div
-                className={`w-4 h-4 bg-white rounded-full shadow-md transform duration-300 ease-in-out ${
-                  allowPayerSelectAmount ? "translate-x-4" : ""
-                }`}
-              ></div>
-            </div>
-          </label>
 
           <button
             type="button"
