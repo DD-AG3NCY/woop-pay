@@ -3,7 +3,7 @@ import logo from "../public/logo.svg";
 import logoMobile from "../public/icon.svg";
 import Wallet from "./Wallet";
 import styles from "./Wallet.module.scss";
-import Notification from "./Notification/Notification";
+import notificationStyles from "./Notification/notification.module.scss";
 import cx from "classnames";
 import { useAccount } from "wagmi";
 
@@ -49,8 +49,15 @@ const Header: React.FC<IHeaderProps> = (props) => {
       </Link>
 
       <div className="flex">
+        <div className="flex text-black text-center mr-3">
+          <Link
+            href={"/dashboard"}
+            className={cx(notificationStyles.notificationButton)}
+          >
+            Dashboard
+          </Link>
+        </div>
         <Wallet />
-        {showNotification && <Notification />}
       </div>
     </div>
   );
