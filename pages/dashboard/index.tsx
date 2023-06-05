@@ -20,14 +20,12 @@ import ErrorsUi from "../../components/ErrorsUi/ErrorsUi";
 import SEO from "../../components/Seo";
 
 const Dashboard = () => {
-  const [showModal, setShowModal] = React.useState<boolean>(false);
   const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
   const [isMainnet, setIsMainnet] = React.useState<boolean>(false);
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { data: signer } = useSigner();
   const [notifications, setNotifications] = React.useState<any>([]);
-  const modalRef = React.useRef<HTMLDivElement>(null);
 
   const retrieveData = async () => {
     const data = await retrieveNotifications(address);
@@ -54,23 +52,6 @@ const Dashboard = () => {
   //       setIsSubscribed(false);
   //     }
   //   };
-
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        setShowModal(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [modalRef]);
 
   React.useEffect(() => {
     if (chain?.network == "homestead") {
@@ -146,27 +127,36 @@ const Dashboard = () => {
                   <table className="table-auto w-full">
                     <thead>
                       <tr>
-                        <th className="px-4 py-2">Amount</th>
-                        <th className="px-4 py-2">Token</th>
-                        <th className="px-4 py-2">Description</th>
                         <th className="px-4 py-2">Date</th>
+                        <th className="px-4 py-2">Network</th>
+                        <th className="px-4 py-2">Token</th>
+                        <th className="px-4 py-2">Amount</th>
+                        <th className="px-4 py-2">Description</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {notifications.map((notification: any, index: any) => (
-                        <tr key={index}>
-                          <td className="border px-4 py-2">{`test`}</td>
-                          <td className="border px-4 py-2">
-                            {`notification?.`}
-                          </td>
-                          <td className="border px-4 py-2">
-                            {`notification?.notification?.body?.description`}
-                          </td>
-                          <td className="border px-4 py-2">
-                            {`notification?.notification?.body?.date`}
-                          </td>
-                        </tr>
-                      ))}
+                      {notifications
+                        .filter(
+                          (notification: any) =>
+                            notification?.title === "Woop Payment Requested"
+                        )
+                        .map((notification: any, index: any) => (
+                          <tr key={index}>
+                            <td className="border px-4 py-2">{`test`}</td>
+                            <td className="border px-4 py-2">
+                              {`notification?.`}
+                            </td>
+                            <td className="border px-4 py-2">
+                              {`notification?.notification?.body?.description`}
+                            </td>
+                            <td className="border px-4 py-2">
+                              {`notification?.notification?.body?.date`}
+                            </td>
+                            <td className="border px-4 py-2">
+                              {`notification?.notification?.body?.date`}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
