@@ -140,23 +140,31 @@ const Dashboard = () => {
                           (notification: any) =>
                             notification?.title === "Woop Payment Requested"
                         )
-                        .map((notification: any, index: any) => (
-                          <tr key={index}>
-                            <td className="border px-4 py-2">{`test`}</td>
-                            <td className="border px-4 py-2">
-                              {`notification?.`}
-                            </td>
-                            <td className="border px-4 py-2">
-                              {`notification?.notification?.body?.description`}
-                            </td>
-                            <td className="border px-4 py-2">
-                              {`notification?.notification?.body?.date`}
-                            </td>
-                            <td className="border px-4 py-2">
-                              {`notification?.notification?.body?.date`}
-                            </td>
-                          </tr>
-                        ))}
+                        .map((notification: any, index: any) => {
+                          const bodyParts = notification?.message.split(" ");
+                          const date = bodyParts[0];
+                          const time = bodyParts[1];
+                          const networkName = bodyParts[9];
+                          const tokenName = bodyParts[6];
+                          const amount = bodyParts[5];
+                          const description = bodyParts.slice(11).join(" ");
+
+                          return (
+                            <tr key={index}>
+                              <td className="border px-4 py-2">
+                                {`${date} ${time}`}
+                              </td>
+                              <td className="border px-4 py-2">
+                                {networkName}
+                              </td>
+                              <td className="border px-4 py-2">{tokenName}</td>
+                              <td className="border px-4 py-2">{amount}</td>
+                              <td className="border px-4 py-2">
+                                {description}
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>

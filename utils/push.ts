@@ -85,9 +85,7 @@ export const sendNotificationRequest = async (
         title: `Woop Payment Requested`,
         body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
           -4
-        )} requested ${amount} ${tokenName} on network ${networkName}${
-          description ? ` for ${description} at ${woopId}` : ""
-        }`,
+        )} requested ${amount} ${tokenName} on network ${networkName} for ${description} `,
         cta: "",
         img: "",
       },
