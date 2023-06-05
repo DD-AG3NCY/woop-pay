@@ -19,6 +19,7 @@ import {
   MAX_CHARACTER_LIMIT,
 } from "../../utils/constants";
 import { event } from "../../utils/ga";
+import { sendNotificationRequest } from "../../utils/push";
 
 export default function Payment(props: any) {
   const [selectedToken, setSelectedToken] = React.useState<{
@@ -97,7 +98,16 @@ export default function Payment(props: any) {
             value: amount,
           });
         });
+        sendNotificationRequest(
+          address,
+          chain?.name,
+          amount,
+          description,
+          selectedToken.label,
+          path
+        );
         setPath(path);
+
         setIsShareActive(true);
       } catch (error) {
         console.error(error);
