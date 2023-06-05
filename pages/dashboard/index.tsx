@@ -113,9 +113,7 @@ const Dashboard = () => {
                   "mb-2 pl-4 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
                 )}
               >
-                <p className="font-base font-bold text-xl">
-                  {`My Woop Payments`}
-                </p>
+                <p className="font-base font-bold text-xl">{`My Woops 📜`}</p>
               </div>
               <div className="px-4 pb-4 pt-1 relative">
                 <div>
@@ -127,13 +125,24 @@ const Dashboard = () => {
                   <table className="table-auto w-full">
                     <thead>
                       <tr>
-                        <th className="px-4 py-2">Date</th>
-                        <th className="px-4 py-2">Network</th>
-                        <th className="px-4 py-2">Token</th>
-                        <th className="px-4 py-2">Amount</th>
-                        <th className="px-4 py-2">Description</th>
+                        <th className="px-4 py-2 text-left text-black bg-white rounded-l-lg">
+                          Date (UTC)
+                        </th>
+                        <th className="px-4 py-2 text-left text-black bg-white">
+                          Description
+                        </th>
+                        <th className="px-4 py-2 text-left text-black bg-white">
+                          Network
+                        </th>
+                        <th className="px-4 py-2 text-left text-black bg-white">
+                          Amount
+                        </th>
+                        <th className="px-4 py-2 text-left text-black bg-white rounded-r-lg">
+                          Paid?
+                        </th>
                       </tr>
                     </thead>
+
                     <tbody>
                       {notifications
                         .filter(
@@ -151,17 +160,11 @@ const Dashboard = () => {
 
                           return (
                             <tr key={index}>
-                              <td className="border px-4 py-2">
-                                {`${date} ${time}`}
-                              </td>
-                              <td className="border px-4 py-2">
-                                {networkName}
-                              </td>
-                              <td className="border px-4 py-2">{tokenName}</td>
-                              <td className="border px-4 py-2">{amount}</td>
-                              <td className="border px-4 py-2">
-                                {description}
-                              </td>
+                              <td className="px-4 py-2">{`${date} ${time}`}</td>
+                              <td className="px-4 py-2">{description}</td>
+                              <td className="px-4 py-2">{networkName}</td>
+                              <td className="px-4 py-2">{`${amount} ${tokenName}`}</td>
+                              <td className="px-4 py-2 ">Yes</td>
                             </tr>
                           );
                         })}
