@@ -140,7 +140,7 @@ const Dashboard = () => {
                           Amount
                         </th>
                         <th className="px-4 py-2 text-left text-black bg-white rounded-r-lg">
-                          Paid?
+                          Payments
                         </th>
                       </tr>
                     </thead>
@@ -170,10 +170,7 @@ const Dashboard = () => {
                                 {" "}
                                 <button
                                   type="button"
-                                  className={cx(
-                                    styles.notificationButton,
-                                    "flex items-center justify-center shadow-lg"
-                                  )}
+                                  className="flex items-center justify-center shadow-lg"
                                   onClick={() => {
                                     setShowModal(!showModal);
                                     setCurrentWoopId(
@@ -181,7 +178,7 @@ const Dashboard = () => {
                                     );
                                   }}
                                 >
-                                  Yes
+                                  Show details 👀
                                 </button>
                               </td>
                             </tr>
