@@ -23,7 +23,8 @@ export const sendNotification = async (
   amount: string,
   description: string,
   request: Request,
-  etherscanLink: any
+  etherscanLink: any,
+  woopId: any
 ) => {
   try {
     const now = new Date();
@@ -36,16 +37,16 @@ export const sendNotification = async (
       identityType: 2, // direct payload
       notification: {
         title: `Woop Payment Received`,
-        body: `${etherscanLink}`,
+        body: `${woopId}`,
       },
       payload: {
         title: `Woop Payment Received`,
         body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
           -4
-        )} paid ${amount} ${request.tokenName} on network ${networkName}${
-          description ? ` for ${description}` : ""
-        }`,
-        cta: "",
+        )} paid ${amount} ${
+          request.tokenName
+        } on network ${networkName} for ${description}`,
+        cta: `${etherscanLink}`,
         img: "",
       },
       recipients: `eip155:${environmentInteger}:${recipient}`, // recipient address
@@ -85,7 +86,7 @@ export const sendNotificationRequest = async (
         title: `Woop Payment Requested`,
         body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
           -4
-        )} requested ${amount} ${tokenName} on network ${networkName} for ${description} `,
+        )} requested ${amount} ${tokenName} on network ${networkName} for ${description}`,
         cta: "",
         img: "",
       },
