@@ -9,8 +9,6 @@ import {
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import styles from "./dashboard.module.scss";
 import cx from "classnames";
-import bellCrossedIcon from "../../public/bell-close.svg";
-import bellIcon from "../../public/bell-open.svg";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -18,10 +16,13 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Heading";
 import ErrorsUi from "../../components/ErrorsUi/ErrorsUi";
 import SEO from "../../components/Seo";
+import Notification from "../../components/Notification/Notification";
 
 const Dashboard = () => {
   const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
   const [isMainnet, setIsMainnet] = React.useState<boolean>(false);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [currentWoopId, setCurrentWoopId] = React.useState<string>("");
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { data: signer } = useSigner();
@@ -106,6 +107,7 @@ const Dashboard = () => {
               "rounded-3xl shadow-md w-full relative z-20"
             )}
           >
+            {showModal ? <Notification woopId={currentWoopId} /> : <></>}
             <section className="justify-items-left font-base text-white">
               <div
                 className={cx(
@@ -164,7 +166,24 @@ const Dashboard = () => {
                               <td className="px-4 py-2">{description}</td>
                               <td className="px-4 py-2">{networkName}</td>
                               <td className="px-4 py-2">{`${amount} ${tokenName}`}</td>
-                              <td className="px-4 py-2 ">Yes</td>
+                              <td className="px-4 py-2 ">
+                                {" "}
+                                <button
+                                  type="button"
+                                  className={cx(
+                                    styles.notificationButton,
+                                    "flex items-center justify-center shadow-lg"
+                                  )}
+                                  onClick={() => {
+                                    setShowModal(!showModal);
+                                    setCurrentWoopId(
+                                      notification?.notification.body
+                                    );
+                                  }}
+                                >
+                                  Yes
+                                </button>
+                              </td>
                             </tr>
                           );
                         })}
