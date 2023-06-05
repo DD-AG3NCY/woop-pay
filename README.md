@@ -51,7 +51,7 @@ It is possible to integrate Woop Pay with your application by using the Woop Pay
 
 Documentation and examples are available hereç https://documenter.getpostman.com/view/7734029/2s8ZDR7QoS
 
-In case of questions, please send a message to alessandro@wooppay.xyz
+In case of questions, please send a message to hello@wooppay.xyz
 
 ## Production
 
