@@ -6,7 +6,7 @@ import cx from "classnames";
 import Link from "next/link";
 
 export default function Notification(props: any) {
-  const { woopId } = props;
+  const { woopId, setShowModal } = props;
   const { address } = useAccount();
   const [notifications, setNotifications] = React.useState<any>([]);
 
@@ -28,8 +28,9 @@ export default function Notification(props: any) {
         className={cx(styles.notificationModal, "shadow rounded-xl z-30 pb-2")}
       >
         <div className={styles.notificationTable}>
-          <div className="font-bold text-slate-500 border-b-2 border-slate-300 py-4 px-4 font-base text-xl mb-5 flex justify-between items-center">
-            <p className="pl-2">Woop Payments</p>
+          <div className="text-slate-500 border-b-2 border-slate-300 py-4 px-4 mb-5">
+            <p className="pl-2 font-bold">{`Cocktail at the beach (50 DAI)`}</p>
+            <p className="pl-2">1x confirmed</p>
           </div>
           {
             <div className="px-6 h-full">
@@ -59,6 +60,18 @@ export default function Notification(props: any) {
               </div>
             </div>
           }
+          <div className="font-bold text-slate-500 py-4 px-4 font-base flex justify-between items-center">
+            <button className="p-2 border">Copy Payment Link</button>
+            <button
+              type="button"
+              className="p-2 border"
+              onClick={() => {
+                setShowModal(false);
+              }}
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
