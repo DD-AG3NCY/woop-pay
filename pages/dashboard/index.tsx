@@ -107,7 +107,17 @@ const Dashboard = () => {
               "rounded-3xl shadow-md w-full relative z-20"
             )}
           >
-            {showModal ? <Notification woopId={currentWoopId} /> : <></>}
+            {showModal ? (
+              <Notification
+                woopId={currentWoopId}
+                description={currentDescription}
+                amount={currentAmount}
+                tokenName={currentToken}
+                setShowModal={setShowModal}
+              />
+            ) : (
+              <></>
+            )}
             <section className="justify-items-left font-base text-white">
               <div
                 className={cx(
@@ -172,10 +182,13 @@ const Dashboard = () => {
                                   type="button"
                                   className="flex items-center justify-center shadow-lg"
                                   onClick={() => {
-                                    setShowModal(!showModal);
+                                    setShowModal(true);
                                     setCurrentWoopId(
                                       notification?.notification.body
                                     );
+                                    setCurrentAmount(amount);
+                                    setCurrentDescription(description);
+                                    setCurrentToken(tokenName);
                                   }}
                                 >
                                   Show details 👀

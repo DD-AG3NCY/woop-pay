@@ -6,7 +6,7 @@ import cx from "classnames";
 import Link from "next/link";
 
 export default function Notification(props: any) {
-  const { woopId, setShowModal } = props;
+  const { woopId, description, amount, tokenName, setShowModal } = props;
   const { address } = useAccount();
   const [notifications, setNotifications] = React.useState<any>([]);
 
@@ -29,8 +29,8 @@ export default function Notification(props: any) {
       >
         <div className={styles.notificationTable}>
           <div className="text-slate-500 border-b-2 border-slate-300 py-4 px-4 mb-5">
-            <p className="pl-2 font-bold">{`Cocktail at the beach (50 DAI)`}</p>
-            <p className="pl-2">1x confirmed</p>
+            <p className="pl-2 font-bold">{`${description} (${amount} ${tokenName})`}</p>
+            <p className="pl-2">{`${notifications.length}x confirmed`}</p>
           </div>
           {
             <div className="px-6 h-full">
