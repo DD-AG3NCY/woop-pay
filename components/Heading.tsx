@@ -52,7 +52,10 @@ const Header: React.FC<IHeaderProps> = (props) => {
         <div className="flex text-black text-center mr-3">
           <Link
             href={"/dashboard"}
-            className={cx(notificationStyles.notificationButton)}
+            className={cx(
+              notificationStyles.notificationButton,
+              "font-bold flex items-center"
+            )}
           >
             Dashboard
           </Link>
