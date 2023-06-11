@@ -1,4 +1,5 @@
 import * as React from "react";
+import { AiOutlineCopy, AiOutlineClose } from "react-icons/ai";
 import { retrieveNotifications } from "../../utils/push";
 import { useAccount } from "wagmi";
 import styles from "./notification.module.scss";
@@ -84,23 +85,25 @@ export default function Notification(props: any) {
               </div>
             </div>
           }
-          <div className="font-bold text-slate-500 py-4 px-4 font-base flex justify-between items-center">
+          <div className="font-bold text-slate-500 py-4 px-4 font-base flex justify-center">
             <button
               type="button"
               onClick={copyToClipboard}
-              className="p-2 border"
+              className="p-2 mr-5 border flex items-center"
             >
-              {linkCopied ? "Copied" : "Copy Payment Link"}
+              {linkCopied ? "Copied!" : "Copy Link"}
+              {linkCopied ? "" : <AiOutlineCopy className="ml-2" />}
             </button>
 
             <button
               type="button"
-              className="p-2 border"
+              className="p-2 border flex items-center"
               onClick={() => {
                 setShowModal(false);
               }}
             >
               Close
+              <AiOutlineClose className="ml-2" />
             </button>
           </div>
         </div>
