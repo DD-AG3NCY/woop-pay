@@ -50,17 +50,22 @@ const Header: React.FC<IHeaderProps> = (props) => {
       </Link>
 
       <div className="flex">
-        <div className="flex text-black text-center mr-3">
-          <Link
-            href={"/dashboard"}
-            className={cx(
-              notificationStyles.notificationButton,
-              "font-bold flex items-center"
-            )}
-          >
-            Dashboard <AiOutlineProfile className="ml-1" />
-          </Link>
-        </div>
+        {showNotification ? (
+          <div className="flex text-black text-center mr-3">
+            <Link
+              href={"/dashboard"}
+              className={cx(
+                notificationStyles.notificationButton,
+                "font-bold flex items-center"
+              )}
+            >
+              Dashboard <AiOutlineProfile className="ml-1" />
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )}
+
         <Wallet />
       </div>
     </div>
