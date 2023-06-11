@@ -23,6 +23,10 @@ const Dashboard = () => {
   const [isMainnet, setIsMainnet] = React.useState<boolean>(false);
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const [currentWoopId, setCurrentWoopId] = React.useState<string>("");
+  const [currentDescription, setCurrentDescription] =
+    React.useState<string>("");
+  const [currentAmount, setCurrentAmount] = React.useState<string>("");
+  const [currentToken, setCurrentToken] = React.useState<string>("");
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { data: signer } = useSigner();

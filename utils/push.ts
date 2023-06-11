@@ -43,12 +43,20 @@ export const sendNotification = async (
         title: `Woop Payment Received`,
         body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
           -4
-        )} paid ${amount} ${
-          request.tokenName
-        } on network ${networkName} for ${description}`,
+        )} paid ${amount} ${request.tokenName}`,
         cta: `${etherscanLink}`,
         img: "",
       },
+      // payload: {
+      //   title: `Woop Payment Received`,
+      //   body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
+      //     -4
+      //   )} paid ${amount} ${
+      //     request.tokenName
+      //   } on network ${networkName} for ${description}`,
+      //   cta: `${etherscanLink}`,
+      //   img: "",
+      // },
       recipients: `eip155:${environmentInteger}:${recipient}`, // recipient address
       channel: `eip155:${environmentInteger}:${channelAddress}`,
       env: environment,

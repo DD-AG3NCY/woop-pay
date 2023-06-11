@@ -9,11 +9,29 @@ export default function Notification(props: any) {
   const { woopId, description, amount, tokenName, setShowModal } = props;
   const { address } = useAccount();
   const [notifications, setNotifications] = React.useState<any>([]);
+  const [linkCopied, setLinkCopied] = React.useState<boolean>(false);
 
   const retrieveData = async () => {
     const data = await retrieveNotifications(address);
     console.log("Notifications => ", data);
     setNotifications(data);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(`https://www.wooppay.xyz/woop/${woopId}`)
+      .then(() => {
+        setLinkCopied(true);
+
+        // Reset the button text after a few seconds
+        setTimeout(() => {
+          setLinkCopied(false);
+        }, 3000); // 3 seconds
+      })
+      .catch(() => {
+        // Handle case where copying fails
+        console.error("Failed to copy text");
+      });
   };
 
   React.useEffect(() => {
@@ -30,7 +48,13 @@ export default function Notification(props: any) {
         <div className={styles.notificationTable}>
           <div className="text-slate-500 border-b-2 border-slate-300 py-4 px-4 mb-5">
             <p className="pl-2 font-bold">{`${description} (${amount} ${tokenName})`}</p>
-            <p className="pl-2">{`${notifications.length}x confirmed`}</p>
+            <p className="pl-2">{`${
+              notifications.filter(
+                (notification: any) =>
+                  notification?.title === "Woop Payment Received" &&
+                  notification?.notification.body === `${woopId}`
+              ).length
+            }x confirmed`}</p>
           </div>
           {
             <div className="px-6 h-full">
@@ -61,7 +85,14 @@ export default function Notification(props: any) {
             </div>
           }
           <div className="font-bold text-slate-500 py-4 px-4 font-base flex justify-between items-center">
-            <button className="p-2 border">Copy Payment Link</button>
+            <button
+              type="button"
+              onClick={copyToClipboard}
+              className="p-2 border"
+            >
+              {linkCopied ? "Copied" : "Copy Payment Link"}
+            </button>
+
             <button
               type="button"
               className="p-2 border"
