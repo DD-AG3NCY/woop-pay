@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AiOutlineProfile } from "react-icons/ai";
 import logo from "../public/logo.svg";
 import logoMobile from "../public/icon.svg";
 import Wallet from "./Wallet";
@@ -57,7 +58,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
               "font-bold flex items-center"
             )}
           >
-            Dashboard
+            Dashboard <AiOutlineProfile className="ml-1" />
           </Link>
         </div>
         <Wallet />

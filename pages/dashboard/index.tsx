@@ -1,5 +1,6 @@
 import * as React from "react";
-import Image from "next/image";
+import { AiFillFolderOpen } from "react-icons/ai";
+
 import {
   retrieveNotifications,
   retrieveSubscriptions,
@@ -195,7 +196,8 @@ const Dashboard = () => {
                                     setCurrentToken(tokenName);
                                   }}
                                 >
-                                  Show details 👀
+                                  Show details
+                                  <AiFillFolderOpen className="ml-2" />
                                 </button>
                               </td>
                             </tr>

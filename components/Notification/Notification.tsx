@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AiOutlineCopy, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineCopy, AiOutlineClose, AiFillLike } from "react-icons/ai";
 import { retrieveNotifications } from "../../utils/push";
 import { useAccount } from "wagmi";
 import styles from "./notification.module.scss";
@@ -91,8 +91,12 @@ export default function Notification(props: any) {
               onClick={copyToClipboard}
               className="p-2 mr-5 border flex items-center"
             >
-              {linkCopied ? "Copied!" : "Copy Link"}
-              {linkCopied ? "" : <AiOutlineCopy className="ml-2" />}
+              {linkCopied ? "Copied" : "Copy Link"}
+              {linkCopied ? (
+                <AiFillLike className="ml-2" />
+              ) : (
+                <AiOutlineCopy className="ml-2" />
+              )}
             </button>
 
             <button
