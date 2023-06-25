@@ -8,6 +8,17 @@
   width: 100%;
 }
 
+.containerBoxNew {
+  background: linear-gradient(
+    0.6turn,
+    rgba(79, 76, 227, 1),
+    rgba(16, 130, 178, 1)
+  );
+  border: 1px solid rgba(33, 35, 167, 0.5);
+  width: 100%;
+  max-width: fit-content;
+}
+
 .baseContainer {
   background: linear-gradient(0.6turn, rgba(38, 142, 200, 1), rgb(6, 34, 92));
 }

@@ -76,7 +76,7 @@ const Dashboard = () => {
   }, [address]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <SEO
         title={"Woop Pay | My Woops"}
         rrssImg="./RRSS.png"
@@ -99,7 +99,7 @@ const Dashboard = () => {
         ></section>
 
         {/* CONTENT */}
-        <Container>
+        {/* <Container>
           <Box
             component="form"
             className={cx(
@@ -237,7 +237,80 @@ const Dashboard = () => {
                 </div>
               </div>
             </section>
-          </Box>
+          </Box>{" "}
+        </Container> */}
+        <Container className="flex flex-col items-center justify-center">
+          <div className="md:w-2/3 lg:w-1/2">
+            <Box
+              component="form"
+              className={cx(
+                styles.containerBoxNew,
+                "rounded-3xl shadow-md w-full relative z-20 flex flex-col justify-center items-center p-4"
+              )}
+            >
+              <section className="text-center">
+                <div className="flex justify-between w-full">
+                  <p>25-06-2023</p>
+                  <p>5 ETH</p>
+                  <p>Goerli</p>
+                </div>
+                <div className="m-2">
+                  <p>This is a description for the payment</p>
+                </div>
+                <div className="m-2">
+                  <p>Payment details</p>
+                </div>
+              </section>
+            </Box>
+          </div>
+
+          <div className="md:w-2/3 lg:w-1/2 mt-3">
+            <Box
+              component="form"
+              className={cx(
+                styles.containerBoxNew,
+                "rounded-3xl shadow-md w-full relative z-20 flex flex-col justify-center items-center p-4"
+              )}
+            >
+              <section className="text-center">
+                <div className="flex justify-between w-full">
+                  <p>25-06-2023</p>
+                  <p>5 ETH</p>
+                  <p>Goerli</p>
+                </div>
+                <div className="m-2">
+                  <p>This is a description for the payment</p>
+                </div>
+                <div className="m-2">
+                  <p>Payment details</p>
+                </div>
+              </section>
+            </Box>
+          </div>
+
+          <div className="md:w-2/3 lg:w-1/2 mt-3">
+            <Box
+              component="form"
+              className={cx(
+                styles.containerBoxNew,
+                "rounded-3xl shadow-md w-full relative z-20 flex flex-col justify-center items-center p-4"
+              )}
+            >
+              <section className="text-center">
+                <div className="flex justify-between w-full">
+                  <p>25-06-2023</p>
+                  <p>5 ETH</p>
+                  <p>Goerli</p>
+                </div>
+                <div className="m-2">
+                  <p>This is a description for the payment</p>
+                </div>
+                <div className="m-2">
+                  <p>Payment details</p>
+                </div>
+              </section>
+            </Box>
+          </div>
         </Container>
       </article>
 
