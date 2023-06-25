@@ -263,7 +263,8 @@ const Request = () => {
           amount,
           description,
           request,
-          etherscanLink
+          etherscanLink,
+          id
         );
         event({
           action: "paid_woop",
@@ -284,7 +285,8 @@ const Request = () => {
           amount,
           description,
           request,
-          etherscanLink
+          etherscanLink,
+          id
         );
         event({
           action: "paid_woop",

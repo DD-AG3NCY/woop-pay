@@ -1,27 +1,16 @@
 import * as React from "react";
-import Image from "next/image";
-import {
-  retrieveNotifications,
-  retrieveSubscriptions,
-  optIn,
-  optOut,
-} from "../../utils/push";
-import { useAccount, useSigner, useNetwork } from "wagmi";
+import { AiOutlineCopy, AiOutlineClose, AiFillLike } from "react-icons/ai";
+import { retrieveNotifications } from "../../utils/push";
+import { useAccount } from "wagmi";
 import styles from "./notification.module.scss";
 import cx from "classnames";
-import bellCrossedIcon from "../../public/bell-close.svg";
-import bellIcon from "../../public/bell-open.svg";
 import Link from "next/link";
 
-export default function Notification() {
-  const [showModal, setShowModal] = React.useState<boolean>(false);
-  const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
-  const [isMainnet, setIsMainnet] = React.useState<boolean>(false);
+export default function Notification(props: any) {
+  const { woopId, description, amount, tokenName, setShowModal } = props;
   const { address } = useAccount();
-  const { chain } = useNetwork();
-  const { data: signer } = useSigner();
   const [notifications, setNotifications] = React.useState<any>([]);
-  const modalRef = React.useRef<HTMLDivElement>(null);
+  const [linkCopied, setLinkCopied] = React.useState<boolean>(false);
 
   const retrieveData = async () => {
     const data = await retrieveNotifications(address);
@@ -29,179 +18,102 @@ export default function Notification() {
     setNotifications(data);
   };
 
-  const retrieveIsSubscribed = async () => {
-    const subs = await retrieveSubscriptions(address);
-    console.log(subs);
-    setIsSubscribed(subs);
-  };
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(`https://www.wooppay.xyz/woop/${woopId}`)
+      .then(() => {
+        setLinkCopied(true);
 
-  const activateNotifications = async () => {
-    const res: any = await optIn(address, signer);
-    if (res) {
-      setIsSubscribed(true);
-    }
-  };
-
-  const disableNotifications = async () => {
-    const res: any = await optOut(address, signer);
-    if (res) {
-      setIsSubscribed(false);
-    }
+        // Reset the button text after a few seconds
+        setTimeout(() => {
+          setLinkCopied(false);
+        }, 3000); // 3 seconds
+      })
+      .catch(() => {
+        // Handle case where copying fails
+        console.error("Failed to copy text");
+      });
   };
 
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        setShowModal(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [modalRef]);
-
-  React.useEffect(() => {
-    if (chain?.network == "homestead") {
-      setIsMainnet(true);
-    } else {
-      setIsMainnet(false);
-    }
-    if (showModal) {
-      retrieveIsSubscribed();
+    if (woopId) {
       retrieveData();
     }
-  }, [showModal]);
-
-  React.useEffect(() => {
-    if (address) {
-      retrieveIsSubscribed();
-    }
-  }, [address]);
+  }, [woopId]);
 
   return (
-    <div className={cx(styles.notificationContainer, "z-30")} ref={modalRef}>
-      <button
-        type="button"
-        className={cx(
-          styles.notificationButton,
-          "flex items-center justify-center shadow-lg"
-        )}
-        onClick={() => setShowModal(!showModal)}
+    <div className={cx(styles.notificationContainer, "z-30")}>
+      <div
+        className={cx(styles.notificationModal, "shadow rounded-xl z-30 pb-2")}
       >
-        <Image
-          alt="Notification"
-          src="/notification-bell.svg"
-          width={20}
-          height={20}
-        />
-      </button>
-      {showModal && (
-        <div
-          className={cx(
-            styles.notificationModal,
-            "shadow rounded-xl z-30 pb-2"
-          )}
-        >
-          <div className={styles.notificationTable}>
-            <div className="font-bold text-slate-500 border-b-2 border-slate-300 py-4 px-4 font-base text-xl mb-5 flex justify-between items-center">
-              <p className="pl-2">Woop Payments</p>
-              <div className="text-center">
-                {!isMainnet ? (
+        <div className={styles.notificationTable}>
+          <div className="text-slate-500 border-b-2 border-slate-300 py-4 px-4 mb-5">
+            <p className="pl-2 font-bold">{`${description} (${
+              amount !== "allowPayerSelectAmount" ? amount : "User-Selected"
+            } ${tokenName})`}</p>
+            <p className="pl-2">{`${
+              notifications.filter(
+                (notification: any) =>
+                  notification?.title === "Woop Payment Received" &&
+                  notification?.notification.body === `${woopId}`
+              ).length
+            }x confirmed`}</p>
+          </div>
+          {
+            <div className="px-6 h-full">
+              <div className="h-full">
+                {notifications.length > 0 ? (
                   <></>
-                ) : isSubscribed ? (
-                  <button
-                    type="button"
-                    className={
-                      "p-2 border-slate-500 border hover:bg-slate-100 bg-white cursor:pointer rounded-xl transi"
-                    }
-                    onClick={() => {
-                      disableNotifications();
-                      setShowModal(false);
-                    }}
-                  >
-                    <Image
-                      src={bellCrossedIcon}
-                      width={20}
-                      height={20}
-                      alt="bell-close"
-                    />
-                  </button>
                 ) : (
-                  <button
-                    type="button"
-                    className={cx(
-                      styles.notificationOptButton,
-                      "transition-colors"
-                    )}
-                    onClick={() => {
-                      activateNotifications();
-                      setShowModal(false);
-                    }}
-                  >
-                    <Image src={bellIcon} width={20} height={20} alt="bell" />
-                  </button>
+                  <p className="text-slate-500 text-sm mb-3">
+                    No payments found
+                  </p>
                 )}
-              </div>
-            </div>
-            {isSubscribed ? (
-              <div className="px-6 h-full">
-                <div className="h-full">
-                  {notifications.length > 0 ? (
-                    <></>
-                  ) : (
-                    <p className="text-slate-500 text-sm mb-3">
-                      No tracked Woops
-                    </p>
-                  )}
-                  {notifications.map((notification: any, index: any) => (
+                {notifications
+                  .filter(
+                    (notification: any) =>
+                      notification?.title === "Woop Payment Received" &&
+                      notification?.notification.body === `${woopId}`
+                  )
+                  .map((notification: any, index: any) => (
                     <Link
-                      href={notification?.notification?.body}
+                      href={notification?.cta}
                       key={index}
                       className="flex w-full font-base text-sm text-slate-700 px-4 py-3 rounded-lg bg-slate-50 transition-colors cursor-pointer hover:bg-slate-100 mt-3 mb-3"
                     >
                       {notification?.message}
                     </Link>
                   ))}
-                </div>
               </div>
-            ) : !isMainnet ? (
-              <div className="px-6 text-sm mb-3">
-                <p className="text-slate-600">
-                  {
-                    "Woop tracking disabled. To enable PUSH notification, change your network to Ethereum Mainnet"
-                  }
-                </p>
-              </div>
-            ) : (
-              <div className="px-6 text-sm mb-3">
-                <p className="text-slate-600">{"Woop tracking disabled"}</p>
-                <p className="my-3 text-slate-400">
-                  {"Enable PUSH notifications"}
-                </p>
-                <button
-                  type="button"
-                  className={cx(
-                    styles.notificationOptButton,
-                    "transition-colors"
-                  )}
-                  onClick={() => {
-                    activateNotifications();
-                    setShowModal(false);
-                  }}
-                >
-                  <Image src={bellIcon} width={25} height={25} alt="bell" />
-                </button>
-              </div>
-            )}
+            </div>
+          }
+          <div className="font-bold text-slate-500 py-4 px-4 font-base flex justify-center">
+            <button
+              type="button"
+              onClick={copyToClipboard}
+              className="p-2 mr-5 border flex items-center"
+            >
+              {linkCopied ? "Copied" : "Copy Link"}
+              {linkCopied ? (
+                <AiFillLike className="ml-2" />
+              ) : (
+                <AiOutlineCopy className="ml-2" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              className="p-2 border flex items-center"
+              onClick={() => {
+                setShowModal(false);
+              }}
+            >
+              Close
+              <AiOutlineClose className="ml-2" />
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

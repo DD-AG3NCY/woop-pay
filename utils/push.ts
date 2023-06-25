@@ -23,7 +23,8 @@ export const sendNotification = async (
   amount: string,
   description: string,
   request: Request,
-  etherscanLink: any
+  etherscanLink: any,
+  woopId: any
 ) => {
   try {
     const now = new Date();
@@ -36,18 +37,26 @@ export const sendNotification = async (
       identityType: 2, // direct payload
       notification: {
         title: `Woop Payment Received`,
-        body: `${etherscanLink}`,
+        body: `${woopId}`,
       },
       payload: {
         title: `Woop Payment Received`,
         body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
           -4
-        )} paid ${amount} ${request.tokenName} on network ${networkName}${
-          description ? ` for ${description}` : ""
-        }`,
-        cta: "",
+        )} paid ${amount} ${request.tokenName}`,
+        cta: `${etherscanLink}`,
         img: "",
       },
+      // payload: {
+      //   title: `Woop Payment Received`,
+      //   body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
+      //     -4
+      //   )} paid ${amount} ${
+      //     request.tokenName
+      //   } on network ${networkName} for ${description}`,
+      //   cta: `${etherscanLink}`,
+      //   img: "",
+      // },
       recipients: `eip155:${environmentInteger}:${recipient}`, // recipient address
       channel: `eip155:${environmentInteger}:${channelAddress}`,
       env: environment,
@@ -60,20 +69,63 @@ export const sendNotification = async (
   }
 };
 
-export const optIn = async (address: any, signer: any) => {
-  await PushAPI.channels.subscribe({
-    signer: signer,
-    channelAddress: `eip155:${environmentInteger}:${channelAddress}`, // channel address in CAIP
-    userAddress: `eip155:${environmentInteger}:${address}`, // user address in CAIP
-    onSuccess: () => {
-      console.log("opt in success");
-      return true;
-    },
-    onError: (error) => {
-      console.error(error);
-      return false;
-    },
-    env: environment,
+export const sendNotificationRequest = async (
+  sender: string | undefined,
+  networkName: string | undefined,
+  amount: string,
+  description: string,
+  tokenName: string | undefined,
+  woopId: any
+) => {
+  try {
+    const now = new Date();
+    const date = now.toISOString().split("T")[0];
+    const time = now.toISOString().split("T")[1].split(".")[0];
+
+    const apiResponse = await PushAPI.payloads.sendNotification({
+      signer,
+      type: 3, // target
+      identityType: 2, // direct payload
+      notification: {
+        title: `Woop Payment Requested`,
+        body: `${woopId}`,
+      },
+      payload: {
+        title: `Woop Payment Requested`,
+        body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
+          -4
+        )} requested ${amount} ${tokenName} on network ${networkName} for ${description}`,
+        cta: "",
+        img: "",
+      },
+      recipients: `eip155:${environmentInteger}:${sender}`, // recipient address
+      channel: `eip155:${environmentInteger}:${channelAddress}`,
+      env: environment,
+    });
+
+    // apiResponse?.status === 204, if sent successfully!
+    console.log("API repsonse: ", apiResponse);
+  } catch (err) {
+    console.error("Error: ", err);
+  }
+};
+
+export const optIn = (address: any, signer: any) => {
+  return new Promise((resolve, reject) => {
+    PushAPI.channels.subscribe({
+      signer: signer,
+      channelAddress: `eip155:${environmentInteger}:${channelAddress}`,
+      userAddress: `eip155:${environmentInteger}:${address}`,
+      onSuccess: () => {
+        console.log("opt in success");
+        resolve(true);
+      },
+      onError: (error) => {
+        console.error(error);
+        resolve(false);
+      },
+      env: environment,
+    });
   });
 };
 

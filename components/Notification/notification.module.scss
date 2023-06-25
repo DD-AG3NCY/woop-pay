@@ -1,7 +1,6 @@
 .notificationContainer {
   position: relative;
   display: inline-block;
-  margin-left: 10px;
 }
 
 .notificationButton {
@@ -11,17 +10,18 @@
   outline: none;
   border-radius: 14px;
   height: 40px;
-  width: 40px;
+  width: 105px;
+  justify-content: center;
 }
 
 .notificationModal {
   position: absolute;
-  top: 52px;
-  right: 0px;
+  max-height: fit-content;
+  left: 5px;
   background-color: white;
   width: calc(100vw - 60px);
-  max-width: 338px;
-  height: calc(100vh - 106px);
+  max-width: 1140px;
+  //height: calc(100vh - 406px);
   overflow: auto;
 }
 
