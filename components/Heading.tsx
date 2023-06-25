@@ -59,7 +59,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
                 "font-bold flex items-center"
               )}
             >
-              Dashboard <AiOutlineProfile className="ml-1" />
+              Dashboard
             </Link>
           </div>
         ) : (
