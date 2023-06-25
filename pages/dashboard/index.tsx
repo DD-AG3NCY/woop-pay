@@ -71,6 +71,7 @@ const Dashboard = () => {
   React.useEffect(() => {
     if (address) {
       retrieveIsSubscribed();
+      retrieveData();
     }
   }, [address]);
 
