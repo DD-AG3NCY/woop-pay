@@ -1,6 +1,5 @@
 import * as React from "react";
 import { AiFillFolderOpen } from "react-icons/ai";
-
 import {
   retrieveNotifications,
   retrieveSubscriptions,
@@ -10,7 +9,6 @@ import {
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import styles from "./dashboard.module.scss";
 import cx from "classnames";
-import Link from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Footer from "../../components/Footer";
@@ -79,7 +77,7 @@ const Dashboard = () => {
   return (
     <div>
       <SEO
-        title={"Woop Pay | My Woop Payments"}
+        title={"Woop Pay | My Requests"}
         rrssImg="./RRSS.png"
         description={"The list of Woop payments requested and received"}
       />
@@ -100,10 +98,17 @@ const Dashboard = () => {
         ></section>
 
         {/* CONTENT */}
-        <Container maxWidth="lg">
-          <div className={"mb-2 z-20"}>
-            <ErrorsUi errorMsg={"hello"} errorNtk={"hello"} />
-          </div>
+        <Container>
+          {isSubscribed ? (
+            <></>
+          ) : (
+            <div className={"mb-2 z-20"} onClick={activateNotifications}>
+              <ErrorsUi
+                errorMsg={"Enable your PUSH notifications"}
+                errorNtk={"Enable your PUSH notifications"}
+              />
+            </div>
+          )}
 
           <Box
             component="form"
@@ -139,72 +144,74 @@ const Dashboard = () => {
                       {notification?.message}
                     </Link>
                   ))} */}
-                  <table className="table-auto w-full">
-                    <thead>
-                      <tr>
-                        <th className="px-4 py-2 text-left text-black bg-white rounded-l-lg">
-                          Date (UTC)
-                        </th>
-                        <th className="px-4 py-2 text-left text-black bg-white">
-                          Description
-                        </th>
-                        <th className="px-4 py-2 text-left text-black bg-white">
-                          Network
-                        </th>
-                        <th className="px-4 py-2 text-left text-black bg-white">
-                          Amount
-                        </th>
-                        <th className="px-4 py-2 text-left text-black bg-white rounded-r-lg">
-                          Payments
-                        </th>
-                      </tr>
-                    </thead>
+                  <div className="sm:overflow-x-visible overflow-x-auto">
+                    <table className="table-auto w-full">
+                      <thead>
+                        <tr>
+                          <th className="px-4 py-2 text-left text-black bg-white rounded-l-lg">
+                            Date (UTC)
+                          </th>
+                          <th className="px-4 py-2 text-left text-black bg-white">
+                            Description
+                          </th>
+                          <th className="px-4 py-2 text-left text-black bg-white">
+                            Network
+                          </th>
+                          <th className="px-4 py-2 text-left text-black bg-white">
+                            Amount
+                          </th>
+                          <th className="px-4 py-2 text-left text-black bg-white rounded-r-lg">
+                            Payments
+                          </th>
+                        </tr>
+                      </thead>
 
-                    <tbody>
-                      {notifications
-                        .filter(
-                          (notification: any) =>
-                            notification?.title === "Woop Payment Requested"
-                        )
-                        .map((notification: any, index: any) => {
-                          const bodyParts = notification?.message.split(" ");
-                          const date = bodyParts[0];
-                          const time = bodyParts[1];
-                          const networkName = bodyParts[9];
-                          const tokenName = bodyParts[6];
-                          const amount = bodyParts[5];
-                          const description = bodyParts.slice(11).join(" ");
+                      <tbody>
+                        {notifications
+                          .filter(
+                            (notification: any) =>
+                              notification?.title === "Woop Payment Requested"
+                          )
+                          .map((notification: any, index: any) => {
+                            const bodyParts = notification?.message.split(" ");
+                            const date = bodyParts[0];
+                            const time = bodyParts[1];
+                            const networkName = bodyParts[9];
+                            const tokenName = bodyParts[6];
+                            const amount = bodyParts[5];
+                            const description = bodyParts.slice(11).join(" ");
 
-                          return (
-                            <tr key={index}>
-                              <td className="px-4 py-2">{`${date} ${time}`}</td>
-                              <td className="px-4 py-2">{description}</td>
-                              <td className="px-4 py-2">{networkName}</td>
-                              <td className="px-4 py-2">{`${amount} ${tokenName}`}</td>
-                              <td className="px-4 py-2 ">
-                                {" "}
-                                <button
-                                  type="button"
-                                  className="flex items-center justify-center shadow-lg"
-                                  onClick={() => {
-                                    setShowModal(true);
-                                    setCurrentWoopId(
-                                      notification?.notification.body
-                                    );
-                                    setCurrentAmount(amount);
-                                    setCurrentDescription(description);
-                                    setCurrentToken(tokenName);
-                                  }}
-                                >
-                                  Show details
-                                  <AiFillFolderOpen className="ml-2" />
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
+                            return (
+                              <tr key={index}>
+                                <td className="px-4 py-2">{`${date} ${time}`}</td>
+                                <td className="px-4 py-2">{description}</td>
+                                <td className="px-4 py-2">{networkName}</td>
+                                <td className="px-4 py-2">{`${amount} ${tokenName}`}</td>
+                                <td className="px-4 py-2">
+                                  {" "}
+                                  <button
+                                    type="button"
+                                    className="flex items-center justify-center"
+                                    onClick={() => {
+                                      setShowModal(true);
+                                      setCurrentWoopId(
+                                        notification?.notification.body
+                                      );
+                                      setCurrentAmount(amount);
+                                      setCurrentDescription(description);
+                                      setCurrentToken(tokenName);
+                                    }}
+                                  >
+                                    Show details
+                                    <AiFillFolderOpen className="ml-2" />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </section>
