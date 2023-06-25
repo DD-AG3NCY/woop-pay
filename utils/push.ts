@@ -110,20 +110,22 @@ export const sendNotificationRequest = async (
   }
 };
 
-export const optIn = async (address: any, signer: any) => {
-  await PushAPI.channels.subscribe({
-    signer: signer,
-    channelAddress: `eip155:${environmentInteger}:${channelAddress}`, // channel address in CAIP
-    userAddress: `eip155:${environmentInteger}:${address}`, // user address in CAIP
-    onSuccess: () => {
-      console.log("opt in success");
-      return true;
-    },
-    onError: (error) => {
-      console.error(error);
-      return false;
-    },
-    env: environment,
+export const optIn = (address: any, signer: any) => {
+  return new Promise((resolve, reject) => {
+    PushAPI.channels.subscribe({
+      signer: signer,
+      channelAddress: `eip155:${environmentInteger}:${channelAddress}`,
+      userAddress: `eip155:${environmentInteger}:${address}`,
+      onSuccess: () => {
+        console.log("opt in success");
+        resolve(true);
+      },
+      onError: (error) => {
+        console.error(error);
+        resolve(false);
+      },
+      env: environment,
+    });
   });
 };
 
