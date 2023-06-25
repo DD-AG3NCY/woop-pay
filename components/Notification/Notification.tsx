@@ -48,7 +48,9 @@ export default function Notification(props: any) {
       >
         <div className={styles.notificationTable}>
           <div className="text-slate-500 border-b-2 border-slate-300 py-4 px-4 mb-5">
-            <p className="pl-2 font-bold">{`${description} (${amount} ${tokenName})`}</p>
+            <p className="pl-2 font-bold">{`${description} (${
+              amount !== "allowPayerSelectAmount" ? amount : "User-Selected"
+            } ${tokenName})`}</p>
             <p className="pl-2">{`${
               notifications.filter(
                 (notification: any) =>

@@ -177,9 +177,17 @@ const Dashboard = () => {
                                 return (
                                   <tr key={index}>
                                     <td className="px-4 py-2">{`${date} ${time}`}</td>
-                                    <td className="px-4 py-2">{description}</td>
+                                    <td className="px-4 py-2">
+                                      {description !== ""
+                                        ? description
+                                        : "Payment request"}
+                                    </td>
                                     <td className="px-4 py-2">{networkName}</td>
-                                    <td className="px-4 py-2">{`${amount} ${tokenName}`}</td>
+                                    <td className="px-4 py-2">{`${
+                                      amount !== "allowPayerSelectAmount"
+                                        ? amount
+                                        : "(User-Selected)"
+                                    } ${tokenName}`}</td>
                                     <td className="px-4 py-2">
                                       {" "}
                                       <button
