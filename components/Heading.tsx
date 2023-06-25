@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { AiOutlineProfile } from "react-icons/ai";
+import { retrieveSubscriptions } from "../utils/push";
 import logo from "../public/logo.svg";
 import logoMobile from "../public/icon.svg";
 import Wallet from "./Wallet";
@@ -19,10 +20,18 @@ const Header: React.FC<IHeaderProps> = (props) => {
   const { address } = useAccount();
   const [showNotification, setShowNotification] =
     React.useState<boolean>(false);
+  const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
+
+  const retrieveIsSubscribed = async () => {
+    const subs = await retrieveSubscriptions(address);
+    console.log(subs);
+    setIsSubscribed(subs);
+  };
 
   React.useEffect(() => {
     if (address) {
       setShowNotification(true);
+      retrieveIsSubscribed();
     } else {
       setShowNotification(false);
     }
@@ -59,7 +68,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
                 "font-bold flex items-center"
               )}
             >
-              Dashboard <AiOutlineProfile className="ml-1" />
+              Dashboard
             </Link>
           </div>
         ) : (
