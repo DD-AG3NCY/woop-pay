@@ -18,7 +18,7 @@ import {
   tokensDetails,
   MAX_CHARACTER_LIMIT,
 } from "../../utils/constants";
-import { event } from "../../utils/ga";
+import mixpanel from "mixpanel-browser";
 import { sendNotificationRequest } from "../../utils/push";
 
 export default function Payment(props: any) {
@@ -35,7 +35,6 @@ export default function Payment(props: any) {
   const [amount, setAmount] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
   const [characterCount, setCharacterCount] = useState(MAX_CHARACTER_LIMIT);
-  const [previousDescription, setPreviousDescription] = useState("");
   const [path, setPath] = React.useState<string>("");
   const [ipfsLoading, setIpfsLoading] = React.useState<boolean>(false);
   const [chainId, setChainId] = React.useState<string>("");
@@ -50,6 +49,12 @@ export default function Payment(props: any) {
     React.useState<boolean>(false);
   const [isShareActive, setIsShareActive] = useState<boolean>(false);
   const [badRequest, setBadRequest] = useState<any>("");
+  const MIXPANEL_ID = process.env.NEXT_PUBLIC_MIXPANEL_ID;
+
+  // initiate tracking activity
+  if (MIXPANEL_ID) {
+    mixpanel.init(MIXPANEL_ID);
+  }
 
   //event handlers
   const handleAmountChange = (event: any) => {
@@ -57,8 +62,6 @@ export default function Payment(props: any) {
   };
 
   const handleDescriptionChange = (event: any) => {
-    //setDescription(event.target.value as string);
-
     const inputDescription = event.target.value as string;
     if (inputDescription.length <= MAX_CHARACTER_LIMIT) {
       setDescription(inputDescription);
@@ -91,12 +94,13 @@ export default function Payment(props: any) {
 
         const { path } = await uploadIpfs(data).finally(() => {
           setIpfsLoading(false);
-          event({
-            action: "create_woop",
-            category: selectedToken.label,
-            label: chain ? chain?.name : "",
-            value: amount,
-          });
+        });
+        mixpanel.track("create_woop", {
+          Token: selectedToken.label,
+          Network: chain ? chain?.name : "",
+          Amount: amount,
+          Address: address,
+          Link: path,
         });
         sendNotificationRequest(
           address,
@@ -120,11 +124,8 @@ export default function Payment(props: any) {
   React.useEffect(() => {
     if (connected) {
       setIsConnected(true);
-      event({
-        action: "visit_woop_request",
-        category: "",
-        label: address ? address : "",
-        value: "",
+      mixpanel.track("visit_woop_create_request", {
+        Address: address,
       });
     } else {
       setIsConnected(false);
