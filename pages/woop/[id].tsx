@@ -1,6 +1,5 @@
 import * as React from "react";
 import Image from "next/image";
-// import ens from "../../public/ens.png";
 import { useRouter } from "next/router";
 
 import Box from "@mui/material/Box";
@@ -24,7 +23,7 @@ import {
   tokensDetails,
 } from "../../utils/constants";
 import { sendNotification } from "../../utils/push";
-import { event } from "../../utils/ga";
+import mixpanel from "mixpanel-browser";
 import { getEnsName } from "../../utils/ens";
 
 import ERC20 from "../../abi/ERC20.abi.json";
@@ -68,6 +67,12 @@ const Request = () => {
   const { chain } = useNetwork();
   const { openConnectModal } = useConnectModal();
   const { width, height } = useWindowSize();
+  const MIXPANEL_ID = process.env.NEXT_PUBLIC_MIXPANEL_ID;
+
+  // initiate tracking activity
+  if (MIXPANEL_ID) {
+    mixpanel.init(MIXPANEL_ID);
+  }
 
   // querying ipfs
   const callIpfs = async () => {
@@ -114,12 +119,12 @@ const Request = () => {
       if (recipient) {
         setEnsName(recipient);
       }
-
-      event({
-        action: "visit_woop_payment",
-        category: json.networkName,
-        label: address ? address : "",
-        value: `${json.value} ${json.tokenName}`,
+      mixpanel.track("visit_woop_payment", {
+        Token: json.tokenName,
+        Network: json.networkName,
+        Amount: json.value,
+        Address: address,
+        Link: id,
       });
     } catch (error) {
       console.error(error);
@@ -266,11 +271,12 @@ const Request = () => {
           etherscanLink,
           id
         );
-        event({
-          action: "paid_woop",
-          category: networkName,
-          label: address ? address : "",
-          value: `${amount} ${request?.tokenName}`,
+        mixpanel.track("paid_woop", {
+          Token: request?.tokenName,
+          Network: networkName,
+          Amount: amount,
+          Address: address,
+          Link: id,
         });
       }
     }
@@ -288,11 +294,12 @@ const Request = () => {
           etherscanLink,
           id
         );
-        event({
-          action: "paid_woop",
-          category: networkName,
-          label: address ? address : "",
-          value: `${amount} ${request?.tokenName}`,
+        mixpanel.track("paid_woop", {
+          Token: request?.tokenName,
+          Network: networkName,
+          Amount: amount,
+          Address: address,
+          Link: id,
         });
       }
     }
