@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -9,7 +10,11 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+
+import Script from "next/script";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { pageview } from "../utils/ga";
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.goerli, chain.optimism, chain.arbitrum, chain.polygon],
@@ -58,8 +63,36 @@ export default function App({ Component, pageProps }: AppProps) {
     [prefersDarkMode]
   );
 
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      pageview(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <>
+      <Script
+        id="ga-script"
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-2TY295GGG4`}
+      />
+      <Script
+        id="ga-script-2"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-2TY295GGG4');
+          `,
+        }}
+      />
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider modalSize="compact" chains={chains}>
           <ThemeProvider theme={theme}>
