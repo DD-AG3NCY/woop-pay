@@ -250,15 +250,22 @@ const Dashboard = () => {
             >
               <section className="text-center">
                 <div className="flex justify-between w-full">
-                  <p>25-06-2023</p>
-                  <p>5 ETH</p>
-                  <p>Goerli</p>
+                  <p className="ml-2 text-xs">Network: Goerli</p>
+                  <p className="mr-2 text-xs">25th July 2023</p>
+                </div>
+                <div className="ml-2 flex">
+                  <p className="text-[55px] bold">5 ETH</p>
+                </div>
+                <div className="m-2 text-base">
+                  <p>This is a description for thea</p>
                 </div>
                 <div className="m-2">
-                  <p>This is a description for the payment</p>
-                </div>
-                <div className="m-2">
-                  <p>Payment details</p>
+                  <button
+                    type="button"
+                    className="flex justify-center items-center border-white border font-base focus:outline-0 focus:text-slate-700 w-full h-10 rounded-xl transition-all font-bold text-white hover:border-white hover:bg-white hover:text-slate-700 mt-3"
+                  >
+                    Check Payment
+                  </button>
                 </div>
               </section>
             </Box>
