@@ -537,7 +537,7 @@ const Request = () => {
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                         )}
                       >
-                        Finish
+                        Close
                       </button>
                     </Link>
                   </div>
@@ -588,7 +588,7 @@ const Request = () => {
                           "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
                         )}
                       >
-                        Finish
+                        Close
                       </button>
                     </Link>
                   </div>
