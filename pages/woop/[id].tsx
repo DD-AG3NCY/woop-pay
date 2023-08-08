@@ -330,12 +330,7 @@ const Request = () => {
 
       <Header />
 
-      <article
-        className={cx(
-          styles.baseContainer,
-          "h-screen w-full flex justify-center items-center"
-        )}
-      >
+      <article className={cx(styles.baseContainer)}>
         <section
           className={cx(
             styles.containerBase,
