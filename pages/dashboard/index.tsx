@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AiFillFolderOpen } from "react-icons/ai";
+import { AiFillFolderOpen, AiFillCaretDown } from "react-icons/ai";
 import {
   retrieveNotifications,
   retrieveSubscriptions,
@@ -76,21 +76,23 @@ const Dashboard = () => {
   }, [address]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div
+      className={cx(
+        styles.baseContainer,
+        "flex flex-col items-center justify-center h-screen"
+      )}
+    >
       <SEO
         title={"Woop Pay | My Woops"}
         rrssImg="./RRSS.png"
         description={"The list of Woop payments requested and received"}
       />
 
-      <Header />
+      <div className="mb-[60px]">
+        <Header />
+      </div>
 
-      <article
-        className={cx(
-          styles.baseContainer,
-          "h-screen w-full flex justify-center items-center"
-        )}
-      >
+      <article className={cx(styles.baseArticle, "w-full overflow-y-auto")}>
         <section
           className={cx(
             styles.containerBase,
@@ -240,88 +242,136 @@ const Dashboard = () => {
           </Box>{" "}
         </Container> */}
         <Container className="flex flex-col items-center justify-center">
-          <div className="md:w-2/3 lg:w-1/2">
-            <Box
-              component="form"
-              className={cx(
-                styles.containerBoxNew,
-                "rounded-3xl shadow-md w-full relative z-20 flex flex-col justify-center items-center p-4"
-              )}
-            >
-              <section className="text-center">
-                <div className="flex justify-between w-full">
-                  <p className="ml-2 text-xs">Network: Goerli</p>
-                  <p className="mr-2 text-xs">25th July 2023</p>
-                </div>
-                <div className="ml-2 flex">
-                  <p className="text-[55px] bold">5 ETH</p>
-                </div>
-                <div className="m-2 text-base">
-                  <p>This is a description for thea</p>
-                </div>
-                <div className="m-2">
+          {notifications.length == 0 ? (
+            <p className="m-2">No woops found</p>
+          ) : (
+            notifications
+              .filter(
+                (notification: any) =>
+                  notification?.title === "Woop Payment Requested"
+              )
+              .map((notification: any, index: any) => {
+                const bodyParts = notification?.message.split(" ");
+                const date = bodyParts[0];
+                const time = bodyParts[1];
+                const networkName = bodyParts[9];
+                const tokenName = bodyParts[6];
+                const amount = bodyParts[5];
+                const description = bodyParts.slice(11).join(" ");
+
+                return (
+                  <Box
+                    component="form"
+                    className={cx(
+                      styles.containerBoxNew,
+                      "rounded-3xl shadow-md relative z-20 p-4 w-1/2 mt-3"
+                    )}
+                  >
+                    <section className="text-center">
+                      <div className="flex justify-between w-full">
+                        <p className="ml-2 text-sm">{networkName}</p>
+                        <p className="mr-2 text-sm">{date}</p>
+                      </div>
+                      <div className="ml-2 flex justify-center">
+                        <p className="text-[55px] bold">
+                          {amount} {tokenName}
+                        </p>
+                      </div>
+                      <div className="m-2 text-base">
+                        <p>{description}</p>
+                      </div>
+                      <div className="m-2 flex justify-center">
+                        {showModal ? (
+                          <></>
+                        ) : (
+                          <button
+                            type="button"
+                            className="items-center font-base focus:outline-0 focus:text-slate-700 h-10 rounded-xl transition-all font-bold text-white border-white bg-white text-slate-700 mt-3"
+                            onClick={() => {
+                              setShowModal(true);
+                              setCurrentWoopId(notification?.notification.body);
+                              setCurrentAmount(amount);
+                              setCurrentDescription(description);
+                              setCurrentToken(tokenName);
+                            }}
+                          >
+                            <p className="m-2">💵 1x confirmed</p>
+                          </button>
+                        )}
+                      </div>
+                    </section>
+                    {showModal ? (
+                      <Notification
+                        woopId={currentWoopId}
+                        description={currentDescription}
+                        amount={currentAmount}
+                        tokenName={currentToken}
+                        setShowModal={setShowModal}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
+                );
+              })
+          )}
+
+          <Box
+            component="form"
+            className={cx(
+              styles.containerBoxNew,
+              "rounded-3xl shadow-md relative z-20 p-4 w-1/2 mt-3"
+            )}
+          >
+            <section className="text-center">
+              <div className="flex justify-between w-full">
+                <p className="ml-2 text-sm">Network: Goerli</p>
+                <p className="mr-2 text-sm">25th July 2023</p>
+              </div>
+              <div className="ml-2 flex justify-center">
+                <p className="text-[55px] bold">1200 MATIC</p>
+              </div>
+              <div className="m-2 text-base">
+                <p>This is a description for thea</p>
+              </div>
+              <div className="m-2 flex justify-center">
+                {showModal ? (
+                  <></>
+                ) : (
                   <button
                     type="button"
-                    className="flex justify-center items-center border-white border font-base focus:outline-0 focus:text-slate-700 w-full h-10 rounded-xl transition-all font-bold text-white hover:border-white hover:bg-white hover:text-slate-700 mt-3"
+                    className="items-center font-base focus:outline-0 focus:text-slate-700 h-10 rounded-xl transition-all font-bold text-white border-white bg-white text-slate-700 mt-3"
+                    onClick={() => {
+                      setShowModal(true);
+                      // setCurrentWoopId(
+                      //   notification?.notification.body
+                      // );
+                      // setCurrentAmount(amount);
+                      // setCurrentDescription(description);
+                      // setCurrentToken(tokenName);
+                    }}
                   >
-                    Check Payment
+                    <p className="m-2">💵 1x confirmed</p>
                   </button>
-                </div>
-              </section>
-            </Box>
-          </div>
-
-          <div className="md:w-2/3 lg:w-1/2 mt-3">
-            <Box
-              component="form"
-              className={cx(
-                styles.containerBoxNew,
-                "rounded-3xl shadow-md w-full relative z-20 flex flex-col justify-center items-center p-4"
-              )}
-            >
-              <section className="text-center">
-                <div className="flex justify-between w-full">
-                  <p>25-06-2023</p>
-                  <p>5 ETH</p>
-                  <p>Goerli</p>
-                </div>
-                <div className="m-2">
-                  <p>This is a description for the payment</p>
-                </div>
-                <div className="m-2">
-                  <p>Payment details</p>
-                </div>
-              </section>
-            </Box>
-          </div>
-
-          <div className="md:w-2/3 lg:w-1/2 mt-3">
-            <Box
-              component="form"
-              className={cx(
-                styles.containerBoxNew,
-                "rounded-3xl shadow-md w-full relative z-20 flex flex-col justify-center items-center p-4"
-              )}
-            >
-              <section className="text-center">
-                <div className="flex justify-between w-full">
-                  <p>25-06-2023</p>
-                  <p>5 ETH</p>
-                  <p>Goerli</p>
-                </div>
-                <div className="m-2">
-                  <p>This is a description for the payment</p>
-                </div>
-                <div className="m-2">
-                  <p>Payment details</p>
-                </div>
-              </section>
-            </Box>
-          </div>
+                )}
+              </div>
+            </section>
+            {showModal ? (
+              <Notification
+                woopId={currentWoopId}
+                description={currentDescription}
+                amount={currentAmount}
+                tokenName={currentToken}
+                setShowModal={setShowModal}
+              />
+            ) : (
+              <></>
+            )}
+          </Box>
         </Container>
       </article>
 
-      <div className="absolute bottom-0 left-0 w-full">
+      <div className="sticky bottom-0 left-0 w-full">
         <Footer />
       </div>
     </div>
