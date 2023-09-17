@@ -316,59 +316,6 @@ const Dashboard = () => {
                 );
               })
           )}
-
-          <Box
-            component="form"
-            className={cx(
-              styles.containerBoxNew,
-              "rounded-3xl shadow-md relative z-20 p-4 w-1/2 mt-3"
-            )}
-          >
-            <section className="text-center">
-              <div className="flex justify-between w-full">
-                <p className="ml-2 text-sm">Network: Goerli</p>
-                <p className="mr-2 text-sm">25th July 2023</p>
-              </div>
-              <div className="ml-2 flex justify-center">
-                <p className="text-[55px] bold">1200 MATIC</p>
-              </div>
-              <div className="m-2 text-base">
-                <p>This is a description for thea</p>
-              </div>
-              <div className="m-2 flex justify-center">
-                {showModal ? (
-                  <></>
-                ) : (
-                  <button
-                    type="button"
-                    className="items-center font-base focus:outline-0 focus:text-slate-700 h-10 rounded-xl transition-all font-bold text-white border-white bg-white text-slate-700 mt-3"
-                    onClick={() => {
-                      setShowModal(true);
-                      // setCurrentWoopId(
-                      //   notification?.notification.body
-                      // );
-                      // setCurrentAmount(amount);
-                      // setCurrentDescription(description);
-                      // setCurrentToken(tokenName);
-                    }}
-                  >
-                    <p className="m-2">💵 1x confirmed</p>
-                  </button>
-                )}
-              </div>
-            </section>
-            {showModal ? (
-              <Notification
-                woopId={currentWoopId}
-                description={currentDescription}
-                amount={currentAmount}
-                tokenName={currentToken}
-                setShowModal={setShowModal}
-              />
-            ) : (
-              <></>
-            )}
-          </Box>
         </Container>
       </article>
 
