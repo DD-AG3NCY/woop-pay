@@ -295,7 +295,7 @@ const Dashboard = () => {
                               setCurrentToken(tokenName);
                             }}
                           >
-                            <p className="m-2">💵 1x confirmed</p>
+                            <p className="m-2">Check payments 💵</p>
                           </button>
                         )}
                       </div>
