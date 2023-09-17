@@ -92,7 +92,7 @@ const Dashboard = () => {
         <Header />
       </div>
 
-      <article className={cx(styles.baseArticle, "w-full overflow-y-auto")}>
+      <article className={cx(styles.baseArticle, "w-full")}>
         <section
           className={cx(
             styles.containerBase,
@@ -371,7 +371,7 @@ const Dashboard = () => {
         </Container>
       </article>
 
-      <div className="sticky bottom-0 left-0 w-full">
+      <div className="absolute bottom-0 left-0 w-full">
         <Footer />
       </div>
     </div>
