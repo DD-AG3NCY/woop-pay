@@ -252,12 +252,13 @@ const Dashboard = () => {
               )
               .map((notification: any, index: any) => {
                 const bodyParts = notification?.message.split(" ");
-                const date = bodyParts[0];
-                const time = bodyParts[1];
-                const networkName = bodyParts[9];
-                const tokenName = bodyParts[6];
-                const amount = bodyParts[5];
-                const description = bodyParts.slice(11).join(" ");
+                const date = [bodyParts[0], bodyParts[1], bodyParts[2]].join(
+                  " "
+                );
+                const networkName = bodyParts[11];
+                const tokenName = bodyParts[8];
+                const amount = bodyParts[7];
+                const description = bodyParts.slice(13).join(" ");
 
                 return (
                   <Box
@@ -269,8 +270,8 @@ const Dashboard = () => {
                   >
                     <section className="text-center">
                       <div className="flex justify-between w-full">
-                        <p className="ml-2 text-sm">{networkName}</p>
-                        <p className="mr-2 text-sm">{date}</p>
+                        <p className="ml-2 text-sm">{networkName} 🌐</p>
+                        <p className="mr-2 text-sm">{date} ⌚</p>
                       </div>
                       <div className="ml-2 flex justify-center">
                         <p className="text-[55px] bold">

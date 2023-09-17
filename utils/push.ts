@@ -7,6 +7,38 @@ const channelAddress = "0x338EF19fA2eC0fc4d1277B1307a613fA1FBbc0cb";
 const environment = "prod";
 const environmentInteger = "1";
 
+const formatDate = (date: any) => {
+  const day = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  let suffix = "th";
+  if (day === 1 || day === 21 || day === 31) {
+    suffix = "st";
+  } else if (day === 2 || day === 22) {
+    suffix = "nd";
+  } else if (day === 3 || day === 23) {
+    suffix = "rd";
+  }
+
+  return `${day}${suffix} ${monthNames[monthIndex]} ${year}`;
+};
+
 interface Request {
   version: string;
   from: string;
@@ -79,7 +111,7 @@ export const sendNotificationRequest = async (
 ) => {
   try {
     const now = new Date();
-    const date = now.toISOString().split("T")[0];
+    const date = formatDate(now);
     const time = now.toISOString().split("T")[1].split(".")[0];
 
     const apiResponse = await PushAPI.payloads.sendNotification({
