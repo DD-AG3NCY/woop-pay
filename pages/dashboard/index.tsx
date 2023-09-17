@@ -262,6 +262,7 @@ const Dashboard = () => {
 
                 return (
                   <Box
+                    key={index}
                     component="form"
                     className={cx(
                       styles.containerBoxNew,
