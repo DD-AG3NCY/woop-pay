@@ -1,5 +1,4 @@
 import * as React from "react";
-import { AiFillFolderOpen, AiFillCaretDown } from "react-icons/ai";
 import { retrieveNotifications } from "../../utils/push";
 import { useAccount, useSigner, useNetwork } from "wagmi";
 import styles from "./dashboard.module.scss";
@@ -8,7 +7,6 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Footer from "../../components/Footer";
 import Header from "../../components/Heading";
-import ErrorsUi from "../../components/ErrorsUi/ErrorsUi";
 import SEO from "../../components/Seo";
 import Notification from "../../components/Notification/Notification";
 
@@ -27,6 +25,10 @@ const Dashboard = () => {
     console.log("Notifications => ", data);
     setNotifications(data);
   };
+
+  const filteredNotifications = notifications.filter(
+    (notification: any) => notification?.title === "Woop Payment Requested"
+  );
 
   React.useEffect(() => {
     retrieveData();
@@ -64,8 +66,8 @@ const Dashboard = () => {
         ></section>
 
         <Container className="flex flex-col items-center justify-center">
-          {notifications.length == 0 ? (
-            <p className="m-2">No woops found</p>
+          {filteredNotifications.length === 0 ? (
+            <p className="m-2">😞 No woops found</p>
           ) : (
             notifications
               .filter(
@@ -119,7 +121,7 @@ const Dashboard = () => {
                               setCurrentToken(tokenName);
                             }}
                           >
-                            <p className="m-2">Check payments 💵</p>
+                            <p className="m-2">💵 Check payments</p>
                           </button>
                         )}
                       </div>

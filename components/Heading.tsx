@@ -96,7 +96,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
               "font-bold flex items-center text-black text-center mr-3 text-sm"
             )}
           >
-            Activate dashboard
+            📢 Enable dashboard
           </button>
         ) : (
           <></>
