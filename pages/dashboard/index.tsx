@@ -100,7 +100,8 @@ const Dashboard = () => {
                       </div>
                       <div className="ml-2 flex justify-center">
                         <p className="text-[55px] bold">
-                          {amount} {tokenName}
+                          {amount == "allowPayerSelectAmount" ? "n/a" : amount}{" "}
+                          {tokenName}
                         </p>
                       </div>
                       <div className="m-2 text-base">
