@@ -65,7 +65,9 @@ const Dashboard = () => {
           )}
         ></section>
 
-        <Container className="flex flex-col items-center">
+        <Container
+          className={cx(styles.containerDisplay, "flex-col items-center")}
+        >
           {filteredNotifications.length === 0 ? (
             <p className="m-2">😞 No woops found</p>
           ) : (
