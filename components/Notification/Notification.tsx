@@ -64,11 +64,6 @@ export default function Notification(props: any) {
           {
             <div className="px-6 h-full">
               <div className="h-full">
-                {notifications.length > 0 ? (
-                  <></>
-                ) : (
-                  <p className="text-white text-sm mb-3">No payments found</p>
-                )}
                 {notifications
                   .filter(
                     (notification: any) =>

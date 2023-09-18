@@ -107,10 +107,7 @@ const Request = () => {
         setIsNativeTx(true);
       }
 
-      const recipient = await getEnsName(
-        //"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-        json.from
-      );
+      const recipient = await getEnsName(json.from);
       if (recipient) {
         setEnsName(recipient);
       }
@@ -330,7 +327,12 @@ const Request = () => {
 
       <Header />
 
-      <article className={cx(styles.baseContainer)}>
+      <article
+        className={cx(
+          styles.baseContainer,
+          "h-screen w-full flex justify-center items-center"
+        )}
+      >
         <section
           className={cx(
             styles.containerBase,

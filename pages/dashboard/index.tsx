@@ -11,7 +11,7 @@ import SEO from "../../components/Seo";
 import Notification from "../../components/Notification/Notification";
 
 const Dashboard = () => {
-  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [currentModal, setCurrentModal] = React.useState<any>(null);
   const [currentWoopId, setCurrentWoopId] = React.useState<string>("");
   const [currentDescription, setCurrentDescription] =
     React.useState<string>("");
@@ -108,14 +108,14 @@ const Dashboard = () => {
                         <p>{description}</p>
                       </div>
                       <div className="m-2 flex justify-center">
-                        {showModal ? (
+                        {currentModal === index ? (
                           <></>
                         ) : (
                           <button
                             type="button"
                             className="items-center font-base focus:outline-0 focus:text-slate-700 h-10 rounded-xl transition-all font-bold text-white border-white bg-white text-slate-700 mt-3"
                             onClick={() => {
-                              setShowModal(true);
+                              setCurrentModal(index);
                               setCurrentWoopId(notification?.notification.body);
                               setCurrentAmount(amount);
                               setCurrentDescription(description);
@@ -127,13 +127,13 @@ const Dashboard = () => {
                         )}
                       </div>
                     </section>
-                    {showModal ? (
+                    {currentModal === index ? (
                       <Notification
                         woopId={currentWoopId}
                         description={currentDescription}
                         amount={currentAmount}
                         tokenName={currentToken}
-                        setShowModal={setShowModal}
+                        setShowModal={setCurrentModal}
                       />
                     ) : (
                       <></>
