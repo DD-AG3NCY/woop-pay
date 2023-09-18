@@ -59,10 +59,7 @@ const Dashboard = () => {
 
       <article className={cx(styles.baseArticle, "w-full")}>
         <section
-          className={cx(
-            styles.containerBase,
-            "h-screen w-full absolute top-0 z-0 flex opacity-50 items-center"
-          )}
+          className={cx(styles.containerBase, "h-screen w-full absolute top-0")}
         ></section>
 
         <Container
