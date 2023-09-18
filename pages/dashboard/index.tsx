@@ -90,7 +90,7 @@ const Dashboard = () => {
                     component="form"
                     className={cx(
                       styles.containerBoxNew,
-                      "rounded-3xl shadow-md relative z-20 p-4 mt-3 w-1/2 md:w-full"
+                      "rounded-3xl shadow-md relative z-20 p-4 mt-3 w-full md:w-1/2"
                     )}
                   >
                     <section className="text-center">
