@@ -1,5 +1,10 @@
 import * as React from "react";
-import { AiOutlineCopy, AiOutlineClose, AiFillLike } from "react-icons/ai";
+import {
+  AiOutlineCopy,
+  AiOutlineClose,
+  AiFillLike,
+  AiFillCaretDown,
+} from "react-icons/ai";
 import { retrieveNotifications } from "../../utils/push";
 import { useAccount } from "wagmi";
 import styles from "./notification.module.scss";
@@ -42,33 +47,23 @@ export default function Notification(props: any) {
   }, [woopId]);
 
   return (
-    <div className={cx(styles.notificationContainer, "z-30")}>
+    <div className="z-30">
       <div
         className={cx(styles.notificationModal, "shadow rounded-xl z-30 pb-2")}
       >
-        <div className={styles.notificationTable}>
-          <div className="text-slate-500 border-b-2 border-slate-300 py-4 px-4 mb-5">
-            <p className="pl-2 font-bold">{`${description} (${
-              amount !== "allowPayerSelectAmount" ? amount : "User-Selected"
-            } ${tokenName})`}</p>
+        <div className={cx(styles.notificationTable)}>
+          <div className="text-white border-b-2 py-4 px-4 mb-5">
             <p className="pl-2">{`${
               notifications.filter(
                 (notification: any) =>
                   notification?.title === "Woop Payment Received" &&
                   notification?.notification.body === `${woopId}`
               ).length
-            }x confirmed`}</p>
+            }x confirmed 💵`}</p>
           </div>
           {
             <div className="px-6 h-full">
               <div className="h-full">
-                {notifications.length > 0 ? (
-                  <></>
-                ) : (
-                  <p className="text-slate-500 text-sm mb-3">
-                    No payments found
-                  </p>
-                )}
                 {notifications
                   .filter(
                     (notification: any) =>
@@ -87,11 +82,11 @@ export default function Notification(props: any) {
               </div>
             </div>
           }
-          <div className="font-bold text-slate-500 py-4 px-4 font-base flex justify-center">
+          <div className="font-bold text-white py-4 px-4 font-base flex justify-center">
             <button
               type="button"
               onClick={copyToClipboard}
-              className="p-2 mr-5 border flex items-center"
+              className="p-2 mr-5 border flex items-center rounded-xl"
             >
               {linkCopied ? "Copied" : "Copy Link"}
               {linkCopied ? (
@@ -103,7 +98,7 @@ export default function Notification(props: any) {
 
             <button
               type="button"
-              className="p-2 border flex items-center"
+              className="p-2 border flex items-center rounded-xl"
               onClick={() => {
                 setShowModal(false);
               }}

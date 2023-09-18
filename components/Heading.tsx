@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { AiOutlineProfile } from "react-icons/ai";
 import logo from "../public/logo.svg";
 import logoMobile from "../public/icon.svg";
 import Wallet from "./Wallet";
 import styles from "./Wallet.module.scss";
 import notificationStyles from "./Notification/notification.module.scss";
+import { retrieveSubscriptions, optIn } from "../utils/push";
 import cx from "classnames";
-import { useAccount } from "wagmi";
+import { useAccount, useSigner, useNetwork } from "wagmi";
 
 import React from "react";
 import Link from "next/link";
@@ -17,16 +17,41 @@ const defaultProps = {};
 
 const Header: React.FC<IHeaderProps> = (props) => {
   const { address } = useAccount();
+  const { data: signer } = useSigner();
+  const { chain } = useNetwork();
   const [showNotification, setShowNotification] =
     React.useState<boolean>(false);
+  const [isSubscribed, setIsSubscribed] = React.useState<boolean>(false);
+  const [isMainnet, setIsMainnet] = React.useState<boolean>(false);
+
+  const activateNotifications = async () => {
+    const res: any = await optIn(address, signer);
+    if (res) {
+      setIsSubscribed(true);
+    }
+  };
+
+  const retrieveIsSubscribed = async () => {
+    const subs = await retrieveSubscriptions(address);
+    setIsSubscribed(subs);
+  };
 
   React.useEffect(() => {
     if (address) {
       setShowNotification(true);
+      retrieveIsSubscribed();
     } else {
       setShowNotification(false);
     }
   }, [address]);
+
+  React.useEffect(() => {
+    if (chain?.network == "homestead") {
+      setIsMainnet(true);
+    } else {
+      setIsMainnet(false);
+    }
+  }, [chain]);
 
   return (
     <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-30 items-center">
@@ -50,7 +75,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
       </Link>
 
       <div className="flex">
-        {showNotification ? (
+        {isSubscribed ? (
           <div className="flex text-black text-center mr-3">
             <Link
               href={"/dashboard"}
@@ -62,10 +87,20 @@ const Header: React.FC<IHeaderProps> = (props) => {
               Dashboard
             </Link>
           </div>
+        ) : isMainnet ? (
+          <button
+            type="button"
+            onClick={activateNotifications}
+            className={cx(
+              notificationStyles.notificationButton,
+              "font-bold flex items-center text-black text-center mr-3 text-sm"
+            )}
+          >
+            📢 Enable dashboard
+          </button>
         ) : (
           <></>
         )}
-
         <Wallet />
       </div>
     </div>

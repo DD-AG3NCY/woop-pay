@@ -8,8 +8,22 @@
   width: 100%;
 }
 
+.containerBoxNew {
+  background: linear-gradient(
+    0.6turn,
+    rgba(79, 76, 227, 1),
+    rgba(16, 130, 178, 1)
+  );
+  border: 1px solid rgba(33, 35, 167, 0.5);
+}
+
 .baseContainer {
   background: linear-gradient(0.6turn, rgba(38, 142, 200, 1), rgb(6, 34, 92));
+}
+
+.baseArticle {
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
 }
 
 .containerBase {
@@ -17,7 +31,7 @@
   background-image: url("/double-bubble-dark.webp");
   opacity: 0.2;
   background-blend-mode: hard-light;
-  background-size: 350px;
+  background-size: 400px;
 }
 
 .topContainer {

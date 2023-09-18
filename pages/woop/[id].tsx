@@ -113,10 +113,7 @@ const Request = () => {
         setIsNativeTx(true);
       }
 
-      const recipient = await getEnsName(
-        //"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-        json.from
-      );
+      const recipient = await getEnsName(json.from);
       if (recipient) {
         setEnsName(recipient);
       }

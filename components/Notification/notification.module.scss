@@ -1,5 +1,4 @@
 .notificationContainer {
-  position: relative;
   display: inline-block;
 }
 
@@ -15,18 +14,11 @@
 }
 
 .notificationModal {
-  position: absolute;
-  max-height: fit-content;
-  left: 5px;
-  background-color: white;
-  width: calc(100vw - 60px);
-  max-width: 1140px;
-  //height: calc(100vh - 406px);
+  background: linear-gradient(0.6turn, rgb(95, 93, 206), rgb(15, 72, 97));
   overflow: auto;
 }
 
 .notificationTable {
-  width: 100%;
   border-collapse: collapse;
 }
 
