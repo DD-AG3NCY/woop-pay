@@ -1,6 +1,6 @@
 import * as React from "react";
 import { retrieveNotifications } from "../../utils/push";
-import { useAccount, useSigner, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 import styles from "./dashboard.module.scss";
 import cx from "classnames";
 import Box from "@mui/material/Box";
@@ -62,8 +62,11 @@ const Dashboard = () => {
           className={cx(styles.containerBase, "h-screen w-full absolute top-0")}
         ></section>
 
-        <Container
-          className={cx(styles.containerDisplay, "flex-col items-center")}
+        <div
+          className={cx(
+            styles.containerDisplay,
+            "flex-col items-center mr-3 ml-3"
+          )}
         >
           {filteredNotifications.length === 0 ? (
             <p className="m-2">😞 No woops found</p>
@@ -89,7 +92,7 @@ const Dashboard = () => {
                     component="form"
                     className={cx(
                       styles.containerBoxNew,
-                      "rounded-3xl shadow-md relative z-20 p-4 mt-3 w-full md:w-1/2"
+                      "rounded-3xl shadow-md relative z-20 p-4 mt-3 w-full md:w-2/5"
                     )}
                   >
                     <section className="text-center">
@@ -141,7 +144,7 @@ const Dashboard = () => {
                 );
               })
           )}
-        </Container>
+        </div>
       </article>
 
       <div className="absolute bottom-0 left-0 w-full">
