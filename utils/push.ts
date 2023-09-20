@@ -1,10 +1,11 @@
 import * as PushAPI from "@pushprotocol/restapi";
+import { ENV } from "@pushprotocol/restapi/src/lib/constants";
 import * as ethers from "ethers";
 
 const Pkey = `0x${process.env.NEXT_PUBLIC_PK}`;
 const signer = new ethers.Wallet(Pkey);
 const channelAddress = "0x338EF19fA2eC0fc4d1277B1307a613fA1FBbc0cb";
-const environment = "prod";
+const environment = ENV.PROD;
 const environmentInteger = "1";
 
 const formatDate = (date: any) => {
@@ -79,16 +80,6 @@ export const sendNotification = async (
         cta: `${etherscanLink}`,
         img: "",
       },
-      // payload: {
-      //   title: `Woop Payment Received`,
-      //   body: `${date} ${time} (UTC): ${sender?.slice(0, 4)}...${sender?.slice(
-      //     -4
-      //   )} paid ${amount} ${
-      //     request.tokenName
-      //   } on network ${networkName} for ${description}`,
-      //   cta: `${etherscanLink}`,
-      //   img: "",
-      // },
       recipients: `eip155:${environmentInteger}:${recipient}`, // recipient address
       channel: `eip155:${environmentInteger}:${channelAddress}`,
       env: environment,
