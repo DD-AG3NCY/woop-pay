@@ -6,7 +6,7 @@ import styles from "./Wallet.module.scss";
 import notificationStyles from "./Notification/notification.module.scss";
 import { retrieveSubscriptions, optIn } from "../utils/push";
 import cx from "classnames";
-import { useAccount, useSigner, useNetwork } from "wagmi";
+import { useAccount, useWalletClient, useNetwork } from "wagmi";
 
 import React from "react";
 import Link from "next/link";
@@ -17,7 +17,7 @@ const defaultProps = {};
 
 const Header: React.FC<IHeaderProps> = (props) => {
   const { address } = useAccount();
-  const { data: signer } = useSigner();
+  const { data: signer } = useWalletClient();
   const { chain } = useNetwork();
   const [showNotification, setShowNotification] =
     React.useState<boolean>(false);
@@ -46,7 +46,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
   }, [address]);
 
   React.useEffect(() => {
-    if (chain?.network == "homestead") {
+    if (chain?.id == 1) {
       setIsMainnet(true);
     } else {
       setIsMainnet(false);

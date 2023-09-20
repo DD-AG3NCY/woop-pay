@@ -86,7 +86,7 @@ export default function Payment(props: any) {
           value: amount,
           description: description,
           decimals: selectTokenDecimals(selectedToken.label),
-          network: chain?.network,
+          network: chain?.id,
           networkName: chain?.name,
           tokenName: selectedToken.label,
           tokenAddress: selectToken(selectedToken.label, chainId),

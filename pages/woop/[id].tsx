@@ -150,7 +150,7 @@ const Request = () => {
   };
 
   const checkAndUpdateNetwork = (result: any) => {
-    if (result?.network != chain?.network) {
+    if (result?.network != chain?.id) {
       setWrongNetwork(true);
       setWoopBadNetwork(
         `Wrong network. Please connect to ${result?.networkName}`
@@ -190,7 +190,7 @@ const Request = () => {
 
   // wagmi erc20 transaction
   const { config } = usePrepareContractWrite({
-    address: request?.tokenAddress,
+    address: request?.tokenAddress as `0x${string}` | undefined,
     abi: ERC20,
     functionName: "transfer",
     args: [request?.from, utils.parseEther(amount)],
@@ -204,10 +204,8 @@ const Request = () => {
 
   //wagmi native transaction
   const { config: configNative } = usePrepareSendTransaction({
-    request: {
-      to: recipient,
-      value: amount ? utils.parseEther(amount) : undefined,
-    },
+    to: recipient,
+    value: amount ? BigInt(utils.parseEther(amount).toString()) : undefined,
   });
   const { data: dataNative, sendTransaction } =
     useSendTransaction(configNative);

@@ -3,16 +3,19 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { mainnet, goerli, polygon, optimism, arbitrum } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useRouter } from "next/router";
 
-const { chains, provider } = configureChains(
-  [chain.mainnet, chain.goerli, chain.optimism, chain.arbitrum, chain.polygon],
+const { chains, publicClient } = configureChains(
+  [mainnet, goerli, optimism, arbitrum, polygon],
 
   [
     alchemyProvider({
@@ -30,23 +33,26 @@ const { chains, provider } = configureChains(
     alchemyProvider({
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ARBITRUM_MAINNET_API_KEY!,
     }),
+    publicProvider(),
   ]
 );
 
+const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_ID ?? "";
+
 const { connectors } = getDefaultWallets({
-  appName: "woop-pay",
+  appName: "Woop Pay",
+  projectId,
   chains,
 });
 
-const wagmiClient = createClient({
+const wagmiClient = createConfig({
   autoConnect: true,
   connectors,
-  provider,
+  publicClient,
 });
 
 export default function App({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const router = useRouter();
 
   const theme = React.useMemo(
     () =>
@@ -60,7 +66,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={wagmiClient}>
         <RainbowKitProvider modalSize="compact" chains={chains}>
           <ThemeProvider theme={theme}>
             <CssBaseline>

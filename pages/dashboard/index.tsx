@@ -115,7 +115,7 @@ const Dashboard = () => {
                         ) : (
                           <button
                             type="button"
-                            className="items-center font-base focus:outline-0 focus:text-slate-700 h-10 rounded-xl transition-all font-bold text-white border-white bg-white text-slate-700 mt-3"
+                            className="items-center font-base focus:outline-0 focus:text-slate-700 h-10 rounded-xl transition-all font-bold text-black border-white bg-white text-slate-700 mt-3"
                             onClick={() => {
                               setCurrentModal(index);
                               setCurrentWoopId(notification?.notification.body);
