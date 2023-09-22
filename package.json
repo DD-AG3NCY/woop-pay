@@ -33,6 +33,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.11.0",
     "sass": "^1.67.0",
+    "smartlook-client": "^8.2.0",
     "typescript": "^5.2.2",
     "viem": "^1.10.14",
     "wagmi": "^1.4.2"
