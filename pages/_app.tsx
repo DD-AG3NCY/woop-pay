@@ -7,12 +7,11 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, goerli, polygon, optimism, arbitrum } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import Smartlook from "smartlook-client";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useRouter } from "next/router";
 
 const { chains, publicClient } = configureChains(
   [mainnet, goerli, optimism, arbitrum, polygon],
@@ -53,6 +52,10 @@ const wagmiClient = createConfig({
 
 export default function App({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  React.useEffect(() => {
+    Smartlook.init("673d3d292c8b0ed05619ff7f02caf0dbcba7fb3e");
+  }, []);
 
   const theme = React.useMemo(
     () =>
