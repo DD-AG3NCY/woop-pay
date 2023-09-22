@@ -54,7 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   React.useEffect(() => {
-    Smartlook.init("673d3d292c8b0ed05619ff7f02caf0dbcba7fb3e");
+    Smartlook.init(process.env.NEXT_PUBLIC_SMARTLOOK_KEY ?? "");
   }, []);
 
   const theme = React.useMemo(
