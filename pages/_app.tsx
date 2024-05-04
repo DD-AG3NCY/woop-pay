@@ -4,7 +4,7 @@ import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, goerli, polygon, optimism, arbitrum } from "wagmi/chains";
+import { mainnet, sepolia, polygon, optimism, arbitrum } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import Smartlook from "smartlook-client";
@@ -14,14 +14,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, goerli, optimism, arbitrum, polygon],
+  [mainnet, sepolia, optimism, arbitrum, polygon],
 
   [
     alchemyProvider({
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_MAINNET_API_KEY!,
     }),
     alchemyProvider({
-      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_GOERLI_API_KEY!,
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_SEPOLIA_API_KEY!,
     }),
     alchemyProvider({
       apiKey: process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_MAINNET_API_KEY!,
