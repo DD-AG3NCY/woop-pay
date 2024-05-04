@@ -47,7 +47,7 @@ interface Request {
 
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
-  const [amount, setAmount] = React.useState<string>("0.001");
+  const [amount, setAmount] = React.useState<string>("0.01");
   const [recipient, setRecipient] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
   const [ensName, setEnsName] = React.useState<string>("");
@@ -69,6 +69,7 @@ const Request = () => {
   const { openConnectModal } = useConnectModal();
   const { width, height } = useWindowSize();
   const MIXPANEL_ID = process.env.NEXT_PUBLIC_MIXPANEL_ID;
+  const pinataURL = process.env.NEXT_PUBLIC_PINATA_URL;
 
   // initiate tracking activity
   if (MIXPANEL_ID) {
@@ -78,9 +79,7 @@ const Request = () => {
   // querying ipfs
   const callIpfs = async () => {
     try {
-      const response = await fetch(
-        `https://web3-pay.infura-ipfs.io/ipfs/${id}`
-      );
+      const response = await fetch(`${pinataURL}${id}`);
 
       if (!response.ok) throw new Error(response.statusText);
 
@@ -132,9 +131,7 @@ const Request = () => {
 
   const callIpfsForNetwork: any = async () => {
     try {
-      const response = await fetch(
-        `https://web3-pay.infura-ipfs.io/ipfs/${id}`
-      );
+      const response = await fetch(`${pinataURL}${id}`);
 
       if (!response.ok) throw new Error(response.statusText);
 

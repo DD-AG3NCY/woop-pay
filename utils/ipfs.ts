@@ -1,22 +1,19 @@
-import { create } from "ipfs-http-client";
+export const uploadIpfs = async (data: any) => {
+  const response = await fetch("/api/pinToPinata", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
-const projectId = process.env.NEXT_PUBLIC_INFURA_PROJECT_ID;
-const secret = process.env.NEXT_PUBLIC_INFURA_SECRET;
-const client = create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-  headers: {
-    authorization: `Basic ${Buffer.from(
-      `${projectId}:${secret}`,
-      "utf-8"
-    ).toString("base64")}`,
-  },
-});
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
 
-export const uploadIpfs = async <T>(data: T) => {
-  const result = await client.add(JSON.stringify(data));
+  const result = await response.json();
+  console.log(result);
+  const url = result.IpfsHash;
 
-  console.log("upload result ipfs", result);
-  return result;
+  return url;
 };

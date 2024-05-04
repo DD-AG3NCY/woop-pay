@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "../public/logo.svg";
+import logo from "../public/WoopPayLogo.svg";
 import logoMobile from "../public/icon.svg";
 import Wallet from "./Wallet";
 import styles from "./Wallet.module.scss";
@@ -60,7 +60,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
           <Image
             alt="woop-pay"
             src={logo}
-            width={260}
+            width={190}
             height={120}
             className={cx(styles.image, "hidden md:block")}
           />

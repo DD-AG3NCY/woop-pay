@@ -92,7 +92,7 @@ export default function Payment(props: any) {
           tokenAddress: selectToken(selectedToken.label, chainId),
         };
 
-        const { path } = await uploadIpfs(data).finally(() => {
+        const path = await uploadIpfs(data).finally(() => {
           setIpfsLoading(false);
         });
         mixpanel.track("create_woop", {
@@ -110,6 +110,7 @@ export default function Payment(props: any) {
           selectedToken.label,
           path
         );
+        console.log(path);
         setPath(path);
 
         setIsShareActive(true);
