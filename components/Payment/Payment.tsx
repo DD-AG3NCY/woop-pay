@@ -8,7 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import styles from "./payment.module.scss";
 import cx from "classnames";
 
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 import { uploadIpfs } from "../../utils/ipfs";
@@ -42,7 +42,7 @@ export default function Payment(props: any) {
   const [allowPayerSelectAmount, setAllowPayerSelectAmount] =
     React.useState<boolean>(false);
   const { isConnected: connected, address } = useAccount();
-  const { chain } = useNetwork();
+  const { chain } = useAccount();
   const { openConnectModal } = useConnectModal();
 
   const [selectorVisibility, setSelectorVisibility] =
@@ -142,8 +142,8 @@ export default function Payment(props: any) {
   React.useEffect(() => {
     if (chain) {
       setSelectedToken(tokensDetails[0]);
-      setChainId(chain.network);
-      if (chain.network == "matic") {
+      setChainId(chain.name);
+      if (chain.name == "matic") {
         setSelectedToken(tokensDetails[1]);
       }
     }
