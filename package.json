@@ -1,5 +1,5 @@
 {
-  "name": "web3-pay",
+  "name": "woop-pay",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,8 @@
     "@mui/material": "^5.14.9",
     "@pinata/sdk": "^2.1.0",
     "@pushprotocol/restapi": "^1.4.4",
-    "@rainbow-me/rainbowkit": "^1.0.11",
+    "@rainbow-me/rainbowkit": "^2.1.0",
+    "@tanstack/react-query": "^5.37.1",
     "@types/mixpanel-browser": "^2.47.1",
     "@types/node": "20.6.2",
     "@types/react": "18.2.21",
@@ -27,6 +28,7 @@
     "next": "13.4.19",
     "next-qrcode": "^2.5.1",
     "next-share": "^0.25.0",
+    "npm-check-updates": "^16.14.20",
     "qr-code-styling": "^1.6.0-rc.1",
     "react": "18.2.0",
     "react-confetti": "^6.1.0",
@@ -35,8 +37,8 @@
     "sass": "^1.67.0",
     "smartlook-client": "^8.2.0",
     "typescript": "^5.2.2",
-    "viem": "^1.10.14",
-    "wagmi": "^1.4.2"
+    "viem": "^2.10.11",
+    "wagmi": "^2.9.2"
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.13",
