@@ -142,8 +142,8 @@ export default function Payment(props: any) {
   React.useEffect(() => {
     if (chain) {
       setSelectedToken(tokensDetails[0]);
-      setChainId(chain.network);
-      if (chain.network == "matic") {
+      setChainId(chain.name);
+      if (chain.name == "matic") {
         setSelectedToken(tokensDetails[1]);
       }
     }
