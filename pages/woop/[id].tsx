@@ -8,13 +8,12 @@ import Confetti from "react-confetti";
 import useWindowSize from "./../../hooks/useWindowSize/useWindowSize";
 
 import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useWaitForTransaction,
-  usePrepareSendTransaction,
+  useSimulateContract,
+  useWriteContract,
+  useEstimateGas,
+  useWaitForTransactionReceipt,
   useSendTransaction,
   useAccount,
-  useNetwork,
 } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
@@ -48,7 +47,7 @@ interface Request {
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
   const [amount, setAmount] = React.useState<string>("0.01");
-  const [recipient, setRecipient] = React.useState<string>("");
+  const [recipient, setRecipient] = React.useState<`0x${string}`>("0x");
   const [description, setDescription] = React.useState<string>("");
   const [ensName, setEnsName] = React.useState<string>("");
   const [network, setNetwork] = React.useState<string>("");
@@ -65,7 +64,7 @@ const Request = () => {
   const router = useRouter();
   const { id } = router.query;
   const { isConnected: connected, address } = useAccount();
-  const { chain } = useNetwork();
+  const { chain } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { width, height } = useWindowSize();
   const MIXPANEL_ID = process.env.NEXT_PUBLIC_MIXPANEL_ID;
@@ -186,30 +185,29 @@ const Request = () => {
   };
 
   // wagmi erc20 transaction
-  const { config } = usePrepareContractWrite({
+  const { data } = useSimulateContract({
     address: request?.tokenAddress as `0x${string}` | undefined,
     abi: ERC20,
     functionName: "transfer",
     args: [request?.from, utils.parseEther(amount)],
   });
 
-  const { data, write } = useContractWrite(config);
+  const { data: hash, writeContract } = useWriteContract();
 
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
+    hash,
   });
 
   //wagmi native transaction
-  const { config: configNative } = usePrepareSendTransaction({
+  const { data: dataNative } = useEstimateGas({
     to: recipient,
     value: amount ? BigInt(utils.parseEther(amount).toString()) : undefined,
   });
-  const { data: dataNative, sendTransaction } =
-    useSendTransaction(configNative);
+  const { data: hashNative, sendTransaction } = useSendTransaction();
 
   const { isLoading: isLoadingNative, isSuccess: isSuccessNative } =
-    useWaitForTransaction({
-      hash: dataNative?.hash,
+    useWaitForTransactionReceipt({
+      hash: hashNative,
     });
 
   // react use effects
@@ -225,14 +223,14 @@ const Request = () => {
           setWoopBadRequest("");
         }
       } else {
-        if (!write && !badRequest) {
+        if (!Boolean(data?.request) && !badRequest) {
           setWoopBadRequest(`Insufficient ${request?.tokenName} balance`);
         } else {
           setWoopBadRequest("");
         }
       }
     }
-  }, [isNativeTx, badRequest, isConnected, sendTransaction, write]);
+  }, [isNativeTx, badRequest, isConnected, sendTransaction, data]);
 
   React.useEffect(() => {
     if (id) {
@@ -252,7 +250,7 @@ const Request = () => {
   React.useEffect(() => {
     if (isSuccess) {
       if (request) {
-        const etherscanLink = setEtherscanBase(network, data?.hash);
+        const etherscanLink = setEtherscanBase(network, hash);
         sendNotification(
           recipient,
           address,
@@ -274,7 +272,7 @@ const Request = () => {
     }
     if (isSuccessNative) {
       if (request) {
-        const etherscanLink = setEtherscanBase(network, dataNative?.hash);
+        const etherscanLink = setEtherscanBase(network, hashNative);
         sendNotification(
           recipient,
           address,
@@ -500,10 +498,7 @@ const Request = () => {
                       <p className="text-xs text-slate-300 mb-2 text-center">
                         <a
                           className="underline underline-offset-4 mr-1"
-                          href={`${setEtherscanBase(
-                            network,
-                            dataNative?.hash
-                          )}`}
+                          href={`${setEtherscanBase(network, hashNative)}`}
                         >
                           sent
                         </a>
@@ -544,10 +539,7 @@ const Request = () => {
                       <p className="text-xs text-slate-300 mb-2 text-center">
                         <a
                           className="underline underline-offset-4 mr-1"
-                          href={`${setEtherscanBase(
-                            network,
-                            dataNative?.hash
-                          )}`}
+                          href={`${setEtherscanBase(network, hashNative)}`}
                         >
                           sent
                         </a>
@@ -638,11 +630,20 @@ const Request = () => {
                       )}
                       disabled={
                         (isNativeTx
-                          ? !sendTransaction || isLoadingNative
-                          : !write || isLoading) || wrongNetwork
+                          ? !Boolean(dataNative) || isLoadingNative
+                          : !Boolean(data?.request) || isLoading) ||
+                        wrongNetwork
                       }
                       onClick={
-                        isNativeTx ? () => sendTransaction?.() : () => write?.()
+                        isNativeTx
+                          ? () =>
+                              sendTransaction({
+                                to: recipient,
+                                value: amount
+                                  ? BigInt(utils.parseEther(amount).toString())
+                                  : undefined,
+                              })
+                          : () => writeContract(data!.request)
                       }
                     >
                       {isNativeTx ? (
@@ -733,11 +734,20 @@ const Request = () => {
                       )}
                       disabled={
                         (isNativeTx
-                          ? !sendTransaction || isLoadingNative
-                          : !write || isLoading) || wrongNetwork
+                          ? !Boolean(dataNative) || isLoadingNative
+                          : !Boolean(data?.request) || isLoading) ||
+                        wrongNetwork
                       }
                       onClick={
-                        isNativeTx ? () => sendTransaction?.() : () => write?.()
+                        isNativeTx
+                          ? () =>
+                              sendTransaction({
+                                to: recipient,
+                                value: amount
+                                  ? BigInt(utils.parseEther(amount).toString())
+                                  : undefined,
+                              })
+                          : () => writeContract(data!.request)
                       }
                     >
                       {isNativeTx ? (
