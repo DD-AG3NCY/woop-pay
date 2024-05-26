@@ -27,7 +27,7 @@ import { getEnsName } from "../../utils/ens";
 
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
-import { utils } from "ethers";
+import { parseEther } from "ethers";
 import Header from "../../components/Heading";
 import styles from "./woop.module.scss";
 import cx from "classnames";
@@ -189,7 +189,7 @@ const Request = () => {
     address: request?.tokenAddress as `0x${string}` | undefined,
     abi: ERC20,
     functionName: "transfer",
-    args: [request?.from, utils.parseEther(amount)],
+    args: [request?.from, parseEther(amount)],
   });
 
   const { data: hash, writeContract } = useWriteContract();
@@ -201,7 +201,7 @@ const Request = () => {
   //wagmi native transaction
   const { data: dataNative } = useEstimateGas({
     to: recipient,
-    value: amount ? BigInt(utils.parseEther(amount).toString()) : undefined,
+    value: amount ? BigInt(parseEther(amount).toString()) : undefined,
   });
   const { data: hashNative, sendTransaction } = useSendTransaction();
 
@@ -640,7 +640,7 @@ const Request = () => {
                               sendTransaction({
                                 to: recipient,
                                 value: amount
-                                  ? BigInt(utils.parseEther(amount).toString())
+                                  ? BigInt(parseEther(amount).toString())
                                   : undefined,
                               })
                           : () => writeContract(data!.request)
@@ -744,7 +744,7 @@ const Request = () => {
                               sendTransaction({
                                 to: recipient,
                                 value: amount
-                                  ? BigInt(utils.parseEther(amount).toString())
+                                  ? BigInt(parseEther(amount).toString())
                                   : undefined,
                               })
                           : () => writeContract(data!.request)
