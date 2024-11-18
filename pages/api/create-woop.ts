@@ -7,7 +7,7 @@ import {
   networks,
   MAX_CHARACTER_LIMIT,
 } from "../../utils/constants";
-import { ethers } from "ethers";
+import { getAddress } from "ethers";
 
 export default async function createRequest(
   req: NextApiRequest,
@@ -36,7 +36,7 @@ export default async function createRequest(
 
   // Check if address is a valid ethereum address
   try {
-    ethers.utils.getAddress(fromAddress);
+    getAddress(fromAddress);
   } catch (error) {
     return res.status(400).send({ error: "Bad address checksum" });
   }
