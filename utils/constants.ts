@@ -93,15 +93,15 @@ export const tokensDetails: Token[] = [
 ];
 
 export const setEtherscanBase = (network: string, hash: string | undefined) => {
-  if (network == "arbitrum") {
+  if (network == "Arbitrum") {
     return `https://arbiscan.io/tx/${hash}`;
-  } else if (network == "goerli") {
-    return `https://goerli.etherscan.io/tx/${hash}`;
-  } else if (network == "optimism") {
+  } else if (network == "Sepolia") {
+    return `https://sepolia.etherscan.io/tx/${hash}`;
+  } else if (network == "Optimism") {
     return `https://optimistic.etherscan.io/tx/${hash}`;
-  } else if (network == "mainnet") {
+  } else if (network == "Ethereum") {
     return `https://etherscan.io/tx/${hash}`;
-  } else if (network == "base") {
+  } else if (network == "Base") {
     return `https://basescan.org/tx/${hash}`;
   } else {
     return "...";
