@@ -1,7 +1,7 @@
 import ethLogo from "../public/eth.png";
-import maticLogo from "../public/matic.png";
 import wethLogo from "../public/weth.png";
 import wbtcLogo from "../public/wbtc.png";
+import cbbtcLogo from "../public/cbbtc.png";
 import daiLogo from "../public/dai.png";
 import usdcLogo from "../public/usdc.png";
 import usdtLogo from "../public/usdt.png";
@@ -14,7 +14,7 @@ type Token = {
   goerli: string;
   optimism: string;
   arbitrum: string;
-  matic: string;
+  base: string;
 
   [key: string]: any;
 };
@@ -28,17 +28,7 @@ export const tokensDetails: Token[] = [
     goerli: "0x0000000000000000000000000000000000000000",
     optimism: "0x0000000000000000000000000000000000000000",
     arbitrum: "0x0000000000000000000000000000000000000000",
-    matic: "0x0000000000000000000000000000000000000000",
-  },
-  {
-    label: "MATIC",
-    logo: maticLogo,
-    decimals: 18,
-    homestead: "0x0000000000000000000000000000000000000000",
-    goerli: "0x0000000000000000000000000000000000000000",
-    optimism: "0x0000000000000000000000000000000000000000",
-    arbitrum: "0x0000000000000000000000000000000000000000",
-    matic: "0x0000000000000000000000000000000000000000",
+    base: "0x0000000000000000000000000000000000000000",
   },
   {
     label: "WETH",
@@ -48,7 +38,7 @@ export const tokensDetails: Token[] = [
     goerli: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
     optimism: "0x4200000000000000000000000000000000000006",
     arbitrum: "0x82af49447d8a07e3bd95bd0d56f35241523fbab1",
-    matic: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    base: "0x4200000000000000000000000000000000000006",
   },
   {
     label: "WBTC",
@@ -58,7 +48,17 @@ export const tokensDetails: Token[] = [
     goerli: "0xC04B0d3107736C32e19F1c62b2aF67BE61d63a05",
     optimism: "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
     arbitrum: "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
-    matic: "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+    base: "0x0000000000000000000000000000000000000000",
+  },
+  {
+    label: "cbBTC",
+    logo: cbbtcLogo,
+    decimals: 8,
+    homestead: "0x0000000000000000000000000000000000000000",
+    goerli: "0x0000000000000000000000000000000000000000",
+    optimism: "0x0000000000000000000000000000000000000000",
+    arbitrum: "0x0000000000000000000000000000000000000000",
+    base: "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
   },
   {
     label: "DAI",
@@ -68,7 +68,7 @@ export const tokensDetails: Token[] = [
     goerli: "0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60",
     optimism: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
     arbitrum: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
-    matic: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+    base: "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb",
   },
   {
     label: "USDC",
@@ -78,7 +78,7 @@ export const tokensDetails: Token[] = [
     goerli: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
     optimism: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
     arbitrum: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
-    matic: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    base: "0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA",
   },
   {
     label: "USDT",
@@ -88,21 +88,21 @@ export const tokensDetails: Token[] = [
     goerli: "0x509Ee0d083DdF8AC028f2a56731412edD63223B9",
     optimism: "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58",
     arbitrum: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
-    matic: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    base: "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2",
   },
 ];
 
 export const setEtherscanBase = (network: string, hash: string | undefined) => {
-  if (network == "arbitrum") {
+  if (network == "Arbitrum") {
     return `https://arbiscan.io/tx/${hash}`;
-  } else if (network == "goerli") {
-    return `https://goerli.etherscan.io/tx/${hash}`;
-  } else if (network == "optimism") {
+  } else if (network == "Sepolia") {
+    return `https://sepolia.etherscan.io/tx/${hash}`;
+  } else if (network == "Optimism") {
     return `https://optimistic.etherscan.io/tx/${hash}`;
-  } else if (network == "mainnet") {
+  } else if (network == "Ethereum") {
     return `https://etherscan.io/tx/${hash}`;
-  } else if (network == "matic") {
-    return `https://polygonscan.com/tx/${hash}`;
+  } else if (network == "Base") {
+    return `https://basescan.org/tx/${hash}`;
   } else {
     return "...";
   }
@@ -120,8 +120,8 @@ export const setEtherscanAddress = (
     return `https://optimistic.etherscan.io/address/${address}`;
   } else if (network == "homestead") {
     return `https://etherscan.io/address/${address}`;
-  } else if (network == "matic") {
-    return `https://polygonscan.com/address/${address}`;
+  } else if (network == "base") {
+    return `https://basescan.org/address/${address}`;
   } else {
     return "...";
   }
@@ -138,12 +138,12 @@ export const networks: any = [
   "homestead",
   "optimism",
   "arbitrum",
-  "matic",
+  "base",
 ];
 export const tokens: any = [
   "ETH",
-  "MATIC",
   "WETH",
+  "cbBTC",
   "WBTC",
   "DAI",
   "USDC",
@@ -167,8 +167,8 @@ export const selectToken = (token: any, network: any): string | undefined => {
 export const selectTokenDecimals = (token: any): number | undefined => {
   const tokens: string[] | undefined = [
     "ETH",
-    "MATIC",
     "WETH",
+    "cbBTC",
     "WBTC",
     "DAI",
     "USDC",

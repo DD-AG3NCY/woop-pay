@@ -250,7 +250,7 @@ const Request = () => {
   React.useEffect(() => {
     if (isSuccess) {
       if (request) {
-        const etherscanLink = setEtherscanBase(network, hash);
+        const etherscanLink = setEtherscanBase(networkName, hash);
         sendNotification(
           recipient,
           address,
@@ -272,7 +272,7 @@ const Request = () => {
     }
     if (isSuccessNative) {
       if (request) {
-        const etherscanLink = setEtherscanBase(network, hashNative);
+        const etherscanLink = setEtherscanBase(networkName, hashNative);
         sendNotification(
           recipient,
           address,
@@ -498,7 +498,7 @@ const Request = () => {
                       <p className="text-xs text-slate-300 mb-2 text-center">
                         <a
                           className="underline underline-offset-4 mr-1"
-                          href={`${setEtherscanBase(network, hashNative)}`}
+                          href={`${setEtherscanBase(networkName, hashNative)}`}
                         >
                           sent
                         </a>
@@ -539,7 +539,7 @@ const Request = () => {
                       <p className="text-xs text-slate-300 mb-2 text-center">
                         <a
                           className="underline underline-offset-4 mr-1"
-                          href={`${setEtherscanBase(network, hashNative)}`}
+                          href={`${setEtherscanBase(networkName, hashNative)}`}
                         >
                           sent
                         </a>
