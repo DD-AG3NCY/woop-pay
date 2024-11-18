@@ -14,7 +14,7 @@
     "@mui/material": "^5.14.9",
     "@pinata/sdk": "^2.1.0",
     "@pushprotocol/restapi": "^1.4.4",
-    "@rainbow-me/rainbowkit": "^2.1.0",
+    "@rainbow-me/rainbowkit": "^2.2.0",
     "@tanstack/react-query": "^5.37.1",
     "@types/mixpanel-browser": "^2.47.1",
     "@types/node": "20.6.2",
@@ -25,7 +25,7 @@
     "eslint-config-next": "13.4.19",
     "ethers": "^6.12.0",
     "mixpanel-browser": "^2.47.0",
-    "next": "13.4.19",
+    "next": "14.2.3",
     "next-qrcode": "^2.5.1",
     "next-share": "^0.25.0",
     "npm-check-updates": "^16.14.20",
@@ -37,8 +37,8 @@
     "sass": "^1.67.0",
     "smartlook-client": "^8.2.0",
     "typescript": "^5.2.2",
-    "viem": "^2.10.11",
-    "wagmi": "^2.9.2"
+    "viem": "^2.21.47",
+    "wagmi": "2.12.33"
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.13",
