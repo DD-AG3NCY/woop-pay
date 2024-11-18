@@ -4,7 +4,14 @@ import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { http, WagmiProvider } from "wagmi";
-import { mainnet, sepolia, polygon, optimism, arbitrum } from "wagmi/chains";
+import {
+  mainnet,
+  sepolia,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+} from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Smartlook from "smartlook-client";
 
@@ -15,13 +22,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 const config = getDefaultConfig({
   appName: "Woop Pay",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID!,
-  chains: [mainnet, sepolia, optimism, arbitrum, polygon],
+  chains: [mainnet, sepolia, base, optimism, arbitrum],
   transports: {
     [mainnet.id]: http(process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_MAINNET!),
     [sepolia.id]: http(process.env.NEXT_PUBLIC_ALCHEMY_ETHEREUM_SEPOLIA!),
+    [base.id]: http(process.env.NEXT_PUBLIC_ALCHEMY_BASE_MAINNET!),
     [optimism.id]: http(process.env.NEXT_PUBLIC_ALCHEMY_OPTIMISM_MAINNET!),
     [arbitrum.id]: http(process.env.NEXT_PUBLIC_ALCHEMY_ARBITRUM_MAINNET!),
-    [polygon.id]: http(process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_MAINNET!),
   },
 });
 

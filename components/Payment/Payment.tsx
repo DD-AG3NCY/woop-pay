@@ -30,7 +30,7 @@ export default function Payment(props: any) {
     goerli: string;
     optimism: string;
     arbitrum: string;
-    matic: string;
+    base: string;
   }>(tokensDetails[0]);
   const [amount, setAmount] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
@@ -143,9 +143,7 @@ export default function Payment(props: any) {
     if (chain) {
       setSelectedToken(tokensDetails[0]);
       setChainId(chain.name);
-      if (chain.name == "matic") {
-        setSelectedToken(tokensDetails[1]);
-      }
+      console.log(chain.name);
     }
   }, [chain]);
 
@@ -163,10 +161,10 @@ export default function Payment(props: any) {
             </p>
             {tokensDetails
               .filter((token) => {
-                if (chainId == "matic") {
-                  if (token.label != "ETH") return token;
+                if (chainId == "Base") {
+                  if (token.label != "WBTC") return token;
                 } else {
-                  if (token.label != "MATIC") return token;
+                  if (token.label != "cbBTC") return token;
                 }
               })
               .map((token, i) => {
