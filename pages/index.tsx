@@ -1,6 +1,7 @@
 import * as React from "react";
 import Footer from "../components/Footer";
 import Payment from "../components/Payment/Payment";
+import Homepage from "../components/Home/Homepage";
 import Header from "../components/Heading";
 
 import styles from "./index.module.scss";
