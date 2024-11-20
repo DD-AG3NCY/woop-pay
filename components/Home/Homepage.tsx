@@ -18,8 +18,8 @@ export default function Homepage({
     <div
       className={cx(styles.homepageContainer, "flex flex-col items-center p-8")}
     >
-      <h1 className="text-2xl  mb-1 text-center">Receive crypto,</h1>
-      <h1 className="text-2xl  mb-8 text-center">easily.</h1>
+      <h1 className="text-4xl mb-1 text-center">Receive crypto,</h1>
+      <h1 className="text-4xl mb-8 text-center">easily.</h1>
 
       <div className="flex flex-col md:flex-row gap-6">
         <div
