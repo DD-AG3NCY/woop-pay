@@ -5,17 +5,15 @@ import cx from "classnames";
 import createButton from "../../public/create-button.png";
 import paymentRequest from "../../public/payment-request.png";
 
-export default function Homepage() {
-  const handleCreateLink = () => {
-    console.log("Redirect to Create Link flow");
-    // Add navigation logic to Create Link page
-  };
+interface HomepageProps {
+  onNavigateToPaymentRequest: () => void;
+  onNavigateToGenerateButton: () => void;
+}
 
-  const handleCustomizeButton = () => {
-    console.log("Redirect to Customize Button flow");
-    // Add navigation logic to Customize Button page
-  };
-
+export default function Homepage({
+  onNavigateToPaymentRequest,
+  onNavigateToGenerateButton,
+}: HomepageProps) {
   return (
     <div
       className={cx(styles.homepageContainer, "flex flex-col items-center p-8")}
@@ -24,17 +22,15 @@ export default function Homepage() {
       <h1 className="text-2xl  mb-8 text-center">easily.</h1>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Create Link Option */}
         <div
           className={cx(
             styles.optionCard,
             "flex flex-col items-center p-6 border rounded-lg cursor-pointer"
           )}
-          onClick={handleCreateLink}
         >
           <Image
             src={paymentRequest}
-            alt="Customize Button"
+            alt="Payment Request"
             width={90}
             height={90}
             className="mb-2"
@@ -45,22 +41,22 @@ export default function Homepage() {
             </p>
           </div>
           <button
+            type="button"
             className={cx(
               styles.fixedButton,
               "bg-blue-500 text-white px-4 py-2 rounded-lg"
             )}
+            onClick={onNavigateToPaymentRequest}
           >
             Create payment link
           </button>
         </div>
 
-        {/* Customize Button Option */}
         <div
           className={cx(
             styles.optionCard,
             "flex flex-col items-center p-6 border rounded-lg cursor-pointer"
           )}
-          onClick={handleCustomizeButton}
         >
           <Image
             src={createButton}
@@ -75,12 +71,13 @@ export default function Homepage() {
             </p>
           </div>
           <button
+            type="button"
             className={cx(
               styles.fixedButton,
               "bg-blue-500 text-white px-4 py-2 rounded-lg"
             )}
           >
-            Get donate button
+            Coming soon
           </button>
         </div>
       </div>
