@@ -24,12 +24,12 @@ export default function Footer() {
       </div>
       <div>
         <Link
-          href="https://9n0ejb90nk6.typeform.com/to/YHsYaII6"
+          href="https://t.co/wPGRcWjdql"
           className="mr-3 hover:underline underline-offset-4 text-white"
           target="_blank"
           rel="noreferrer"
         >
-          You can share your feedback here!
+          Join our Telegram community!
         </Link>
       </div>
       <div className="hidden md:block">
