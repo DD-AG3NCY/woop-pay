@@ -28,12 +28,10 @@ import { getEnsName } from "../../utils/ens";
 import ERC20 from "../../abi/ERC20.abi.json";
 import Footer from "../../components/Footer";
 import { parseEther } from "ethers";
-import Header from "../../components/Heading";
-import styles from "./woop.module.scss";
-import cx from "classnames";
-import Link from "next/link";
-import ErrorsUi from "../../components/ErrorsUi/ErrorsUi";
-import SEO from "../../components/Seo";
+import Header from '../../components/Heading';
+import Link from 'next/link';
+import ErrorsUi from '../../components/ErrorsUi/ErrorsUi';
+import SEO from '../../components/Seo';
 
 interface Request {
   version: string;
@@ -46,17 +44,17 @@ interface Request {
 
 const Request = () => {
   const [request, setRequest] = React.useState<Request>();
-  const [amount, setAmount] = React.useState<string>("0.01");
-  const [recipient, setRecipient] = React.useState<`0x${string}`>("0x");
-  const [description, setDescription] = React.useState<string>("");
-  const [ensName, setEnsName] = React.useState<string>("");
-  const [network, setNetwork] = React.useState<string>("");
-  const [networkName, setNetworkName] = React.useState<string>("");
+  const [amount, setAmount] = React.useState<string>('0.01');
+  const [recipient, setRecipient] = React.useState<`0x${string}`>('0x');
+  const [description, setDescription] = React.useState<string>('');
+  const [ensName, setEnsName] = React.useState<string>('');
+  const [network, setNetwork] = React.useState<string>('');
+  const [networkName, setNetworkName] = React.useState<string>('');
   const [allowPayerSelectAmount, setAllowPayerSelectAmount] =
     React.useState<boolean>(false);
-  const [woopBadRequest, setWoopBadRequest] = React.useState<string>("");
-  const [woopBadNetwork, setWoopBadNetwork] = React.useState<string>("");
-  const [gif, setGif] = React.useState("");
+  const [woopBadRequest, setWoopBadRequest] = React.useState<string>('');
+  const [woopBadNetwork, setWoopBadNetwork] = React.useState<string>('');
+  const [gif, setGif] = React.useState('');
   const [badRequest, setBadRequest] = React.useState<boolean>(false);
   const [wrongNetwork, setWrongNetwork] = React.useState<boolean>(false);
   const [isNativeTx, setIsNativeTx] = React.useState<boolean>(false);
@@ -89,10 +87,10 @@ const Request = () => {
       setNetworkName(json.networkName);
       setDescription(json.description);
 
-      if (json.value == "allowPayerSelectAmount") {
+      if (json.value == 'allowPayerSelectAmount') {
         setAllowPayerSelectAmount(true);
         const amount: string = (
-          Number("0.001") / Number(10 ** (18 - json.decimals))
+          Number('0.001') / Number(10 ** (18 - json.decimals))
         ).toFixed(18);
         setAmount(amount);
       } else {
@@ -107,7 +105,7 @@ const Request = () => {
       }
 
       let tokenName: string = json.tokenName;
-      if (tokenName == "ETH" || tokenName == "MATIC") {
+      if (tokenName == 'ETH' || tokenName == 'MATIC') {
         setIsNativeTx(true);
       }
 
@@ -115,7 +113,7 @@ const Request = () => {
       if (recipient) {
         setEnsName(recipient);
       }
-      mixpanel.track("visit_woop_payment", {
+      mixpanel.track('visit_woop_payment', {
         Token: json.tokenName,
         Network: json.networkName,
         Amount: json.value,
@@ -153,7 +151,7 @@ const Request = () => {
       );
     } else {
       setWrongNetwork(false);
-      setWoopBadNetwork("");
+      setWoopBadNetwork('');
     }
     setNetwork(result?.network);
   };
@@ -161,15 +159,15 @@ const Request = () => {
   const handleAmountChange = (event: any) => {
     const inputValue = event.target.value;
 
-    if (inputValue === "") {
+    if (inputValue === '') {
       if (request?.decimals != 18 && request) {
         const amount: string = (
-          Number("0.001") / Number(10 ** (18 - request?.decimals))
+          Number('0.001') / Number(10 ** (18 - request?.decimals))
         ).toFixed(18);
         setAmount(amount);
         return;
       } else {
-        setAmount("0.001");
+        setAmount('0.001');
         return;
       }
     }
@@ -188,7 +186,7 @@ const Request = () => {
   const { data } = useSimulateContract({
     address: request?.tokenAddress as `0x${string}` | undefined,
     abi: ERC20,
-    functionName: "transfer",
+    functionName: 'transfer',
     args: [request?.from, parseEther(amount)],
   });
 
@@ -213,20 +211,20 @@ const Request = () => {
   // react use effects
   React.useEffect(() => {
     if (!isConnected) {
-      setWoopBadRequest("");
-      setWoopBadNetwork("");
+      setWoopBadRequest('');
+      setWoopBadNetwork('');
     } else {
       if (isNativeTx) {
         if (!sendTransaction && !badRequest) {
           setWoopBadRequest(`Insufficient ${request?.tokenName} balance`);
         } else {
-          setWoopBadRequest("");
+          setWoopBadRequest('');
         }
       } else {
         if (!Boolean(data?.request) && !badRequest) {
           setWoopBadRequest(`Insufficient ${request?.tokenName} balance`);
         } else {
-          setWoopBadRequest("");
+          setWoopBadRequest('');
         }
       }
     }
@@ -261,7 +259,7 @@ const Request = () => {
           etherscanLink,
           id
         );
-        mixpanel.track("paid_woop", {
+        mixpanel.track('paid_woop', {
           Token: request?.tokenName,
           Network: networkName,
           Amount: amount,
@@ -283,7 +281,7 @@ const Request = () => {
           etherscanLink,
           id
         );
-        mixpanel.track("paid_woop", {
+        mixpanel.track('paid_woop', {
           Token: request?.tokenName,
           Network: networkName,
           Amount: amount,
@@ -299,10 +297,10 @@ const Request = () => {
   }, []);
 
   const colors = [
-    "rgba(16, 130, 178, 1)",
-    "rgba(79, 76, 227, 1)",
-    "rgba(33, 35, 167, 0.5)",
-    "rgb(6, 34, 92)",
+    'rgba(16, 130, 178, 1)',
+    'rgba(79, 76, 227, 1)',
+    'rgba(33, 35, 167, 0.5)',
+    'rgb(6, 34, 92)',
   ];
 
   const findIcon = (tokenName: string) => {
@@ -321,11 +319,11 @@ const Request = () => {
   };
 
   const gifs = [
-    "https://media.giphy.com/media/l3q2wJsC23ikJg9xe/giphy.gif",
-    "https://media.giphy.com/media/TpegB7FzEXfnWlrorG/giphy.gif",
-    "https://media.giphy.com/media/8BHjXpkB7GfqJUbAxa/giphy.gif",
-    "https://media.giphy.com/media/opfF5TLS75Oms/giphy.gif",
-    "https://media.giphy.com/media/Tw4z4MD34y11K/giphy.gif",
+    'https://media.giphy.com/media/l3q2wJsC23ikJg9xe/giphy.gif',
+    'https://media.giphy.com/media/TpegB7FzEXfnWlrorG/giphy.gif',
+    'https://media.giphy.com/media/8BHjXpkB7GfqJUbAxa/giphy.gif',
+    'https://media.giphy.com/media/opfF5TLS75Oms/giphy.gif',
+    'https://media.giphy.com/media/Tw4z4MD34y11K/giphy.gif',
   ];
 
   const randomGif = () => {
@@ -335,25 +333,15 @@ const Request = () => {
   return (
     <div>
       <SEO
-        title={"Woop Pay | Payment Request"}
+        title={'Woop Pay | Payment Request'}
         rrssImg="./RRSS.png"
         description={"You've been requested to send a payment through Woop Pay"}
       />
 
       <Header />
 
-      <article
-        className={cx(
-          styles.baseContainer,
-          "h-screen w-full flex justify-center items-center"
-        )}
-      >
-        <section
-          className={cx(
-            styles.containerBase,
-            "h-screen w-full absolute top-0 z-0 flex opacity-50 items-center"
-          )}
-        ></section>
+      <article className="h-screen w-full flex justify-center items-center bg-gradient-to-tr to-[#268ec8] from-[#06225c]">
+        <section className="h-screen w-full absolute top-0 z-0 flex  items-center bg-repeat bg-[url('/double-bubble-dark.webp')] bg-blend-hard-light bg-[length:350px] opacity-20"></section>
 
         {isSuccess || isSuccessNative ? (
           <Confetti
@@ -367,7 +355,7 @@ const Request = () => {
         {/* CONTENT */}
         <Container maxWidth="xs" className="">
           {!badRequest ? (
-            <div className={"mb-2 z-20"}>
+            <div className={'mb-2 z-20'}>
               <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
             </div>
           ) : (
@@ -376,47 +364,39 @@ const Request = () => {
 
           <Box
             component="form"
-            className={cx(
-              styles.containerBox,
-              "rounded-3xl shadow-md w-full relative z-20"
-            )}
+            className="rounded-3xl shadow-md w-full relative z-20 bg-gradient-to-tr to-[#4f4ce3] from-[#1082b2] border border-[rgba(33,35,167,0.5)]"
           >
             <section className="justify-items-left font-base text-white">
-              <div
-                className={cx(
-                  styles.topContainer,
-                  "mb-2 pl-4 pr-4 pt-4 pb-3 w-full flex justify-between items-center"
-                )}
-              >
+              <div className="mb-2 pl-4 pr-4 pt-4 pb-3 w-full flex justify-between items-center border-b border-[rgba(33,35,167,0.5)]">
                 <p className="font-base font-bold text-xl">
                   {badRequest
-                    ? "No Woop to pay here"
+                    ? 'No Woop to pay here'
                     : isNativeTx
                     ? isSuccessNative
-                      ? "Woop sent!"
+                      ? 'Woop sent!'
                       : description
                       ? `${
                           description.charAt(0).toUpperCase() +
                           description.slice(1)
                         }`
-                      : "Payment requested!"
+                      : 'Payment requested!'
                     : isSuccess
-                    ? "Woop sent!"
+                    ? 'Woop sent!'
                     : description
                     ? `${
                         description.charAt(0).toUpperCase() +
                         description.slice(1)
                       }`
-                    : "Payment requested!"}
+                    : 'Payment requested!'}
                 </p>
                 <p className="text-3xl ml-2">
                   {badRequest
-                    ? "⚠️"
+                    ? '⚠️'
                     : isSuccess
-                    ? "💸"
+                    ? '💸'
                     : isSuccessNative
-                    ? "💸"
-                    : "✨"}
+                    ? '💸'
+                    : '✨'}
                 </p>
               </div>
               {badRequest ? (
@@ -425,9 +405,9 @@ const Request = () => {
                     <div className="mt-6"></div>
                     <Link href="/">
                       <button
-                        className={cx(
-                          "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
+                        className={
+                          'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                        }
                       >
                         Go back
                       </button>
@@ -463,12 +443,12 @@ const Request = () => {
                           </span>
                         )}
                       </a>
-                      <span className="ml-1">{"requested:"}</span>
+                      <span className="ml-1">{'requested:'}</span>
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
-                      {request?.value == "allowPayerSelectAmount"
-                        ? "..."
-                        : request?.value}{" "}
+                      {request?.value == 'allowPayerSelectAmount'
+                        ? '...'
+                        : request?.value}{' '}
                       {request?.tokenName}
                     </div>
                   </>
@@ -476,9 +456,9 @@ const Request = () => {
                   <div className="">
                     <button
                       type="button"
-                      className={cx(
-                        "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                      )}
+                      className={
+                        'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                      }
                       onClick={openConnectModal}
                     >
                       Connect Wallet
@@ -492,7 +472,7 @@ const Request = () => {
                       <p className="font-bold md:text-5xl text-4xl mb-2">
                         {request?.decimals == 18
                           ? amount
-                          : Number(amount) * 10 ** 12}{" "}
+                          : Number(amount) * 10 ** 12}{' '}
                         {request?.tokenName}
                       </p>
                       <p className="text-xs text-slate-300 mb-2 text-center">
@@ -502,7 +482,7 @@ const Request = () => {
                         >
                           sent
                         </a>
-                        <span className="mr-1">{"to"}</span>
+                        <span className="mr-1">{'to'}</span>
                         {ensName ? (
                           <a>
                             <span className="mr-1 font-bold">{ensName}</span>
@@ -520,9 +500,9 @@ const Request = () => {
                     </div>
                     <Link href="/">
                       <button
-                        className={cx(
-                          "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
+                        className={
+                          'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                        }
                       >
                         Close
                       </button>
@@ -543,7 +523,7 @@ const Request = () => {
                         >
                           sent
                         </a>
-                        <span className="mr-1">{"to"}</span>
+                        <span className="mr-1">{'to'}</span>
                         {ensName ? (
                           <a>
                             <span className="mr-1 font-bold">{ensName}</span>
@@ -568,9 +548,9 @@ const Request = () => {
                     </div>
                     <Link href="/">
                       <button
-                        className={cx(
-                          "border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                        )}
+                        className={
+                          'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                        }
                       >
                         Close
                       </button>
@@ -607,7 +587,7 @@ const Request = () => {
                         )}
                       </a>
                       <span className="ml-1">
-                        {"requested to set an amount:"}
+                        {'requested to set an amount:'}
                       </span>
                     </div>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6 text-center items-center">
@@ -616,7 +596,7 @@ const Request = () => {
                         type="number"
                         placeholder="0.001"
                         onChange={handleAmountChange}
-                        style={{ maxWidth: "100%" }}
+                        style={{ maxWidth: '100%' }}
                       />
                       <div className="flex-shrink-0">{request?.tokenName}</div>
                     </div>
@@ -625,9 +605,9 @@ const Request = () => {
                   <div className="">
                     <button
                       type="button"
-                      className={cx(
-                        "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                      )}
+                      className={
+                        'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                      }
                       disabled={
                         (isNativeTx
                           ? !Boolean(dataNative) || isLoadingNative
@@ -664,7 +644,7 @@ const Request = () => {
                             />
                           </svg>
                         ) : (
-                          "Pay Woop"
+                          'Pay Woop'
                         )
                       ) : isLoading ? (
                         <>
@@ -685,7 +665,7 @@ const Request = () => {
                           </svg>
                         </>
                       ) : (
-                        "Pay Woop"
+                        'Pay Woop'
                       )}
                     </button>
                   </div>
@@ -719,7 +699,7 @@ const Request = () => {
                           </span>
                         )}
                       </a>
-                      <span className="ml-1">{"requested:"}</span>
+                      <span className="ml-1">{'requested:'}</span>
                     </p>
                     <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
                       {request?.value} {request?.tokenName}
@@ -729,9 +709,9 @@ const Request = () => {
                   <div className="">
                     <button
                       type="button"
-                      className={cx(
-                        "flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700"
-                      )}
+                      className={
+                        'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                      }
                       disabled={
                         (isNativeTx
                           ? !Boolean(dataNative) || isLoadingNative
@@ -768,7 +748,7 @@ const Request = () => {
                             />
                           </svg>
                         ) : (
-                          "Pay Woop"
+                          'Pay Woop'
                         )
                       ) : isLoading ? (
                         <>
@@ -789,7 +769,7 @@ const Request = () => {
                           </svg>
                         </>
                       ) : (
-                        "Pay Woop"
+                        'Pay Woop'
                       )}
                     </button>
                   </div>

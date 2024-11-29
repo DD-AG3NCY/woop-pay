@@ -1,10 +1,7 @@
 import * as React from "react";
 import { retrieveNotifications } from "../../utils/push";
-import { useAccount } from "wagmi";
-import styles from "./dashboard.module.scss";
-import cx from "classnames";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
+import { useAccount } from 'wagmi';
+import Box from '@mui/material/Box';
 import Footer from "../../components/Footer";
 import Header from "../../components/Heading";
 import SEO from "../../components/Seo";
@@ -41,59 +38,44 @@ const Dashboard = () => {
   }, [address]);
 
   return (
-    <div
-      className={cx(
-        styles.baseContainer,
-        "flex flex-col items-center justify-center h-screen"
-      )}
-    >
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-500 to-blue-900">
       <SEO
-        title={"Woop Pay | My Woops"}
+        title={'Woop Pay | My Woops'}
         rrssImg="./RRSS.png"
-        description={"The list of Woop payments requested and received"}
+        description={'The list of Woop payments requested and received'}
       />
 
       <div className="mb-[60px]">
         <Header />
       </div>
 
-      <article className={cx(styles.baseArticle, "w-full")}>
-        <section
-          className={cx(styles.containerBase, "h-screen w-full absolute top-0")}
-        ></section>
+      <article className="w-full max-h-[calc(100vh-180px)] overflow-y-auto">
+        <section className="absolute top-0 w-full h-screen bg-repeat bg-[url('/double-bubble-dark.webp')] opacity-20 bg-blend-hard-light bg-[length:400px]"></section>
 
-        <div
-          className={cx(
-            styles.containerDisplay,
-            "flex-col items-center mr-3 ml-3"
-          )}
-        >
+        <div className="flex flex-col items-center mx-3">
           {filteredNotifications.length === 0 ? (
             <p className="m-2">😞 No woops found</p>
           ) : (
             notifications
               .filter(
                 (notification: any) =>
-                  notification?.title === "Woop Payment Requested"
+                  notification?.title === 'Woop Payment Requested'
               )
               .map((notification: any, index: any) => {
-                const bodyParts = notification?.message.split(" ");
+                const bodyParts = notification?.message.split(' ');
                 const date = [bodyParts[0], bodyParts[1], bodyParts[2]].join(
-                  " "
+                  ' '
                 );
                 const networkName = bodyParts[11];
                 const tokenName = bodyParts[8];
                 const amount = bodyParts[7];
-                const description = bodyParts.slice(13).join(" ");
+                const description = bodyParts.slice(13).join(' ');
 
                 return (
                   <Box
                     key={index}
                     component="form"
-                    className={cx(
-                      styles.containerBoxNew,
-                      "rounded-3xl shadow-md relative z-20 p-4 mt-3 w-full md:w-2/5"
-                    )}
+                    className="relative z-20 p-4 mt-3 w-full md:w-2/5 rounded-3xl shadow-md bg-gradient-to-r from-blue-500 to-blue-900 border border-blue-200"
                   >
                     <section className="text-center">
                       <div className="flex justify-between w-full">
@@ -101,8 +83,8 @@ const Dashboard = () => {
                         <p className="mr-2 text-sm">{date} ⌚</p>
                       </div>
                       <div className="ml-2 flex justify-center">
-                        <p className="text-[55px] bold">
-                          {amount == "allowPayerSelectAmount" ? "n/a" : amount}{" "}
+                        <p className="text-[55px] font-bold">
+                          {amount == 'allowPayerSelectAmount' ? 'n/a' : amount}{' '}
                           {tokenName}
                         </p>
                       </div>
@@ -115,7 +97,7 @@ const Dashboard = () => {
                         ) : (
                           <button
                             type="button"
-                            className="items-center font-base focus:outline-0 focus:text-slate-700 h-10 rounded-xl transition-all font-bold text-black border-white bg-white text-slate-700 mt-3"
+                            className="h-10 px-4 py-2 text-sm font-bold text-slate-700 bg-white border rounded-xl transition-all focus:outline-none focus:text-slate-700"
                             onClick={() => {
                               setCurrentModal(index);
                               setCurrentWoopId(notification?.notification.body);

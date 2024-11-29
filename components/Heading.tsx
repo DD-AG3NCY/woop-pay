@@ -1,21 +1,18 @@
 import Image from "next/image";
 import logo from "../public/WoopPayLogo.svg";
 import logoMobile from "../public/icon.svg";
-import Wallet from "./Wallet";
-import styles from "./Wallet.module.scss";
-import notificationStyles from "./Notification/notification.module.scss";
-import { retrieveSubscriptions, optIn } from "../utils/push";
-import cx from "classnames";
-import { useAccount, useWalletClient } from "wagmi";
+import Wallet from './Wallet';
+import { retrieveSubscriptions, optIn } from '../utils/push';
+import { useAccount, useWalletClient } from 'wagmi';
 
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 
 type IHeaderProps = {};
 
 const defaultProps = {};
 
-const Header: React.FC<IHeaderProps> = (props) => {
+const Header: React.FC<IHeaderProps> = () => {
   const { address } = useAccount();
   const { data: signer } = useWalletClient();
   const { chain } = useAccount();
@@ -55,21 +52,21 @@ const Header: React.FC<IHeaderProps> = (props) => {
 
   return (
     <div className="absolute top-0 left-0 w-full flex justify-between p-7 z-30 items-center">
-      <Link href={"/"}>
+      <Link href={'/'}>
         <div>
           <Image
             alt="woop-pay"
             src={logo}
             width={190}
             height={120}
-            className={cx(styles.image, "hidden md:block")}
+            className="hidden md:block w-[160px] mr-[5px]"
           />
           <Image
             alt="woop-pay"
             src={logoMobile}
             width={40}
             height={40}
-            className={cx("md:hidden")}
+            className={'md:hidden'}
           />
         </div>
       </Link>
@@ -78,11 +75,8 @@ const Header: React.FC<IHeaderProps> = (props) => {
         {isSubscribed ? (
           <div className="flex text-black text-center mr-3">
             <Link
-              href={"/dashboard"}
-              className={cx(
-                notificationStyles.notificationButton,
-                "font-bold flex items-center"
-              )}
+              href={'/dashboard'}
+              className="bg-white border-none cursor-pointer outline-none rounded-[14px] h-[40px] w-[105px] flex justify-center items-center font-bold"
             >
               Dashboard
             </Link>
@@ -91,10 +85,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
           <button
             type="button"
             onClick={activateNotifications}
-            className={cx(
-              notificationStyles.notificationButton,
-              "font-bold flex items-center text-black text-center mr-3 text-sm"
-            )}
+            className="bg-white border-none cursor-pointer outline-none rounded-[14px] h-[40px] w-[105px] flex justify-center items-center font-bold text-black text-center mr-3 text-sm"
           >
             📢 Enable dashboard
           </button>

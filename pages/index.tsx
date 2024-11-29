@@ -15,10 +15,7 @@ export default function Home() {
         rrssImg="./RRSS.png"
       />
       <Layout>
-        <Homepage
-          onNavigateToPaymentRequest={() => router.push("/request")}
-          onNavigateToGenerateButton={() => router.push("/customize")}
-        />
+        <Homepage onNavigateToPaymentRequest={() => router.push('/request')} />
       </Layout>
     </>
   );
