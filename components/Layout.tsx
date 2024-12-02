@@ -1,8 +1,6 @@
-import React from "react";
-import Header from "./Heading";
+import React from 'react';
 import Footer from './Footer';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import Header from './Heading';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,23 +8,31 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <>
-      <Header />
-      <article className="h-screen w-full flex justify-center items-center bg-gradient-to-tr to-[#268ec8] from-[#06225c]">
-        <section className="h-screen w-full absolute top-0 z-0 bg-repeat bg-[url('/double-bubble-dark.webp')] bg-blend-hard-light bg-[length:350px] opacity-20"></section>
+    <div
+      className="
+        min-h-screen flex flex-col relative
+        bg-primary-gradient
+      "
+    >
+      {/* Background Image */}
+      <div
+        className="
+          absolute inset-0 z-0 opacity-20
+          bg-repeat bg-[url('/double-bubble-dark.webp')]
+          bg-[length:350px] bg-blend-hard-light
+        "
+      />
 
-        <Container maxWidth="sm" className="w-full z-10">
-          <Box
-            component="form"
-            className="p-2 rounded-3xl shadow-md w-full bg-gradient-to-tr to-[#4f4ce3] from-[#1082b2] border border-[rgba(33,35,167,0.5)]"
-          >
-            {children}
-          </Box>
-        </Container>
-      </article>
-      <div className="absolute bottom-0 left-0 w-full">
+      {/* Content Wrapper */}
+      <div className="relative z-10 flex flex-col flex-grow">
+        <Header />
+
+        <main className="flex-grow flex justify-center items-center">
+          {children}
+        </main>
+
         <Footer />
       </div>
-    </>
+    </div>
   );
 }

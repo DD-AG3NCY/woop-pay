@@ -32,6 +32,7 @@ import Header from '../../components/Heading';
 import Link from 'next/link';
 import ErrorsUi from '../../components/ErrorsUi/ErrorsUi';
 import SEO from '../../components/Seo';
+import Layout from '../../components/Layout';
 
 interface Request {
   version: string;
@@ -331,459 +332,446 @@ const Request = () => {
   };
 
   return (
-    <div>
+    <Layout>
       <SEO
         title={'Woop Pay | Payment Request'}
         rrssImg="./RRSS.png"
         description={"You've been requested to send a payment through Woop Pay"}
       />
 
-      <Header />
+      {isSuccess || isSuccessNative ? (
+        <Confetti
+          colors={colors}
+          className="z-10"
+          width={width}
+          height={height}
+        />
+      ) : null}
 
-      <article className="h-screen w-full flex justify-center items-center bg-gradient-to-tr to-[#268ec8] from-[#06225c]">
-        <section className="h-screen w-full absolute top-0 z-0 flex  items-center bg-repeat bg-[url('/double-bubble-dark.webp')] bg-blend-hard-light bg-[length:350px] opacity-20"></section>
+      {/* CONTENT */}
+      <Container maxWidth="xs" className="">
+        {!badRequest ? (
+          <div className={'mb-2 z-20'}>
+            <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
+          </div>
+        ) : (
+          <></>
+        )}
 
-        {isSuccess || isSuccessNative ? (
-          <Confetti
-            colors={colors}
-            className="z-10"
-            width={width}
-            height={height}
-          />
-        ) : null}
-
-        {/* CONTENT */}
-        <Container maxWidth="xs" className="">
-          {!badRequest ? (
-            <div className={'mb-2 z-20'}>
-              <ErrorsUi errorMsg={woopBadRequest} errorNtk={woopBadNetwork} />
-            </div>
-          ) : (
-            <></>
-          )}
-
-          <Box
-            component="form"
-            className="rounded-3xl shadow-md w-full relative z-20 bg-gradient-to-tr to-[#4f4ce3] from-[#1082b2] border border-[rgba(33,35,167,0.5)]"
-          >
-            <section className="justify-items-left font-base text-white">
-              <div className="mb-2 pl-4 pr-4 pt-4 pb-3 w-full flex justify-between items-center border-b border-[rgba(33,35,167,0.5)]">
-                <p className="font-base font-bold text-xl">
-                  {badRequest
-                    ? 'No Woop to pay here'
-                    : isNativeTx
-                    ? isSuccessNative
-                      ? 'Woop sent!'
-                      : description
-                      ? `${
-                          description.charAt(0).toUpperCase() +
-                          description.slice(1)
-                        }`
-                      : 'Payment requested!'
-                    : isSuccess
+        <Box
+          component="form"
+          className="rounded-3xl shadow-md w-full relative z-20 bg-gradient-to-tr to-[#4f4ce3] from-[#1082b2] border border-[rgba(33,35,167,0.5)]"
+        >
+          <section className="justify-items-left font-base text-white">
+            <div className="mb-2 pl-4 pr-4 pt-4 pb-3 w-full flex justify-between items-center border-b border-[rgba(33,35,167,0.5)]">
+              <p className="font-base font-bold text-xl">
+                {badRequest
+                  ? 'No Woop to pay here'
+                  : isNativeTx
+                  ? isSuccessNative
                     ? 'Woop sent!'
                     : description
                     ? `${
                         description.charAt(0).toUpperCase() +
                         description.slice(1)
                       }`
-                    : 'Payment requested!'}
-                </p>
-                <p className="text-3xl ml-2">
-                  {badRequest
-                    ? '⚠️'
-                    : isSuccess
-                    ? '💸'
-                    : isSuccessNative
-                    ? '💸'
-                    : '✨'}
-                </p>
-              </div>
-              {badRequest ? (
-                <>
-                  <div className="px-4 pb-4 pt-1">
-                    <div className="mt-6"></div>
-                    <Link href="/">
-                      <button
-                        className={
-                          'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
-                        }
-                      >
-                        Go back
-                      </button>
-                    </Link>
-                  </div>
-                </>
-              ) : !isConnected ? (
-                <div className="px-4 pb-4 pt-1 relative">
-                  <>
-                    <div className="absolute top-0 right-3 p-1">
-                      {request && findIcon(request?.tokenName)}
-                    </div>
-                    <p className="text-xs text-slate-300 mb-2 flex items-center">
-                      <a
-                        className="underline underline-offset-4"
-                        href={`${setEtherscanAddress(network, request?.from)}`}
-                      >
-                        {ensName ? (
-                          <p className="flex items-center">
-                            <span className="mr-1 font-bold">{ensName}</span>
-                            {/* <Image
-                              alt="ens"
-                              src={ens}
-                              className=""
-                              width={20}
-                              height={20}
-                            /> */}
-                          </p>
-                        ) : (
-                          <span className="font-bold">
-                            {request?.from.slice(0, 4)}...
-                            {request?.from.slice(-4)}
-                          </span>
-                        )}
-                      </a>
-                      <span className="ml-1">{'requested:'}</span>
-                    </p>
-                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
-                      {request?.value == 'allowPayerSelectAmount'
-                        ? '...'
-                        : request?.value}{' '}
-                      {request?.tokenName}
-                    </div>
-                  </>
-
-                  <div className="">
+                    : 'Payment requested!'
+                  : isSuccess
+                  ? 'Woop sent!'
+                  : description
+                  ? `${
+                      description.charAt(0).toUpperCase() + description.slice(1)
+                    }`
+                  : 'Payment requested!'}
+              </p>
+              <p className="text-3xl ml-2">
+                {badRequest
+                  ? '⚠️'
+                  : isSuccess
+                  ? '💸'
+                  : isSuccessNative
+                  ? '💸'
+                  : '✨'}
+              </p>
+            </div>
+            {badRequest ? (
+              <>
+                <div className="px-4 pb-4 pt-1">
+                  <div className="mt-6"></div>
+                  <Link href="/">
                     <button
-                      type="button"
                       className={
-                        'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                        'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
                       }
-                      onClick={openConnectModal}
                     >
-                      Connect Wallet
+                      Go back
                     </button>
-                  </div>
+                  </Link>
                 </div>
-              ) : isSuccess ? (
+              </>
+            ) : !isConnected ? (
+              <div className="px-4 pb-4 pt-1 relative">
                 <>
-                  <div className="px-4 pb-4 pt-1">
-                    <div className="mt-3 text-center w-full my-6">
-                      <p className="font-bold md:text-5xl text-4xl mb-2">
-                        {request?.decimals == 18
-                          ? amount
-                          : Number(amount) * 10 ** 12}{' '}
-                        {request?.tokenName}
-                      </p>
-                      <p className="text-xs text-slate-300 mb-2 text-center">
-                        <a
-                          className="underline underline-offset-4 mr-1"
-                          href={`${setEtherscanBase(networkName, hashNative)}`}
-                        >
-                          sent
-                        </a>
-                        <span className="mr-1">{'to'}</span>
-                        {ensName ? (
-                          <a>
-                            <span className="mr-1 font-bold">{ensName}</span>
-                          </a>
-                        ) : (
-                          <span className="font-bold">
-                            {request?.from.slice(0, 4)}...
-                            {request?.from.slice(-4)}
-                          </span>
-                        )}
-                      </p>
-                      <div className="m-3">
-                        <img src={gif} alt="Thank you" />
-                      </div>
-                    </div>
-                    <Link href="/">
-                      <button
-                        className={
-                          'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
-                        }
-                      >
-                        Close
-                      </button>
-                    </Link>
+                  <div className="absolute top-0 right-3 p-1">
+                    {request && findIcon(request?.tokenName)}
                   </div>
-                </>
-              ) : isSuccessNative ? (
-                <>
-                  <div className="px-4 pb-4 pt-1">
-                    <div className="mt-3 text-center w-full my-6">
-                      <p className="font-bold md:text-5xl text-4xl mb-2">
-                        {amount} {request?.tokenName}
-                      </p>
-                      <p className="text-xs text-slate-300 mb-2 text-center">
-                        <a
-                          className="underline underline-offset-4 mr-1"
-                          href={`${setEtherscanBase(networkName, hashNative)}`}
-                        >
-                          sent
-                        </a>
-                        <span className="mr-1">{'to'}</span>
-                        {ensName ? (
-                          <a>
-                            <span className="mr-1 font-bold">{ensName}</span>
-                            {/* <Image
+                  <p className="text-xs text-slate-300 mb-2 flex items-center">
+                    <a
+                      className="underline underline-offset-4"
+                      href={`${setEtherscanAddress(network, request?.from)}`}
+                    >
+                      {ensName ? (
+                        <p className="flex items-center">
+                          <span className="mr-1 font-bold">{ensName}</span>
+                          {/* <Image
                               alt="ens"
                               src={ens}
                               className=""
                               width={20}
                               height={20}
                             /> */}
-                          </a>
-                        ) : (
-                          <span className="font-bold">
-                            {request?.from.slice(0, 4)}...
-                            {request?.from.slice(-4)}
-                          </span>
-                        )}
-                      </p>
-                    </div>
+                        </p>
+                      ) : (
+                        <span className="font-bold">
+                          {request?.from.slice(0, 4)}...
+                          {request?.from.slice(-4)}
+                        </span>
+                      )}
+                    </a>
+                    <span className="ml-1">{'requested:'}</span>
+                  </p>
+                  <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
+                    {request?.value == 'allowPayerSelectAmount'
+                      ? '...'
+                      : request?.value}{' '}
+                    {request?.tokenName}
+                  </div>
+                </>
+
+                <div className="">
+                  <button
+                    type="button"
+                    className={
+                      'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                    }
+                    onClick={openConnectModal}
+                  >
+                    Connect Wallet
+                  </button>
+                </div>
+              </div>
+            ) : isSuccess ? (
+              <>
+                <div className="px-4 pb-4 pt-1">
+                  <div className="mt-3 text-center w-full my-6">
+                    <p className="font-bold md:text-5xl text-4xl mb-2">
+                      {request?.decimals == 18
+                        ? amount
+                        : Number(amount) * 10 ** 12}{' '}
+                      {request?.tokenName}
+                    </p>
+                    <p className="text-xs text-slate-300 mb-2 text-center">
+                      <a
+                        className="underline underline-offset-4 mr-1"
+                        href={`${setEtherscanBase(networkName, hashNative)}`}
+                      >
+                        sent
+                      </a>
+                      <span className="mr-1">{'to'}</span>
+                      {ensName ? (
+                        <a>
+                          <span className="mr-1 font-bold">{ensName}</span>
+                        </a>
+                      ) : (
+                        <span className="font-bold">
+                          {request?.from.slice(0, 4)}...
+                          {request?.from.slice(-4)}
+                        </span>
+                      )}
+                    </p>
                     <div className="m-3">
                       <img src={gif} alt="Thank you" />
                     </div>
-                    <Link href="/">
-                      <button
-                        className={
-                          'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
-                        }
+                  </div>
+                  <Link href="/">
+                    <button
+                      className={
+                        'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                      }
+                    >
+                      Close
+                    </button>
+                  </Link>
+                </div>
+              </>
+            ) : isSuccessNative ? (
+              <>
+                <div className="px-4 pb-4 pt-1">
+                  <div className="mt-3 text-center w-full my-6">
+                    <p className="font-bold md:text-5xl text-4xl mb-2">
+                      {amount} {request?.tokenName}
+                    </p>
+                    <p className="text-xs text-slate-300 mb-2 text-center">
+                      <a
+                        className="underline underline-offset-4 mr-1"
+                        href={`${setEtherscanBase(networkName, hashNative)}`}
                       >
-                        Close
-                      </button>
-                    </Link>
+                        sent
+                      </a>
+                      <span className="mr-1">{'to'}</span>
+                      {ensName ? (
+                        <a>
+                          <span className="mr-1 font-bold">{ensName}</span>
+                          {/* <Image
+                              alt="ens"
+                              src={ens}
+                              className=""
+                              width={20}
+                              height={20}
+                            /> */}
+                        </a>
+                      ) : (
+                        <span className="font-bold">
+                          {request?.from.slice(0, 4)}...
+                          {request?.from.slice(-4)}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                  <div className="m-3">
+                    <img src={gif} alt="Thank you" />
+                  </div>
+                  <Link href="/">
+                    <button
+                      className={
+                        'border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                      }
+                    >
+                      Close
+                    </button>
+                  </Link>
+                </div>
+              </>
+            ) : allowPayerSelectAmount ? (
+              <div className="px-4 pb-4 pt-1 relative">
+                <>
+                  <div className="absolute top-0 right-3 p-1">
+                    {request && findIcon(request?.tokenName)}
+                  </div>
+                  <div className="text-xs text-slate-300 mb-2 flex items-center">
+                    <a
+                      className="underline underline-offset-4"
+                      href={`${setEtherscanAddress(network, request?.from)}`}
+                    >
+                      {ensName ? (
+                        <p className="flex items-center">
+                          <span className="font-bold">{ensName}</span>
+                          {/* <Image
+                              alt="ens"
+                              src={ens}
+                              className=""
+                              width={20}
+                              height={20}
+                            /> */}
+                        </p>
+                      ) : (
+                        <span className="font-bold">
+                          {request?.from.slice(0, 4)}...
+                          {request?.from.slice(-4)}
+                        </span>
+                      )}
+                    </a>
+                    <span className="ml-1">
+                      {'requested to set an amount:'}
+                    </span>
+                  </div>
+                  <div className="mt-3 md:text-6xl text-5xl font-bold my-6 text-center items-center">
+                    <input
+                      className="bg-transparent text-white text-center focus:outline-none mr-1"
+                      type="number"
+                      placeholder="0.001"
+                      onChange={handleAmountChange}
+                      style={{ maxWidth: '100%' }}
+                    />
+                    <div className="flex-shrink-0">{request?.tokenName}</div>
                   </div>
                 </>
-              ) : allowPayerSelectAmount ? (
-                <div className="px-4 pb-4 pt-1 relative">
-                  <>
-                    <div className="absolute top-0 right-3 p-1">
-                      {request && findIcon(request?.tokenName)}
-                    </div>
-                    <div className="text-xs text-slate-300 mb-2 flex items-center">
-                      <a
-                        className="underline underline-offset-4"
-                        href={`${setEtherscanAddress(network, request?.from)}`}
-                      >
-                        {ensName ? (
-                          <p className="flex items-center">
-                            <span className="font-bold">{ensName}</span>
-                            {/* <Image
+
+                <div className="">
+                  <button
+                    type="button"
+                    className={
+                      'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                    }
+                    disabled={
+                      (isNativeTx
+                        ? !Boolean(dataNative) || isLoadingNative
+                        : !Boolean(data?.request) || isLoading) || wrongNetwork
+                    }
+                    onClick={
+                      isNativeTx
+                        ? () =>
+                            sendTransaction({
+                              to: recipient,
+                              value: amount
+                                ? BigInt(parseEther(amount).toString())
+                                : undefined,
+                            })
+                        : () => writeContract(data!.request)
+                    }
+                  >
+                    {isNativeTx ? (
+                      isLoadingNative ? (
+                        <svg
+                          className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            strokeWidth="4"
+                            stroke="currentColor"
+                            strokeDasharray="32"
+                            strokeLinecap="round"
+                            fill="transparent"
+                          />
+                        </svg>
+                      ) : (
+                        'Pay Woop'
+                      )
+                    ) : isLoading ? (
+                      <>
+                        <svg
+                          className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            strokeWidth="4"
+                            stroke="currentColor"
+                            strokeDasharray="32"
+                            strokeLinecap="round"
+                            fill="transparent"
+                          />
+                        </svg>
+                      </>
+                    ) : (
+                      'Pay Woop'
+                    )}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="px-4 pb-4 pt-1 relative">
+                <>
+                  <div className="absolute top-0 right-3 p-1">
+                    {request && findIcon(request?.tokenName)}
+                  </div>
+                  <p className="text-xs text-slate-300 mb-2 flex items-center">
+                    <a
+                      className="underline underline-offset-4"
+                      href={`${setEtherscanAddress(network, request?.from)}`}
+                    >
+                      {ensName ? (
+                        <p className="flex items-center">
+                          <span className="font-bold">{ensName}</span>
+                          {/* <Image
                               alt="ens"
                               src={ens}
                               className=""
                               width={20}
                               height={20}
                             /> */}
-                          </p>
-                        ) : (
-                          <span className="font-bold">
-                            {request?.from.slice(0, 4)}...
-                            {request?.from.slice(-4)}
-                          </span>
-                        )}
-                      </a>
-                      <span className="ml-1">
-                        {'requested to set an amount:'}
-                      </span>
-                    </div>
-                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6 text-center items-center">
-                      <input
-                        className="bg-transparent text-white text-center focus:outline-none mr-1"
-                        type="number"
-                        placeholder="0.001"
-                        onChange={handleAmountChange}
-                        style={{ maxWidth: '100%' }}
-                      />
-                      <div className="flex-shrink-0">{request?.tokenName}</div>
-                    </div>
-                  </>
+                        </p>
+                      ) : (
+                        <span className="font-bold">
+                          {request?.from.slice(0, 4)}...
+                          {request?.from.slice(-4)}
+                        </span>
+                      )}
+                    </a>
+                    <span className="ml-1">{'requested:'}</span>
+                  </p>
+                  <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
+                    {request?.value} {request?.tokenName}
+                  </div>
+                </>
 
-                  <div className="">
-                    <button
-                      type="button"
-                      className={
-                        'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
-                      }
-                      disabled={
-                        (isNativeTx
-                          ? !Boolean(dataNative) || isLoadingNative
-                          : !Boolean(data?.request) || isLoading) ||
-                        wrongNetwork
-                      }
-                      onClick={
-                        isNativeTx
-                          ? () =>
-                              sendTransaction({
-                                to: recipient,
-                                value: amount
-                                  ? BigInt(parseEther(amount).toString())
-                                  : undefined,
-                              })
-                          : () => writeContract(data!.request)
-                      }
-                    >
-                      {isNativeTx ? (
-                        isLoadingNative ? (
-                          <svg
-                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              strokeWidth="4"
-                              stroke="currentColor"
-                              strokeDasharray="32"
-                              strokeLinecap="round"
-                              fill="transparent"
-                            />
-                          </svg>
-                        ) : (
-                          'Pay Woop'
-                        )
-                      ) : isLoading ? (
-                        <>
-                          <svg
-                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              strokeWidth="4"
-                              stroke="currentColor"
-                              strokeDasharray="32"
-                              strokeLinecap="round"
-                              fill="transparent"
-                            />
-                          </svg>
-                        </>
+                <div className="">
+                  <button
+                    type="button"
+                    className={
+                      'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
+                    }
+                    disabled={
+                      (isNativeTx
+                        ? !Boolean(dataNative) || isLoadingNative
+                        : !Boolean(data?.request) || isLoading) || wrongNetwork
+                    }
+                    onClick={
+                      isNativeTx
+                        ? () =>
+                            sendTransaction({
+                              to: recipient,
+                              value: amount
+                                ? BigInt(parseEther(amount).toString())
+                                : undefined,
+                            })
+                        : () => writeContract(data!.request)
+                    }
+                  >
+                    {isNativeTx ? (
+                      isLoadingNative ? (
+                        <svg
+                          className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            strokeWidth="4"
+                            stroke="currentColor"
+                            strokeDasharray="32"
+                            strokeLinecap="round"
+                            fill="transparent"
+                          />
+                        </svg>
                       ) : (
                         'Pay Woop'
-                      )}
-                    </button>
-                  </div>
+                      )
+                    ) : isLoading ? (
+                      <>
+                        <svg
+                          className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            strokeWidth="4"
+                            stroke="currentColor"
+                            strokeDasharray="32"
+                            strokeLinecap="round"
+                            fill="transparent"
+                          />
+                        </svg>
+                      </>
+                    ) : (
+                      'Pay Woop'
+                    )}
+                  </button>
                 </div>
-              ) : (
-                <div className="px-4 pb-4 pt-1 relative">
-                  <>
-                    <div className="absolute top-0 right-3 p-1">
-                      {request && findIcon(request?.tokenName)}
-                    </div>
-                    <p className="text-xs text-slate-300 mb-2 flex items-center">
-                      <a
-                        className="underline underline-offset-4"
-                        href={`${setEtherscanAddress(network, request?.from)}`}
-                      >
-                        {ensName ? (
-                          <p className="flex items-center">
-                            <span className="font-bold">{ensName}</span>
-                            {/* <Image
-                              alt="ens"
-                              src={ens}
-                              className=""
-                              width={20}
-                              height={20}
-                            /> */}
-                          </p>
-                        ) : (
-                          <span className="font-bold">
-                            {request?.from.slice(0, 4)}...
-                            {request?.from.slice(-4)}
-                          </span>
-                        )}
-                      </a>
-                      <span className="ml-1">{'requested:'}</span>
-                    </p>
-                    <div className="mt-3 md:text-6xl text-5xl font-bold my-6">
-                      {request?.value} {request?.tokenName}
-                    </div>
-                  </>
-
-                  <div className="">
-                    <button
-                      type="button"
-                      className={
-                        'flex justify-center items-center border-white border font-base text-lg focus:outline-0 focus:text-slate-700 w-full h-16 rounded-xl transition-all font-bold text-white capitalize hover:border-white hover:bg-white hover:text-slate-700'
-                      }
-                      disabled={
-                        (isNativeTx
-                          ? !Boolean(dataNative) || isLoadingNative
-                          : !Boolean(data?.request) || isLoading) ||
-                        wrongNetwork
-                      }
-                      onClick={
-                        isNativeTx
-                          ? () =>
-                              sendTransaction({
-                                to: recipient,
-                                value: amount
-                                  ? BigInt(parseEther(amount).toString())
-                                  : undefined,
-                              })
-                          : () => writeContract(data!.request)
-                      }
-                    >
-                      {isNativeTx ? (
-                        isLoadingNative ? (
-                          <svg
-                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              strokeWidth="4"
-                              stroke="currentColor"
-                              strokeDasharray="32"
-                              strokeLinecap="round"
-                              fill="transparent"
-                            />
-                          </svg>
-                        ) : (
-                          'Pay Woop'
-                        )
-                      ) : isLoading ? (
-                        <>
-                          <svg
-                            className="animate-spin rounded-full w-5 h-5 mr-3 bg-white-500"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              strokeWidth="4"
-                              stroke="currentColor"
-                              strokeDasharray="32"
-                              strokeLinecap="round"
-                              fill="transparent"
-                            />
-                          </svg>
-                        </>
-                      ) : (
-                        'Pay Woop'
-                      )}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </section>
-          </Box>
-        </Container>
-      </article>
-
-      <div className="absolute bottom-0 left-0 w-full">
-        <Footer />
-      </div>
-    </div>
+              </div>
+            )}
+          </section>
+        </Box>
+      </Container>
+    </Layout>
   );
 };
 

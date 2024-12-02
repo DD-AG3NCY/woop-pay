@@ -88,7 +88,7 @@ export const Share: React.FC<{
           <div className="mt-2 flex gap-2 place-content-evenly">
             <div
               onClick={() => visibility(false)}
-              className="border-2 border-[rgba(38,142,200,0.8)] text-[#166995] hover:border-[rgba(38,142,200,1)] hover:text-[#08476a] hover:bg-[#e8f8ff] transition-all rounded-xl font-semibold flex items-center justify-center w-full h-16 cursor-pointer"
+              className="border-2 border-lightBlue text-blue hover:border-darkBlue hover:text-darkBlue hover:bg-[#e8f8ff] transition-all rounded-xl font-semibold flex items-center justify-center w-full h-16 cursor-pointer"
             >
               Back
             </div>
@@ -111,7 +111,7 @@ export const Share: React.FC<{
                   }, 1000);
                 }
               }}
-              className="border-2 border-[rgba(38,142,200,0.8)] text-[#166995] hover:border-[rgba(38,142,200,1)] hover:text-[#08476a] hover:bg-[#e8f8ff] transition-all rounded-xl font-semibold flex items-center justify-center w-full h-16 cursor-pointer"
+              className="border-2 border-lightBlue text-blue hover:border-blue hover:text-darkBlue hover:bg-[#e8f8ff] transition-all rounded-xl font-semibold flex items-center justify-center w-full h-16 cursor-pointer"
             >
               {!navigator.share && copySuccess
                 ? 'Copied'

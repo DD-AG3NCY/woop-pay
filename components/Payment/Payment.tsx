@@ -118,14 +118,14 @@ export default function Payment(props: any) {
   }, [chain]);
 
   return (
-    <>
+    <div className="bg-secondary-gradient border border border-darkBlue border-opacity-50 p-2 rounded-3xl shadow-md">
       {selectorVisibility && (
-        <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen z-30">
+        <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen ">
           <div
             onClick={() => setSelectorVisibility(!selectorVisibility)}
             className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30"
           ></div>
-          <div className="z-20 bg-white rounded-xl shadow-xl py-2 px-2 md:w-80 w-full m-5">
+          <div className=" bg-white rounded-xl shadow-xl py-2 px-2 md:w-80 w-full m-5">
             <p className="font-base font-semibold text-slate-700 pl-4 pb-3 pt-2 border-b mb-3">
               Select a token
             </p>
@@ -275,12 +275,12 @@ export default function Payment(props: any) {
       </div>
 
       {isShareActive && (
-        <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen z-30">
+        <section className="fixed top-0 left-0 flex justify-center items-center w-screen h-screen ">
           <div
             onClick={() => setIsShareActive(!isShareActive)}
             className="fixed top-0 left-0 w-screen h-screen bg-slate-900 opacity-30"
           ></div>
-          <div className="z-20 bg-[#f7fcff] border border-[#06225c66] rounded-3xl shadow-xl py-2 px-2 md:w-96 w-full m-5">
+          <div className=" bg-accent border border-[#06225c66] rounded-3xl shadow-xl py-2 px-2 md:w-96 w-full m-5 z-50">
             <Share
               visibility={setIsShareActive}
               path={path}
@@ -291,6 +291,6 @@ export default function Payment(props: any) {
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 }

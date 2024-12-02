@@ -39,8 +39,8 @@ export default function Notification(props: any) {
   }, [woopId]);
 
   return (
-    <div className="z-30">
-      <div className="bg-gradient-to-r from-indigo-500 to-teal-600 overflow-auto shadow rounded-xl z-30 pb-2">
+    <div>
+      <div className="bg-gradient-to-r from-indigo-500 to-teal-600 overflow-auto shadow rounded-xl  pb-2">
         <div className="border-collapse">
           <div className="text-white border-b-2 py-4 px-4 mb-5">
             <p className="pl-2">{`${
