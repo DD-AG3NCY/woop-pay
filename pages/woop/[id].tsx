@@ -25,10 +25,8 @@ import { sendNotification } from "../../utils/push";
 import mixpanel from "mixpanel-browser";
 import { getEnsName } from "../../utils/ens";
 
-import ERC20 from "../../abi/ERC20.abi.json";
-import Footer from "../../components/Footer";
-import { parseEther } from "ethers";
-import Header from '../../components/Heading';
+import ERC20 from '../../abi/ERC20.abi.json';
+import { parseEther } from 'ethers';
 import Link from 'next/link';
 import ErrorsUi from '../../components/ErrorsUi/ErrorsUi';
 import SEO from '../../components/Seo';

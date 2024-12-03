@@ -10,7 +10,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div
       className="
-        min-h-screen flex flex-col relative
+        min-h-screen flex flex-col relative w-screen
         bg-primary-gradient
       "
     >
@@ -24,10 +24,10 @@ export default function Layout({ children }: LayoutProps) {
       />
 
       {/* Content Wrapper */}
-      <div className="relative z-10 flex flex-col flex-grow">
+      <div className="relative z-10 flex flex-col flex-grow w-screen">
         <Header />
 
-        <main className="flex-grow flex justify-center items-center">
+        <main className="flex-grow flex justify-center items-center w-screen">
           {children}
         </main>
 

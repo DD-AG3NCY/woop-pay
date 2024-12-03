@@ -9,7 +9,7 @@ interface HomepageProps {
 
 export default function Homepage({ onNavigateToPaymentRequest }: HomepageProps) {
   return (
-    <div className="bg-secondary-gradient border border border-darkBlue border-opacity-50 p-2 rounded-3xl shadow-md">
+    <div className="bg-secondary-gradient border border-darkBlue border-opacity-50 p-2 rounded-3xl shadow-md w-full max-w-xl">
       <div className="flex flex-col items-center p-8">
         <h1 className="text-4xl mb-1 text-center text-white">
           Receive crypto,
