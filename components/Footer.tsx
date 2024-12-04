@@ -5,7 +5,7 @@ export default function Footer() {
   const ALEX_LINK = `https://twitter.com/${ALEX_HANDLE}`;
   const D_D_LINK = "https://agency.developerdao.com/";
   return (
-    <footer className="flex justify-center md:justify-between p-5 font-base text-sm text-white opacity-70">
+    <footer className="flex justify-center md:justify-between p-5 font-base text-sm text-white opacity-70 bg-transparent">
       <div className="hidden md:flex">
         <Link href="/policy" className="mr-3" target="_blank" rel="noreferrer">
           <p>Privacy policy</p>
@@ -34,16 +34,16 @@ export default function Footer() {
       </div>
       <div className="hidden md:block">
         <p className="text-white">
-          Built with 💙 by{" "}
+          Built with 💙 by{' '}
           <a
             className="font-semibold hover:underline underline-offset-4"
             target="_blank"
             rel="noreferrer"
             href={ALEX_LINK}
           >
-            @alerex {"  "}
+            @alerex {'  '}
           </a>
-          &{" "}
+          &{' '}
           <a
             className="font-semibold hover:underline underline-offset-4"
             target="_blank"

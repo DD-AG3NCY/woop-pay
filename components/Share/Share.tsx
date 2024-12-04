@@ -10,9 +10,7 @@ import {
 import { baseUrl } from "../../utils/constants";
 import { useEffect, useRef, useState } from "react";
 
-import cx from "classnames";
-import styles from "./share.module.scss";
-import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
+import useWindowSize from '../../hooks/useWindowSize/useWindowSize';
 
 export const Share: React.FC<{
   path: string;
@@ -31,28 +29,28 @@ export const Share: React.FC<{
 
   useEffect(() => {
     const initQR = async () => {
-      const QRCodeStyling = await require("qr-code-styling");
+      const QRCodeStyling = await require('qr-code-styling');
       const qrCodeBuild = new QRCodeStyling({
         width: 357,
         height: 357,
-        image: "icon.svg",
+        image: 'icon.svg',
         dotsOptions: {
           gradient: {
-            type: "linear",
+            type: 'linear',
             colorStops: [
-              { offset: 0, color: "rgb(6, 34, 92)" },
-              { offset: 1, color: "rgba(38, 142, 200, 1)" },
+              { offset: 0, color: 'rgb(6, 34, 92)' },
+              { offset: 1, color: 'rgba(38, 142, 200, 1)' },
             ],
             rotation: 2.35,
           },
-          type: "extra-rounded",
+          type: 'extra-rounded',
         },
         imageOptions: {
-          crossOrigin: "anonymous",
+          crossOrigin: 'anonymous',
           margin: 10,
         },
         backgroundOptions: {
-          color: "transparent",
+          color: 'transparent',
         },
       });
       setqrCode(qrCodeBuild);
@@ -90,24 +88,21 @@ export const Share: React.FC<{
           <div className="mt-2 flex gap-2 place-content-evenly">
             <div
               onClick={() => visibility(false)}
-              className={cx(
-                styles.buttons,
-                "w-full cursor-pointer font-base h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize flex items-center justify-center"
-              )}
+              className="border-2 border-lightBlue text-blue hover:border-darkBlue hover:text-darkBlue hover:bg-[#e8f8ff] transition-all rounded-xl font-semibold flex items-center justify-center w-full h-16 cursor-pointer"
             >
-              {"Back"}
+              Back
             </div>
             <div
               onClick={() => {
                 if (navigator.share) {
                   navigator
                     .share({
-                      title: "Woop Pay",
+                      title: 'Woop Pay',
                       text: `Hey, can you please send me ${amount} ${token.label} for ${description} at`,
                       url: `${baseUrl}${path}`,
                     })
-                    .then(() => console.log("Successful share"))
-                    .catch((error) => console.log("Error sharing", error));
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
                 } else {
                   navigator.clipboard.writeText(`${baseUrl}${path}`);
                   setCopySuccess(true);
@@ -116,16 +111,13 @@ export const Share: React.FC<{
                   }, 1000);
                 }
               }}
-              className={cx(
-                styles.buttons,
-                "w-full font-base cursor-pointer focus:outline-0 focus:text-slate-700  h-16 rounded-xl transition-all font-semibold text-slate-500 capitalize hover:border-slate-700 hover:bg-slate-200 hover:text-slate-500 flex items-center justify-center"
-              )}
+              className="border-2 border-lightBlue text-blue hover:border-blue hover:text-darkBlue hover:bg-[#e8f8ff] transition-all rounded-xl font-semibold flex items-center justify-center w-full h-16 cursor-pointer"
             >
               {!navigator.share && copySuccess
-                ? "Copied"
+                ? 'Copied'
                 : !copySuccess
-                ? "Share Link"
-                : "Share"}
+                ? 'Share Link'
+                : 'Share'}
             </div>
           </div>
           <div className="flex justify-between mt-3">
@@ -137,7 +129,7 @@ export const Share: React.FC<{
                 <WhatsappShareButton
                   url={`${baseUrl}${path}`}
                   title={`Hey, can you please send me ${
-                    amount == "allowPayerSelectAmount" ? "some" : amount
+                    amount == 'allowPayerSelectAmount' ? 'some' : amount
                   } ${token.label} for ${description} at`}
                 >
                   <WhatsappIcon size={30} round />
@@ -147,7 +139,7 @@ export const Share: React.FC<{
                 <TelegramShareButton
                   url={`${baseUrl}${path}`}
                   title={`Hey, can you please send me ${
-                    amount == "allowPayerSelectAmount" ? "some" : amount
+                    amount == 'allowPayerSelectAmount' ? 'some' : amount
                   } ${token.label} for ${description} at`}
                 >
                   <TelegramIcon size={30} round />
@@ -157,7 +149,7 @@ export const Share: React.FC<{
                 <TwitterShareButton
                   url={`${baseUrl}${path}`}
                   title={`Hey, can you please send me ${
-                    amount == "allowPayerSelectAmount" ? "some" : amount
+                    amount == 'allowPayerSelectAmount' ? 'some' : amount
                   } ${token.label} for ${description} at`}
                 >
                   <TwitterIcon size={30} round />

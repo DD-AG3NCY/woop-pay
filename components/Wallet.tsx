@@ -2,11 +2,11 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Wallet() {
   return (
-    <div className="">
+    <div>
       <ConnectButton
         accountStatus={{
-          smallScreen: "avatar",
-          largeScreen: "full",
+          smallScreen: 'avatar',
+          largeScreen: 'full',
         }}
         showBalance={{
           smallScreen: false,
