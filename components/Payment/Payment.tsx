@@ -26,11 +26,11 @@ export default function Payment(props: any) {
     label: string;
     logo: any;
     decimals: number;
-    homestead: string;
-    goerli: string;
-    optimism: string;
-    arbitrum: string;
-    base: string;
+    Ethereum: string;
+    Sepolia: string;
+    Optimism: string;
+    Arbitrum: string;
+    Base: string;
   }>(tokensDetails[0]);
   const [amount, setAmount] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
